@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = STM32F407VET
+TARGET = Laboratory_Practice
 
 ######################################
 # building variables
@@ -27,7 +27,10 @@ OPT = -Og
 # paths
 #######################################
 # Build path
-ifeq ($(TARGET), STM32F103C8Tx)
+
+BUILD_DIR = Build
+
+ ifeq ($(TARGET), STM32F103C8Tx)
 	BUILD_DIR = build_F103C8Tx
 else ifeq ($(TARGET), STM32F103x6)
 	BUILD_DIR = build_F103x6
@@ -38,6 +41,7 @@ else ifeq ($(TARGET), STM32F411VET)
 else ifeq ($(TARGET), STM32F429ZI)
 	BUILD_DIR = build_F429ZI
 endif
+
 ######################################
 # selecting source
 ######################################
@@ -98,7 +102,20 @@ else ifeq ($(TARGET), STM32F429ZI)
 	MCPU = cortex-m4
 	MFPU = fpv4-sp-d16  #dobavit "v" k "fpv4" = "vfpv4-d16"
 	TRGT_CFG = stm32f4x
+else ifeq ($(TARGET), Laboratory_Practice)
+	SYS = CMSIS/Devices/STM32F4xx/Src/system_stm32f4xx.c \ CMSIS/Devices/Src/syscalls.c \ CMSIS/Devices/Src/sysmem.c
+	ASM = STM32F429ZI/startup_stm32f429xx.s
+	CMSIS_INC_DEV = CMSIS/Devices/STM32F4xx/Inc
+	CMSIS_INC_UNIT = CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI
+	CMSIS_INC = CMSIS/Include
+	LD = STM32F429ZI/STM32F429ZITx_FLASH.ld
+	DEF = STM32F429xx
+	MCPU = cortex-m4
+	MFPU = fpv4-sp-d16  #dobavit "v" k "fpv4" = "vfpv4-d16"
+	TRGT_CFG = stm32f4x
+
 endif
+
 
 ######################################
 # source
@@ -107,6 +124,7 @@ endif
 C_SOURCES =  \
 $(SYS) \
 Core/Src/main.c \
+Core/Src/init.c \
 
 # ASM sources
 ASM_SOURCES =  \
@@ -227,7 +245,7 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 	@echo "-----------------------------------------------------"	
 
 $(BUILD_DIR):
-	"mkdir" -p $@
+	mkdir $@
 
 #######################################
 # clean up
