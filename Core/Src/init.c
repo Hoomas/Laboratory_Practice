@@ -17,3 +17,8 @@ void GPIO_init_With_Myself_Macros2 (void)
     BIT_SET(GPIOB_OSPEEDR, GPIO_PIN_MED_14);
     BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_14);
 }
+
+void GPIO_init_CMSIS(void)
+{
+    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
+}
