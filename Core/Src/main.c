@@ -11,6 +11,6 @@ int main(void){
    
  
     while(1){}
-  git config --global user.email "you@example.com"
+ 
   
 }
