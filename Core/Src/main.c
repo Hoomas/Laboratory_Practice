@@ -1,16 +1,21 @@
-#include <stdint.h>
+#include "main.h"
 
-int main(void){
-
-    *(uint32_t*)(0x40023800 + 0x30) |= 0x02; //TACT B EN 
-    //Для включения регистров посылается 16-ти ричная форма двоичного числа нужных регстров(прим. третий и второй регистры, будет число 110 -> 6)
-    *(uint32_t*)(0x40020400 + 0x00) |= 0x4000; // GPIO B EN
-    *(uint32_t*)(0x40020400 + 0x04) = 0x00; //PURDR to zeroes
-    *(uint32_t*)(0x40020400 + 0x08) |= 0x4000; // Speed setup
-    *(uint32_t*)(0x40020400 + 0x18) = 0x80; //Light on 
-   
- 
-    while(1){}
- 
-  
+int main(void)
+{
+    GPIO_init_With_Myself_Macros ();
+    GPIO_init_With_Myself_Macros2 ();
+    while (1)
+    {
+        BIT_SET (GPIOB_BSRR, GPIO_PIN_SET_14);
+        if (BIT_READ(GPIOC_IDR, GPIO_PIN_13)) // опереатор if, в котором логически умножается IDR на значение
+        {
+            BIT_SET(GPIOB_BSRR, GPIO_PIN_SET_7);
+            BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_14);   // Включает светодиод BSSR, если нажата кнопка
+        }
+        else
+        {
+            BIT_SET(GPIOB_BSRR, GPIO_PIN_SET_14);
+            BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_7);
+        }
+    }
 }

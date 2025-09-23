@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\macka\AppData\Local\Temp\ccptdLqi.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,11 +20,148 @@ ARM GAS  C:\Users\macka\AppData\Local\Temp\ccptdLqi.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/init.c"
-  20              	.Letext0:
-ARM GAS  C:\Users\macka\AppData\Local\Temp\ccptdLqi.s 			page 2
+  20              		.section	.text.GPIO_init__Memory,"ax",%progbits
+  21              		.align	1
+  22              		.global	GPIO_init__Memory
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	GPIO_init__Memory:
+  28              	.LFB0:
+   1:Core/Src/init.c **** #include "main.h"
+   2:Core/Src/init.c **** void GPIO_init__Memory(void){};
+  29              		.loc 1 2 29 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              		.loc 1 2 30 view .LVU1
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE0:
+  39              		.section	.text.GPIO_init_With_Myself_Macros,"ax",%progbits
+  40              		.align	1
+  41              		.global	GPIO_init_With_Myself_Macros
+  42              		.syntax unified
+  43              		.thumb
+  44              		.thumb_func
+  46              	GPIO_init_With_Myself_Macros:
+  47              	.LFB1:
+   3:Core/Src/init.c **** void GPIO_init_With_Myself_Macros (void)
+   4:Core/Src/init.c **** {
+  48              		.loc 1 4 1 view -0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+   5:Core/Src/init.c ****     RCC_AHB1ENR |= RCC_GPIOB_EN | RCC_GPIOC_EN;
+  53              		.loc 1 5 5 view .LVU3
+  54 0000 0D4A     		ldr	r2, .L3
+  55 0002 D2F83038 		ldr	r3, [r2, #2096]
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s 			page 2
+
+
+  56              		.loc 1 5 17 is_stmt 0 view .LVU4
+  57 0006 43F00603 		orr	r3, r3, #6
+  58 000a C2F83038 		str	r3, [r2, #2096]
+   6:Core/Src/init.c ****     BIT_SET(GPIOB_MODER, GPIO_PIN_OUT_7);
+  59              		.loc 1 6 5 is_stmt 1 view .LVU5
+  60 000e 0B4B     		ldr	r3, .L3+4
+  61 0010 D3F80024 		ldr	r2, [r3, #1024]
+  62 0014 42F48042 		orr	r2, r2, #16384
+  63 0018 C3F80024 		str	r2, [r3, #1024]
+   7:Core/Src/init.c ****     BIT_SET(GPIOB_OTYPER, GPIO_OFF);
+  64              		.loc 1 7 5 view .LVU6
+   8:Core/Src/init.c ****     BIT_SET(GPIOB_OSPEEDR, GPIO_PIN_MED_7);
+  65              		.loc 1 8 5 view .LVU7
+  66 001c D3F80824 		ldr	r2, [r3, #1032]
+  67 0020 42F48042 		orr	r2, r2, #16384
+  68 0024 C3F80824 		str	r2, [r3, #1032]
+   9:Core/Src/init.c ****     BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_7);
+  69              		.loc 1 9 5 view .LVU8
+  70 0028 D3F81824 		ldr	r2, [r3, #1048]
+  71 002c 42F40002 		orr	r2, r2, #8388608
+  72 0030 C3F81824 		str	r2, [r3, #1048]
+  10:Core/Src/init.c **** }
+  73              		.loc 1 10 1 is_stmt 0 view .LVU9
+  74 0034 7047     		bx	lr
+  75              	.L4:
+  76 0036 00BF     		.align	2
+  77              	.L3:
+  78 0038 00300240 		.word	1073885184
+  79 003c 00000240 		.word	1073872896
+  80              		.cfi_endproc
+  81              	.LFE1:
+  83              		.section	.text.GPIO_init_With_Myself_Macros2,"ax",%progbits
+  84              		.align	1
+  85              		.global	GPIO_init_With_Myself_Macros2
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	GPIO_init_With_Myself_Macros2:
+  91              	.LFB2:
+  11:Core/Src/init.c **** 
+  12:Core/Src/init.c **** void GPIO_init_With_Myself_Macros2 (void)
+  13:Core/Src/init.c **** {
+  92              		.loc 1 13 1 is_stmt 1 view -0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  14:Core/Src/init.c ****     RCC_AHB1ENR |= RCC_GPIOB_EN | RCC_GPIOC_EN;
+  97              		.loc 1 14 5 view .LVU11
+  98 0000 0D4A     		ldr	r2, .L6
+  99 0002 D2F83038 		ldr	r3, [r2, #2096]
+ 100              		.loc 1 14 17 is_stmt 0 view .LVU12
+ 101 0006 43F00603 		orr	r3, r3, #6
+ 102 000a C2F83038 		str	r3, [r2, #2096]
+  15:Core/Src/init.c ****     BIT_SET(GPIOB_MODER, GPIO_PIN_OUT_14);
+ 103              		.loc 1 15 5 is_stmt 1 view .LVU13
+ 104 000e 0B4B     		ldr	r3, .L6+4
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s 			page 3
+
+
+ 105 0010 D3F80024 		ldr	r2, [r3, #1024]
+ 106 0014 42F08052 		orr	r2, r2, #268435456
+ 107 0018 C3F80024 		str	r2, [r3, #1024]
+  16:Core/Src/init.c ****     BIT_SET(GPIOB_OTYPER, GPIO_OFF);
+ 108              		.loc 1 16 5 view .LVU14
+  17:Core/Src/init.c ****     BIT_SET(GPIOB_OSPEEDR, GPIO_PIN_MED_14);
+ 109              		.loc 1 17 5 view .LVU15
+ 110 001c D3F80824 		ldr	r2, [r3, #1032]
+ 111 0020 42F08052 		orr	r2, r2, #268435456
+ 112 0024 C3F80824 		str	r2, [r3, #1032]
+  18:Core/Src/init.c ****     BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_14);
+ 113              		.loc 1 18 5 view .LVU16
+ 114 0028 D3F81824 		ldr	r2, [r3, #1048]
+ 115 002c 42F08042 		orr	r2, r2, #1073741824
+ 116 0030 C3F81824 		str	r2, [r3, #1048]
+  19:Core/Src/init.c **** }...
+ 117              		.loc 1 19 1 is_stmt 0 view .LVU17
+ 118 0034 7047     		bx	lr
+ 119              	.L7:
+ 120 0036 00BF     		.align	2
+ 121              	.L6:
+ 122 0038 00300240 		.word	1073885184
+ 123 003c 00000240 		.word	1073872896
+ 124              		.cfi_endproc
+ 125              	.LFE2:
+ 127              		.text
+ 128              	.Letext0:
+ 129              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
+ 130              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:21     .text.GPIO_init__Memory:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:27     .text.GPIO_init__Memory:00000000 GPIO_init__Memory
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:40     .text.GPIO_init_With_Myself_Macros:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:46     .text.GPIO_init_With_Myself_Macros:00000000 GPIO_init_With_Myself_Macros
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:78     .text.GPIO_init_With_Myself_Macros:00000038 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:84     .text.GPIO_init_With_Myself_Macros2:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:90     .text.GPIO_init_With_Myself_Macros2:00000000 GPIO_init_With_Myself_Macros2
+C:\Users\SIMONM~1\AppData\Local\Temp\ccCpHyRM.s:122    .text.GPIO_init_With_Myself_Macros2:00000038 $d
 
 NO UNDEFINED SYMBOLS
