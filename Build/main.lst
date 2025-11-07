@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc9pFCfe.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,7 +27,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	main:
-  28              	.LFB0:
+  28              	.LFB130:
    1:Core/Src/main.c **** #include "main.h"
    2:Core/Src/main.c **** 
    3:Core/Src/main.c **** int main(void)
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s 			page 1
   10:Core/Src/main.c ****         if (BIT_READ(GPIOC_IDR, GPIO_PIN_13)) // опереатор if, в котором логи�
   11:Core/Src/main.c ****         {
   12:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_PIN_SET_7);
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s 			page 2
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc9pFCfe.s 			page 2
 
 
   13:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_14);   // Включает светодиод BSSR, 
@@ -107,20 +107,20 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s 			page 1
   77              	.L6:
   78 004c 00000240 		.word	1073872896
   79              		.cfi_endproc
-  80              	.LFE0:
+  80              	.LFE130:
   82              		.text
   83              	.Letext0:
   84              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
   85              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
   86              		.file 4 "Core/Inc/main.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s 			page 3
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc9pFCfe.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s:21     .text.main:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s:27     .text.main:00000000 main
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUyujzF.s:78     .text.main:0000004c $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cc9pFCfe.s:21     .text.main:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\cc9pFCfe.s:27     .text.main:00000000 main
+C:\Users\SIMONM~1\AppData\Local\Temp\cc9pFCfe.s:78     .text.main:0000004c $d
 
 UNDEFINED SYMBOLS
 GPIO_init_With_Myself_Macros
