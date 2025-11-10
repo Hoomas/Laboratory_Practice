@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -39,167 +39,292 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s 			page 1
   35 0000 7047     		bx	lr
   36              		.cfi_endproc
   37              	.LFE130:
-  39              		.section	.text.GPIO_init_With_Myself_Macros,"ax",%progbits
+  39              		.section	.text.Led_init,"ax",%progbits
   40              		.align	1
-  41              		.global	GPIO_init_With_Myself_Macros
+  41              		.global	Led_init
   42              		.syntax unified
   43              		.thumb
   44              		.thumb_func
-  46              	GPIO_init_With_Myself_Macros:
+  46              	Led_init:
   47              	.LFB131:
-   3:Core/Src/init.c **** void GPIO_init_With_Myself_Macros (void)
-   4:Core/Src/init.c **** {
-  48              		.loc 1 4 1 view -0
+   3:Core/Src/init.c **** 
+   4:Core/Src/init.c **** void Led_init(void)
+   5:Core/Src/init.c **** {
+  48              		.loc 1 5 1 view -0
   49              		.cfi_startproc
   50              		@ args = 0, pretend = 0, frame = 0
   51              		@ frame_needed = 0, uses_anonymous_args = 0
   52              		@ link register save eliminated.
-   5:Core/Src/init.c ****     RCC_AHB1ENR |= RCC_GPIOB_EN | RCC_GPIOC_EN;
-  53              		.loc 1 5 5 view .LVU3
-  54 0000 0D4A     		ldr	r2, .L3
+   6:Core/Src/init.c ****     RCC_AHB1ENR |= RCC_GPIOB_EN ;
+  53              		.loc 1 6 5 view .LVU3
+  54 0000 214A     		ldr	r2, .L3
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 2
+
+
   55 0002 D2F83038 		ldr	r3, [r2, #2096]
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s 			page 2
-
-
-  56              		.loc 1 5 17 is_stmt 0 view .LVU4
-  57 0006 43F00603 		orr	r3, r3, #6
+  56              		.loc 1 6 17 is_stmt 0 view .LVU4
+  57 0006 43F00203 		orr	r3, r3, #2
   58 000a C2F83038 		str	r3, [r2, #2096]
-   6:Core/Src/init.c ****     BIT_SET(GPIOB_MODER, GPIO_PIN_OUT_7);
-  59              		.loc 1 6 5 is_stmt 1 view .LVU5
-  60 000e 0B4B     		ldr	r3, .L3+4
+   7:Core/Src/init.c ****     //PB11 with my macros
+   8:Core/Src/init.c ****     BIT_SET(GPIOB_MODER, GPIO_PIN_OUT_11);
+  59              		.loc 1 8 5 is_stmt 1 view .LVU5
+  60 000e 1F4B     		ldr	r3, .L3+4
   61 0010 D3F80024 		ldr	r2, [r3, #1024]
-  62 0014 42F48042 		orr	r2, r2, #16384
+  62 0014 42F48002 		orr	r2, r2, #4194304
   63 0018 C3F80024 		str	r2, [r3, #1024]
-   7:Core/Src/init.c ****     BIT_SET(GPIOB_OTYPER, GPIO_OFF);
-  64              		.loc 1 7 5 view .LVU6
-   8:Core/Src/init.c ****     BIT_SET(GPIOB_OSPEEDR, GPIO_PIN_MED_7);
-  65              		.loc 1 8 5 view .LVU7
+   9:Core/Src/init.c ****     BIT_SET(GPIOB_OTYPER, GPIO_OFF);
+  64              		.loc 1 9 5 view .LVU6
+  10:Core/Src/init.c ****     BIT_SET(GPIOB_OSPEEDR, GPIO_PIN_MED_11);
+  65              		.loc 1 10 5 view .LVU7
   66 001c D3F80824 		ldr	r2, [r3, #1032]
-  67 0020 42F48042 		orr	r2, r2, #16384
+  67 0020 42F48002 		orr	r2, r2, #4194304
   68 0024 C3F80824 		str	r2, [r3, #1032]
-   9:Core/Src/init.c ****     BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_7);
-  69              		.loc 1 9 5 view .LVU8
+  11:Core/Src/init.c ****     BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_11);
+  69              		.loc 1 11 5 view .LVU8
   70 0028 D3F81824 		ldr	r2, [r3, #1048]
-  71 002c 42F40002 		orr	r2, r2, #8388608
+  71 002c 42F00062 		orr	r2, r2, #134217728
   72 0030 C3F81824 		str	r2, [r3, #1048]
-  10:Core/Src/init.c **** }
-  73              		.loc 1 10 1 is_stmt 0 view .LVU9
-  74 0034 7047     		bx	lr
-  75              	.L4:
-  76 0036 00BF     		.align	2
-  77              	.L3:
-  78 0038 00300240 		.word	1073885184
-  79 003c 00000240 		.word	1073872896
-  80              		.cfi_endproc
-  81              	.LFE131:
-  83              		.section	.text.GPIO_init_With_Myself_Macros2,"ax",%progbits
-  84              		.align	1
-  85              		.global	GPIO_init_With_Myself_Macros2
-  86              		.syntax unified
-  87              		.thumb
-  88              		.thumb_func
-  90              	GPIO_init_With_Myself_Macros2:
-  91              	.LFB132:
-  11:Core/Src/init.c **** 
-  12:Core/Src/init.c **** void GPIO_init_With_Myself_Macros2 (void)
-  13:Core/Src/init.c **** {
-  92              		.loc 1 13 1 is_stmt 1 view -0
-  93              		.cfi_startproc
-  94              		@ args = 0, pretend = 0, frame = 0
-  95              		@ frame_needed = 0, uses_anonymous_args = 0
-  96              		@ link register save eliminated.
-  14:Core/Src/init.c ****     RCC_AHB1ENR |= RCC_GPIOB_EN | RCC_GPIOC_EN;
-  97              		.loc 1 14 5 view .LVU11
-  98 0000 0D4A     		ldr	r2, .L6
-  99 0002 D2F83038 		ldr	r3, [r2, #2096]
- 100              		.loc 1 14 17 is_stmt 0 view .LVU12
- 101 0006 43F00603 		orr	r3, r3, #6
- 102 000a C2F83038 		str	r3, [r2, #2096]
-  15:Core/Src/init.c ****     BIT_SET(GPIOB_MODER, GPIO_PIN_OUT_14);
- 103              		.loc 1 15 5 is_stmt 1 view .LVU13
- 104 000e 0B4B     		ldr	r3, .L6+4
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s 			page 3
+  12:Core/Src/init.c ****     //PB12 with CMSIS
+  13:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE12, (0x1u << GPIO_MODER_MODE12_Pos));
+  73              		.loc 1 13 5 view .LVU9
+  74 0034 164A     		ldr	r2, .L3+8
+  75 0036 1168     		ldr	r1, [r2]
+  76 0038 21F04071 		bic	r1, r1, #50331648
+  77 003c 41F08070 		orr	r0, r1, #16777216
+  78 0040 1060     		str	r0, [r2]
+  14:Core/Src/init.c ****     CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT_12);
+  79              		.loc 1 14 5 view .LVU10
+  80 0042 5068     		ldr	r0, [r2, #4]
+  81 0044 20F48050 		bic	r0, r0, #4096
+  82 0048 5060     		str	r0, [r2, #4]
+  15:Core/Src/init.c ****     MODIFY_REG(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED12, (0x1u << GPIO_OSPEEDR_OSPEED12_Pos));
+  83              		.loc 1 15 5 view .LVU11
+  84 004a 9068     		ldr	r0, [r2, #8]
+  85 004c 20F04070 		bic	r0, r0, #50331648
+  86 0050 40F08070 		orr	r0, r0, #16777216
+  87 0054 9060     		str	r0, [r2, #8]
+  16:Core/Src/init.c ****     CLEAR_BIT(GPIOB->BSRR, GPIO_BSRR_BR12);
+  88              		.loc 1 16 5 view .LVU12
+  89 0056 9069     		ldr	r0, [r2, #24]
+  90 0058 20F08050 		bic	r0, r0, #268435456
+  91 005c 9061     		str	r0, [r2, #24]
+  17:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD12, (0x0u << GPIO_PUPDR_PUPD12_Pos));
+  92              		.loc 1 17 5 view .LVU13
+  93 005e D068     		ldr	r0, [r2, #12]
+  94 0060 20F04070 		bic	r0, r0, #50331648
+  95 0064 D060     		str	r0, [r2, #12]
+  18:Core/Src/init.c ****     //PB15 bytes operations
+  19:Core/Src/init.c ****     *(uint32_t *)(0x40020400UL + 0x00UL) |= 0x40000000UL; //MODER
+  96              		.loc 1 19 5 view .LVU14
+  97              		.loc 1 19 42 is_stmt 0 view .LVU15
+  98 0066 41F08241 		orr	r1, r1, #1090519040
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 3
 
 
- 105 0010 D3F80024 		ldr	r2, [r3, #1024]
- 106 0014 42F08052 		orr	r2, r2, #268435456
- 107 0018 C3F80024 		str	r2, [r3, #1024]
-  16:Core/Src/init.c ****     BIT_SET(GPIOB_OTYPER, GPIO_OFF);
- 108              		.loc 1 16 5 view .LVU14
-  17:Core/Src/init.c ****     BIT_SET(GPIOB_OSPEEDR, GPIO_PIN_MED_14);
- 109              		.loc 1 17 5 view .LVU15
- 110 001c D3F80824 		ldr	r2, [r3, #1032]
- 111 0020 42F08052 		orr	r2, r2, #268435456
- 112 0024 C3F80824 		str	r2, [r3, #1032]
-  18:Core/Src/init.c ****     BIT_SET(GPIOB_BSRR, GPIO_PIN_RESET_14);
- 113              		.loc 1 18 5 view .LVU16
- 114 0028 D3F81824 		ldr	r2, [r3, #1048]
- 115 002c 42F08042 		orr	r2, r2, #1073741824
- 116 0030 C3F81824 		str	r2, [r3, #1048]
-  19:Core/Src/init.c **** }
- 117              		.loc 1 19 1 is_stmt 0 view .LVU17
- 118 0034 7047     		bx	lr
- 119              	.L7:
- 120 0036 00BF     		.align	2
- 121              	.L6:
- 122 0038 00300240 		.word	1073885184
- 123 003c 00000240 		.word	1073872896
- 124              		.cfi_endproc
- 125              	.LFE132:
- 127              		.section	.text.GPIO_init_CMSIS,"ax",%progbits
- 128              		.align	1
- 129              		.global	GPIO_init_CMSIS
- 130              		.syntax unified
- 131              		.thumb
- 132              		.thumb_func
- 134              	GPIO_init_CMSIS:
- 135              	.LFB133:
-  20:Core/Src/init.c **** 
-  21:Core/Src/init.c **** void GPIO_init_CMSIS(void)
-  22:Core/Src/init.c **** {
- 136              		.loc 1 22 1 is_stmt 1 view -0
- 137              		.cfi_startproc
- 138              		@ args = 0, pretend = 0, frame = 0
- 139              		@ frame_needed = 0, uses_anonymous_args = 0
- 140              		@ link register save eliminated.
-  23:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
- 141              		.loc 1 23 5 view .LVU19
- 142 0000 024A     		ldr	r2, .L9
- 143 0002 136B     		ldr	r3, [r2, #48]
- 144 0004 43F00203 		orr	r3, r3, #2
- 145 0008 1363     		str	r3, [r2, #48]
-  24:Core/Src/init.c **** }...
- 146              		.loc 1 24 1 is_stmt 0 view .LVU20
- 147 000a 7047     		bx	lr
- 148              	.L10:
- 149              		.align	2
- 150              	.L9:
- 151 000c 00380240 		.word	1073887232
- 152              		.cfi_endproc
- 153              	.LFE133:
- 155              		.text
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s 			page 4
+  99 006a C3F80014 		str	r1, [r3, #1024]
+  20:Core/Src/init.c ****     *(uint32_t *)(0x40020400UL + 0x04UL) |= 0x00; //OTYPER
+ 100              		.loc 1 20 5 is_stmt 1 view .LVU16
+  21:Core/Src/init.c ****     *(uint32_t *)(0x40020400UL + 0x08UL) |= 0x40000000UL; //OSPEEDR
+ 101              		.loc 1 21 5 view .LVU17
+ 102 006e D3F80824 		ldr	r2, [r3, #1032]
+ 103              		.loc 1 21 42 is_stmt 0 view .LVU18
+ 104 0072 42F08042 		orr	r2, r2, #1073741824
+ 105 0076 C3F80824 		str	r2, [r3, #1032]
+  22:Core/Src/init.c ****     *(uint32_t *)(0x40020400UL + 0x0CUL) |= 0x80000000UL; //BSRR
+ 106              		.loc 1 22 5 is_stmt 1 view .LVU19
+ 107 007a D3F80C24 		ldr	r2, [r3, #1036]
+ 108              		.loc 1 22 42 is_stmt 0 view .LVU20
+ 109 007e 42F00042 		orr	r2, r2, #-2147483648
+ 110 0082 C3F80C24 		str	r2, [r3, #1036]
+  23:Core/Src/init.c **** }
+ 111              		.loc 1 23 1 view .LVU21
+ 112 0086 7047     		bx	lr
+ 113              	.L4:
+ 114              		.align	2
+ 115              	.L3:
+ 116 0088 00300240 		.word	1073885184
+ 117 008c 00000240 		.word	1073872896
+ 118 0090 00040240 		.word	1073873920
+ 119              		.cfi_endproc
+ 120              	.LFE131:
+ 122              		.section	.text.Buttons_Init,"ax",%progbits
+ 123              		.align	1
+ 124              		.global	Buttons_Init
+ 125              		.syntax unified
+ 126              		.thumb
+ 127              		.thumb_func
+ 129              	Buttons_Init:
+ 130              	.LFB132:
+  24:Core/Src/init.c **** 
+  25:Core/Src/init.c **** void Buttons_Init(void)
+  26:Core/Src/init.c **** {
+ 131              		.loc 1 26 1 is_stmt 1 view -0
+ 132              		.cfi_startproc
+ 133              		@ args = 0, pretend = 0, frame = 0
+ 134              		@ frame_needed = 0, uses_anonymous_args = 0
+ 135              		@ link register save eliminated.
+  27:Core/Src/init.c **** 
+  28:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
+ 136              		.loc 1 28 5 view .LVU23
+ 137 0000 0D4B     		ldr	r3, .L6
+ 138 0002 1A6B     		ldr	r2, [r3, #48]
+ 139 0004 42F00202 		orr	r2, r2, #2
+ 140 0008 1A63     		str	r2, [r3, #48]
+  29:Core/Src/init.c ****     (void)RCC->AHB1ENR;
+ 141              		.loc 1 29 5 view .LVU24
+ 142 000a 1B6B     		ldr	r3, [r3, #48]
+  30:Core/Src/init.c **** 
+  31:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE10_Msk, (0x0u << GPIO_MODER_MODE10_Pos)); // 00 = Input
+ 143              		.loc 1 31 5 view .LVU25
+ 144 000c 0B4B     		ldr	r3, .L6+4
+ 145 000e 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 4
 
 
- 156              	.Letext0:
- 157              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
- 158              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
- 159              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s 			page 5
+ 146 0010 22F44012 		bic	r2, r2, #3145728
+ 147 0014 1A60     		str	r2, [r3]
+  32:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD10_Msk, (0x2u << GPIO_PUPDR_PUPD10_Pos)); // 10 = Pull-
+ 148              		.loc 1 32 5 view .LVU26
+ 149 0016 DA68     		ldr	r2, [r3, #12]
+ 150 0018 22F44012 		bic	r2, r2, #3145728
+ 151 001c 42F40012 		orr	r2, r2, #2097152
+ 152 0020 DA60     		str	r2, [r3, #12]
+  33:Core/Src/init.c **** 
+  34:Core/Src/init.c **** 
+  35:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE6_Msk, (0x0u << GPIO_MODER_MODE6_Pos)); // 00 = Input
+ 153              		.loc 1 35 5 view .LVU27
+ 154 0022 1A68     		ldr	r2, [r3]
+ 155 0024 22F44052 		bic	r2, r2, #12288
+ 156 0028 1A60     		str	r2, [r3]
+  36:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD6_Msk, (0x2u << GPIO_PUPDR_PUPD6_Pos)); // 10 = Pull-Do
+ 157              		.loc 1 36 5 view .LVU28
+ 158 002a DA68     		ldr	r2, [r3, #12]
+ 159 002c 22F44052 		bic	r2, r2, #12288
+ 160 0030 42F40052 		orr	r2, r2, #8192
+ 161 0034 DA60     		str	r2, [r3, #12]
+  37:Core/Src/init.c **** }
+ 162              		.loc 1 37 1 is_stmt 0 view .LVU29
+ 163 0036 7047     		bx	lr
+ 164              	.L7:
+ 165              		.align	2
+ 166              	.L6:
+ 167 0038 00380240 		.word	1073887232
+ 168 003c 00040240 		.word	1073873920
+ 169              		.cfi_endproc
+ 170              	.LFE132:
+ 172              		.section	.text.PB10_out,"ax",%progbits
+ 173              		.align	1
+ 174              		.global	PB10_out
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	PB10_out:
+ 180              	.LFB133:
+  38:Core/Src/init.c **** 
+  39:Core/Src/init.c **** void PB10_out(void)
+  40:Core/Src/init.c **** {
+ 181              		.loc 1 40 1 is_stmt 1 view -0
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 0
+ 184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 185              		@ link register save eliminated.
+  41:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE10_Msk, (0x1u << GPIO_MODER_MODE10_Pos)); // Output
+ 186              		.loc 1 41 5 view .LVU31
+ 187 0000 0A4B     		ldr	r3, .L9
+ 188 0002 1A68     		ldr	r2, [r3]
+ 189 0004 22F44012 		bic	r2, r2, #3145728
+ 190 0008 42F48012 		orr	r2, r2, #1048576
+ 191 000c 1A60     		str	r2, [r3]
+  42:Core/Src/init.c ****     CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT_10); // Push-pull
+ 192              		.loc 1 42 5 view .LVU32
+ 193 000e 5A68     		ldr	r2, [r3, #4]
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 5
+
+
+ 194 0010 22F48062 		bic	r2, r2, #1024
+ 195 0014 5A60     		str	r2, [r3, #4]
+  43:Core/Src/init.c ****     MODIFY_REG(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED10_Msk, (0x1u << GPIO_OSPEEDR_OSPEED10_Pos)); // 
+ 196              		.loc 1 43 5 view .LVU33
+ 197 0016 9A68     		ldr	r2, [r3, #8]
+ 198 0018 22F44012 		bic	r2, r2, #3145728
+ 199 001c 42F48012 		orr	r2, r2, #1048576
+ 200 0020 9A60     		str	r2, [r3, #8]
+  44:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD10_Msk, (0x00u << GPIO_PUPDR_PUPD10_Pos)); // Off
+ 201              		.loc 1 44 5 view .LVU34
+ 202 0022 DA68     		ldr	r2, [r3, #12]
+ 203 0024 22F44012 		bic	r2, r2, #3145728
+ 204 0028 DA60     		str	r2, [r3, #12]
+  45:Core/Src/init.c **** }
+ 205              		.loc 1 45 1 is_stmt 0 view .LVU35
+ 206 002a 7047     		bx	lr
+ 207              	.L10:
+ 208              		.align	2
+ 209              	.L9:
+ 210 002c 00040240 		.word	1073873920
+ 211              		.cfi_endproc
+ 212              	.LFE133:
+ 214              		.section	.text.PB10_inp,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	PB10_inp
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 221              	PB10_inp:
+ 222              	.LFB134:
+  46:Core/Src/init.c **** void PB10_inp(void)
+  47:Core/Src/init.c **** {
+ 223              		.loc 1 47 1 is_stmt 1 view -0
+ 224              		.cfi_startproc
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227              		@ link register save eliminated.
+  48:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE10_Msk, (0x0u << GPIO_MODER_MODE10_Pos)); // 00 = Input
+ 228              		.loc 1 48 5 view .LVU37
+ 229 0000 054A     		ldr	r2, .L12
+ 230 0002 1368     		ldr	r3, [r2]
+ 231 0004 23F44013 		bic	r3, r3, #3145728
+ 232 0008 1360     		str	r3, [r2]
+  49:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD10_Msk, (0x2u << GPIO_PUPDR_PUPD10_Pos)); // 10 = Pull-
+ 233              		.loc 1 49 5 view .LVU38
+ 234 000a D368     		ldr	r3, [r2, #12]
+ 235 000c 23F44013 		bic	r3, r3, #3145728
+ 236 0010 43F40013 		orr	r3, r3, #2097152
+ 237 0014 D360     		str	r3, [r2, #12]
+  50:Core/Src/init.c **** }
+ 238              		.loc 1 50 1 is_stmt 0 view .LVU39
+ 239 0016 7047     		bx	lr
+ 240              	.L13:
+ 241              		.align	2
+ 242              	.L12:
+ 243 0018 00040240 		.word	1073873920
+ 244              		.cfi_endproc
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 6
+
+
+ 245              	.LFE134:
+ 247              		.text
+ 248              	.Letext0:
+ 249              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
+ 250              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
+ 251              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:21     .text.GPIO_init__Memory:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:27     .text.GPIO_init__Memory:00000000 GPIO_init__Memory
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:40     .text.GPIO_init_With_Myself_Macros:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:46     .text.GPIO_init_With_Myself_Macros:00000000 GPIO_init_With_Myself_Macros
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:78     .text.GPIO_init_With_Myself_Macros:00000038 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:84     .text.GPIO_init_With_Myself_Macros2:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:90     .text.GPIO_init_With_Myself_Macros2:00000000 GPIO_init_With_Myself_Macros2
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:122    .text.GPIO_init_With_Myself_Macros2:00000038 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:128    .text.GPIO_init_CMSIS:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:134    .text.GPIO_init_CMSIS:00000000 GPIO_init_CMSIS
-C:\Users\SIMONM~1\AppData\Local\Temp\cczlsEwk.s:151    .text.GPIO_init_CMSIS:0000000c $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:21     .text.GPIO_init__Memory:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:27     .text.GPIO_init__Memory:00000000 GPIO_init__Memory
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:40     .text.Led_init:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:46     .text.Led_init:00000000 Led_init
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:116    .text.Led_init:00000088 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:123    .text.Buttons_Init:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:129    .text.Buttons_Init:00000000 Buttons_Init
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:167    .text.Buttons_Init:00000038 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:173    .text.PB10_out:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:179    .text.PB10_out:00000000 PB10_out
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:210    .text.PB10_out:0000002c $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:215    .text.PB10_inp:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:221    .text.PB10_inp:00000000 PB10_inp
+C:\Users\SIMONM~1\AppData\Local\Temp\ccte0sCb.s:243    .text.PB10_inp:00000018 $d
 
 NO UNDEFINED SYMBOLS
