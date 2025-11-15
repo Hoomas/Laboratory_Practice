@@ -1,102 +1,19 @@
-#include "main.h"
+#include "init.h"
+#include "it_handlers.h"
 //1 кнопка 3 частоты
 //2 кнопка включает последовательно 4 светодиода(циклично, короткое нажатие 1 12 123 1234 1 )
 //выбор светодиода, для которого выбирается частота(длинное нажатие имзенеие порядкового номера, если не настраивать, то базовя, можно настроить свтодтод. даже если он сейчас не горит) без таймеров и прерываний
 
 
- static void delay_cycles(volatile uint32_t t)
-{
-    while (t--) __NOP();
-}
-
-static uint8_t debounce(uint32_t bitmask, uint32_t time)
-{
-
-    for (int i = 0; i < 5; i++)
-    {
-        if (READ_BIT(GPIOC_IDR, bitmask))
-            return 0;
-        delay_cycles(time);
-    }
-    return 1;
-}
-
-static uint8_t upndown(uint32_t bitmask)
-{
-    uint8_t flag = 0;
-    if(debounce(bitmask, 10))
-    {
-        flag++;
-    }
-    if(!debounce(bitmask, 10))
-    {flag++;}
-    if(flag>=2){return 1;}
-    else{return 0;}
-}
-
-static uint8_t upndown_l(uint32_t bitmask)
-{
-    uint8_t flag = 0;
-    if(debounce(bitmask, 8))
-    {
-        flag++;
-    }
-    if(!debounce(bitmask, 8))
-    {flag++;}
-    if(flag>=2){return 1;}
-    else{return 0;}
-}
-
-static void blink(uint32_t bitmask, uint8_t speed)
-{
-    SET_BIT(GPIOB->BSRR, bitmask);
-    switch(speed)
-    {
-        case 1 : delay_cycles(100000); break;
-        case 2: delay_cycles(500000); break;
-        case 3: delay_cycles(2500000); break;
-    }
-    BIT_SET(GPIOB->BSRR, bitmask << (16U));
-    switch(speed)
-    {
-        case 1 : delay_cycles(100000); break;
-        case 2: delay_cycles(500000); break;
-        case 3: delay_cycles(250000); break;
-    }
-}
 
 //  GPIO_BSRR_BR0
 //  GPIO_BSRR_BS0
-static void spdup( uint8_t *var )
-{
-   uint8_t spd  = *var;
-   spd++;
-    if(spd>3)
-    {
-        spd =1 ;
-    }
 
-}
 
-// static void quant( uint8_t *var )
-// {
-//    uint8_t spd  = *var;
-//    spd++;
-//     if(spd>4)
-//     {
-//         spd =1 ;
-//     }
+// PB0, PB7, PB14 - plate
+// Pb8, PbB10, Pb11 - added
 
-// }
-
-uint8_t btn1 = 0;
-uint8_t btn2 = 0;
-uint8_t choose = 1;
-uint8_t quanty = 1;
-uint8_t PB11_spd = 1;
-uint8_t PB12_spd = 1;
-uint8_t PB13_spd = 1;
-uint8_t PB15_spd = 1;
+//PC6 - button
 
 
 /*
@@ -202,9 +119,7 @@ int main()
     */
 
 
-
-
-
+/*
 uint8_t flag1 =0;
 uint8_t flag2 =0;
 uint8_t current_led_indx = 2;
@@ -302,7 +217,7 @@ int main(void)
 
 
 
-/*while (1)
+while (1)
     {
        if (BIT_READ(GPIOC_IDR, GPIO_PIN_8))
        {
@@ -334,3 +249,20 @@ int main(void)
        }
     }
        */
+
+uint8_t LedState;
+
+int main(void)
+{
+    GPIO_init();
+    CLK_CLEAR();
+    RCC_Init();
+    ITR_init();
+
+    while(1)
+    {
+        if(LedState) SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+        else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+    }
+
+}

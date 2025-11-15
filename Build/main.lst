@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,1096 +20,376 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/main.c"
-  20              		.section	.text.delay_cycles,"ax",%progbits
+  20              		.section	.text.main,"ax",%progbits
   21              		.align	1
-  22              		.syntax unified
-  23              		.thumb
-  24              		.thumb_func
-  26              	delay_cycles:
-  27              	.LVL0:
+  22              		.global	main
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	main:
   28              	.LFB130:
-   1:Core/Src/main.c **** #include "main.h"
-   2:Core/Src/main.c **** //1 кнопка 3 частоты
-   3:Core/Src/main.c **** //2 кнопка включает последовательно 4 светодиода(цикли�
-   4:Core/Src/main.c **** //выбор светодиода, для которого выбирается частота(дл
-   5:Core/Src/main.c **** 
+   1:Core/Src/main.c **** #include "init.h"
+   2:Core/Src/main.c **** #include "it_handlers.h"
+   3:Core/Src/main.c **** //1 кнопка 3 частоты
+   4:Core/Src/main.c **** //2 кнопка включает последовательно 4 светодиода(цикли�
+   5:Core/Src/main.c **** //выбор светодиода, для которого выбирается частота(дл
    6:Core/Src/main.c **** 
-   7:Core/Src/main.c ****  static void delay_cycles(volatile uint32_t t)
-   8:Core/Src/main.c **** {
-  29              		.loc 1 8 1 view -0
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 8
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33              		@ link register save eliminated.
-  34              		.loc 1 8 1 is_stmt 0 view .LVU1
-  35 0000 82B0     		sub	sp, sp, #8
-  36              	.LCFI0:
-  37              		.cfi_def_cfa_offset 8
-  38 0002 0190     		str	r0, [sp, #4]
-   9:Core/Src/main.c ****     while (t--) __NOP();
-  39              		.loc 1 9 5 is_stmt 1 view .LVU2
-  40              		.loc 1 9 11 is_stmt 0 view .LVU3
-  41 0004 00E0     		b	.L2
-  42              	.L3:
-  43              		.loc 1 9 17 is_stmt 1 discriminator 2 view .LVU4
-  44              		.syntax unified
-  45              	@ 9 "Core/Src/main.c" 1
-  46 0006 00BF     		nop
-  47              	@ 0 "" 2
-  48              		.thumb
-  49              		.syntax unified
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 2
-
-
-  50              	.L2:
-  51              		.loc 1 9 12 discriminator 1 view .LVU5
-  52              		.loc 1 9 13 is_stmt 0 discriminator 1 view .LVU6
-  53 0008 019B     		ldr	r3, [sp, #4]
-  54 000a 5A1E     		subs	r2, r3, #1
-  55 000c 0192     		str	r2, [sp, #4]
-  56              		.loc 1 9 12 discriminator 1 view .LVU7
-  57 000e 002B     		cmp	r3, #0
-  58 0010 F9D1     		bne	.L3
-  10:Core/Src/main.c **** }
-  59              		.loc 1 10 1 view .LVU8
-  60 0012 02B0     		add	sp, sp, #8
-  61              	.LCFI1:
-  62              		.cfi_def_cfa_offset 0
-  63              		@ sp needed
-  64 0014 7047     		bx	lr
-  65              		.cfi_endproc
-  66              	.LFE130:
-  68              		.section	.text.blink,"ax",%progbits
-  69              		.align	1
-  70              		.syntax unified
-  71              		.thumb
-  72              		.thumb_func
-  74              	blink:
-  75              	.LVL1:
-  76              	.LFB134:
+   7:Core/Src/main.c **** 
+   8:Core/Src/main.c **** 
+   9:Core/Src/main.c **** //  GPIO_BSRR_BR0
+  10:Core/Src/main.c **** //  GPIO_BSRR_BS0
   11:Core/Src/main.c **** 
-  12:Core/Src/main.c **** static uint8_t debounce(uint32_t bitmask, uint32_t time)
-  13:Core/Src/main.c **** {
-  14:Core/Src/main.c **** 
-  15:Core/Src/main.c ****     for (int i = 0; i < 5; i++)
-  16:Core/Src/main.c ****     {
-  17:Core/Src/main.c ****         if (READ_BIT(GPIOC_IDR, bitmask))
-  18:Core/Src/main.c ****             return 0;
-  19:Core/Src/main.c ****         delay_cycles(time);
-  20:Core/Src/main.c ****     }
-  21:Core/Src/main.c ****     return 1;
-  22:Core/Src/main.c **** }
-  23:Core/Src/main.c **** 
-  24:Core/Src/main.c **** static uint8_t upndown(uint32_t bitmask)
-  25:Core/Src/main.c **** {
-  26:Core/Src/main.c ****     uint8_t flag = 0;
-  27:Core/Src/main.c ****     if(debounce(bitmask, 10))
-  28:Core/Src/main.c ****     {
-  29:Core/Src/main.c ****         flag++;
-  30:Core/Src/main.c ****     }
-  31:Core/Src/main.c ****     if(!debounce(bitmask, 10))
-  32:Core/Src/main.c ****     {flag++;}
-  33:Core/Src/main.c ****     if(flag>=2){return 1;}
-  34:Core/Src/main.c ****     else{return 0;}
-  35:Core/Src/main.c **** }
-  36:Core/Src/main.c **** 
-  37:Core/Src/main.c **** static uint8_t upndown_l(uint32_t bitmask)
-  38:Core/Src/main.c **** {
-  39:Core/Src/main.c ****     uint8_t flag = 0;
-  40:Core/Src/main.c ****     if(debounce(bitmask, 8))
-  41:Core/Src/main.c ****     {
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 3
+  12:Core/Src/main.c **** 
+  13:Core/Src/main.c **** // PB0, PB7, PB14 - plate
+  14:Core/Src/main.c **** // Pb8, PbB10, Pb11 - added
+  15:Core/Src/main.c **** 
+  16:Core/Src/main.c **** //PC6 - button
+  17:Core/Src/main.c **** 
+  18:Core/Src/main.c **** 
+  19:Core/Src/main.c **** /*
+  20:Core/Src/main.c **** int main(void)
+  21:Core/Src/main.c **** {
+  22:Core/Src/main.c ****     Led_init();
+  23:Core/Src/main.c ****     Buttons_Init();
+  24:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR10);    
+  25:Core/Src/main.c **** 
+  26:Core/Src/main.c ****     while (1)
+  27:Core/Src/main.c ****     {
+  28:Core/Src/main.c ****         
+  29:Core/Src/main.c ****         if (upndown(GPIO_IDR_ID6))
+  30:Core/Src/main.c ****         {
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 2
 
 
-  42:Core/Src/main.c ****         flag++;
-  43:Core/Src/main.c ****     }
-  44:Core/Src/main.c ****     if(!debounce(bitmask, 8))
-  45:Core/Src/main.c ****     {flag++;}
-  46:Core/Src/main.c ****     if(flag>=2){return 1;}
-  47:Core/Src/main.c ****     else{return 0;}
-  48:Core/Src/main.c **** }
-  49:Core/Src/main.c **** 
-  50:Core/Src/main.c **** static void blink(uint32_t bitmask, uint8_t speed)
-  51:Core/Src/main.c **** {
-  77              		.loc 1 51 1 is_stmt 1 view -0
-  78              		.cfi_startproc
-  79              		@ args = 0, pretend = 0, frame = 0
-  80              		@ frame_needed = 0, uses_anonymous_args = 0
-  81              		.loc 1 51 1 is_stmt 0 view .LVU10
-  82 0000 38B5     		push	{r3, r4, r5, lr}
-  83              	.LCFI2:
-  84              		.cfi_def_cfa_offset 16
-  85              		.cfi_offset 3, -16
-  86              		.cfi_offset 4, -12
-  87              		.cfi_offset 5, -8
-  88              		.cfi_offset 14, -4
-  89 0002 0546     		mov	r5, r0
-  90 0004 0C46     		mov	r4, r1
-  52:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask);
-  91              		.loc 1 52 5 is_stmt 1 view .LVU11
-  92 0006 164A     		ldr	r2, .L13
-  93 0008 9369     		ldr	r3, [r2, #24]
-  94 000a 0343     		orrs	r3, r3, r0
-  95 000c 9361     		str	r3, [r2, #24]
-  53:Core/Src/main.c ****     switch(speed)
-  96              		.loc 1 53 5 view .LVU12
-  97 000e 0229     		cmp	r1, #2
-  98 0010 15D0     		beq	.L6
-  99 0012 0329     		cmp	r1, #3
- 100 0014 17D0     		beq	.L7
- 101 0016 0129     		cmp	r1, #1
- 102 0018 02D1     		bne	.L8
-  54:Core/Src/main.c ****     {
-  55:Core/Src/main.c ****         case 1 : delay_cycles(100000); break;
- 103              		.loc 1 55 18 view .LVU13
- 104 001a 1248     		ldr	r0, .L13+4
- 105              	.LVL2:
- 106              		.loc 1 55 18 is_stmt 0 view .LVU14
- 107 001c FFF7FEFF 		bl	delay_cycles
- 108              	.LVL3:
- 109              		.loc 1 55 40 is_stmt 1 discriminator 1 view .LVU15
- 110              	.L8:
-  56:Core/Src/main.c ****         case 2: delay_cycles(500000); break;
-  57:Core/Src/main.c ****         case 3: delay_cycles(2500000); break;
-  58:Core/Src/main.c ****     }
-  59:Core/Src/main.c ****     BIT_SET(GPIOB->BSRR, bitmask << (16U));
- 111              		.loc 1 59 5 view .LVU16
- 112 0020 0F4A     		ldr	r2, .L13
- 113 0022 9369     		ldr	r3, [r2, #24]
- 114 0024 43EA0543 		orr	r3, r3, r5, lsl #16
- 115 0028 9361     		str	r3, [r2, #24]
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 4
+  31:Core/Src/main.c ****             btn2 = 1;
+  32:Core/Src/main.c ****                 
+  33:Core/Src/main.c ****                 btn2_state = !btn2_state;
+  34:Core/Src/main.c ****                 delay_cycles(500);
+  35:Core/Src/main.c ****         }
+  36:Core/Src/main.c ****         btn2 = 0;
+  37:Core/Src/main.c **** 
+  38:Core/Src/main.c ****         if (btn2_state == 0)
+  39:Core/Src/main.c ****         {
+  40:Core/Src/main.c ****  
+  41:Core/Src/main.c ****             PB10_inp();
+  42:Core/Src/main.c **** 
+  43:Core/Src/main.c ****             if (upndown(GPIO_IDR_ID10))
+  44:Core/Src/main.c ****             {
+  45:Core/Src/main.c ****                 btn1++;
+  46:Core/Src/main.c ****                 
+  47:Core/Src/main.c ****                     switch(btn1)
+  48:Core/Src/main.c ****                     {
+  49:Core/Src/main.c ****                     case 1:
+  50:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR, GPIO_PIN_SET_11);
+  51:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_RESET_12);
+  52:Core/Src/main.c ****                         break;
+  53:Core/Src/main.c ****                     case 2:
+  54:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR, GPIO_PIN_SET_11);
+  55:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_SET_12);
+  56:Core/Src/main.c ****                         break;
+  57:Core/Src/main.c ****                     case 3:
+  58:Core/Src/main.c ****                         btn1 = 0;
+  59:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_RESET_11);
+  60:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_RESET_12);
+  61:Core/Src/main.c ****                         break;
+  62:Core/Src/main.c ****                     }
+  63:Core/Src/main.c ****                     delay_cycles(5000);
+  64:Core/Src/main.c ****                 
+  65:Core/Src/main.c ****             }
+  66:Core/Src/main.c ****             
+  67:Core/Src/main.c ****         }
+  68:Core/Src/main.c ****         else
+  69:Core/Src/main.c ****         {
+  70:Core/Src/main.c ****             PB10_out();
+  71:Core/Src/main.c **** 
+  72:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_BSRR_BS10);
+  73:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_BSRR_BR11);
+  74:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_BSRR_BR12);
+  75:Core/Src/main.c **** 
+  76:Core/Src/main.c ****     
+  77:Core/Src/main.c ****             while (1)
+  78:Core/Src/main.c ****             {
+  79:Core/Src/main.c ****                 
+  80:Core/Src/main.c ****                 if (upndown(GPIO_IDR_ID6))
+  81:Core/Src/main.c ****                 {
+  82:Core/Src/main.c ****                         btn2 = 1;
+  83:Core/Src/main.c ****                         BIT_SET(GPIOB_BSRR, GPIO_BSRR_BR10);
+  84:Core/Src/main.c ****                         PB10_inp();
+  85:Core/Src/main.c ****                         btn2_state = 0;
+  86:Core/Src/main.c ****                         delay_cycles(500000);
+  87:Core/Src/main.c ****                         break;
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 3
 
 
-  60:Core/Src/main.c ****     switch(speed)
- 116              		.loc 1 60 5 view .LVU17
- 117 002a 022C     		cmp	r4, #2
- 118 002c 0FD0     		beq	.L9
- 119 002e 032C     		cmp	r4, #3
- 120 0030 11D0     		beq	.L10
- 121 0032 012C     		cmp	r4, #1
- 122 0034 02D1     		bne	.L5
-  61:Core/Src/main.c ****     {
-  62:Core/Src/main.c ****         case 1 : delay_cycles(100000); break;
- 123              		.loc 1 62 18 view .LVU18
- 124 0036 0B48     		ldr	r0, .L13+4
- 125 0038 FFF7FEFF 		bl	delay_cycles
- 126              	.LVL4:
- 127              		.loc 1 62 40 discriminator 1 view .LVU19
- 128              	.L5:
-  63:Core/Src/main.c ****         case 2: delay_cycles(500000); break;
-  64:Core/Src/main.c ****         case 3: delay_cycles(250000); break;
-  65:Core/Src/main.c ****     }
-  66:Core/Src/main.c **** }
- 129              		.loc 1 66 1 is_stmt 0 view .LVU20
- 130 003c 38BD     		pop	{r3, r4, r5, pc}
- 131              	.LVL5:
- 132              	.L6:
-  56:Core/Src/main.c ****         case 3: delay_cycles(2500000); break;
- 133              		.loc 1 56 17 is_stmt 1 view .LVU21
- 134 003e 0A48     		ldr	r0, .L13+8
- 135              	.LVL6:
-  56:Core/Src/main.c ****         case 3: delay_cycles(2500000); break;
- 136              		.loc 1 56 17 is_stmt 0 view .LVU22
- 137 0040 FFF7FEFF 		bl	delay_cycles
- 138              	.LVL7:
-  56:Core/Src/main.c ****         case 3: delay_cycles(2500000); break;
- 139              		.loc 1 56 39 is_stmt 1 discriminator 1 view .LVU23
-  56:Core/Src/main.c ****         case 3: delay_cycles(2500000); break;
- 140              		.loc 1 56 39 is_stmt 0 view .LVU24
- 141 0044 ECE7     		b	.L8
- 142              	.LVL8:
- 143              	.L7:
-  57:Core/Src/main.c ****     }
- 144              		.loc 1 57 17 is_stmt 1 view .LVU25
- 145 0046 0948     		ldr	r0, .L13+12
- 146              	.LVL9:
-  57:Core/Src/main.c ****     }
- 147              		.loc 1 57 17 is_stmt 0 view .LVU26
- 148 0048 FFF7FEFF 		bl	delay_cycles
- 149              	.LVL10:
-  57:Core/Src/main.c ****     }
- 150              		.loc 1 57 40 is_stmt 1 discriminator 1 view .LVU27
-  57:Core/Src/main.c ****     }
- 151              		.loc 1 57 40 is_stmt 0 view .LVU28
- 152 004c E8E7     		b	.L8
- 153              	.L9:
-  63:Core/Src/main.c ****         case 2: delay_cycles(500000); break;
- 154              		.loc 1 63 17 is_stmt 1 view .LVU29
- 155 004e 0648     		ldr	r0, .L13+8
- 156 0050 FFF7FEFF 		bl	delay_cycles
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 5
-
-
- 157              	.LVL11:
-  63:Core/Src/main.c ****         case 2: delay_cycles(500000); break;
- 158              		.loc 1 63 39 discriminator 1 view .LVU30
-  63:Core/Src/main.c ****         case 2: delay_cycles(500000); break;
- 159              		.loc 1 63 39 is_stmt 0 view .LVU31
- 160 0054 F2E7     		b	.L5
- 161              	.L10:
-  64:Core/Src/main.c ****     }
- 162              		.loc 1 64 17 is_stmt 1 view .LVU32
- 163 0056 0648     		ldr	r0, .L13+16
- 164 0058 FFF7FEFF 		bl	delay_cycles
- 165              	.LVL12:
-  64:Core/Src/main.c ****     }
- 166              		.loc 1 64 39 discriminator 1 view .LVU33
- 167              		.loc 1 66 1 is_stmt 0 view .LVU34
- 168 005c EEE7     		b	.L5
- 169              	.L14:
- 170 005e 00BF     		.align	2
- 171              	.L13:
- 172 0060 00040240 		.word	1073873920
- 173 0064 A0860100 		.word	100000
- 174 0068 20A10700 		.word	500000
- 175 006c A0252600 		.word	2500000
- 176 0070 90D00300 		.word	250000
- 177              		.cfi_endproc
- 178              	.LFE134:
- 180              		.section	.text.main,"ax",%progbits
- 181              		.align	1
- 182              		.global	main
- 183              		.syntax unified
- 184              		.thumb
- 185              		.thumb_func
- 187              	main:
- 188              	.LFB136:
-  67:Core/Src/main.c **** 
-  68:Core/Src/main.c **** //  GPIO_BSRR_BR0
-  69:Core/Src/main.c **** //  GPIO_BSRR_BS0
-  70:Core/Src/main.c **** static void spdup( uint8_t *var )
-  71:Core/Src/main.c **** {
-  72:Core/Src/main.c ****    uint8_t spd  = *var;
-  73:Core/Src/main.c ****    spd++;
-  74:Core/Src/main.c ****     if(spd>3)
-  75:Core/Src/main.c ****     {
-  76:Core/Src/main.c ****         spd =1 ;
-  77:Core/Src/main.c ****     }
-  78:Core/Src/main.c **** 
-  79:Core/Src/main.c **** }
-  80:Core/Src/main.c **** 
-  81:Core/Src/main.c **** // static void quant( uint8_t *var )
-  82:Core/Src/main.c **** // {
-  83:Core/Src/main.c **** //    uint8_t spd  = *var;
-  84:Core/Src/main.c **** //    spd++;
-  85:Core/Src/main.c **** //     if(spd>4)
-  86:Core/Src/main.c **** //     {
-  87:Core/Src/main.c **** //         spd =1 ;
-  88:Core/Src/main.c **** //     }
-  89:Core/Src/main.c **** 
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 6
-
-
-  90:Core/Src/main.c **** // }
-  91:Core/Src/main.c **** 
-  92:Core/Src/main.c **** uint8_t btn1 = 0;
-  93:Core/Src/main.c **** uint8_t btn2 = 0;
-  94:Core/Src/main.c **** uint8_t choose = 1;
-  95:Core/Src/main.c **** uint8_t quanty = 1;
-  96:Core/Src/main.c **** uint8_t PB11_spd = 1;
-  97:Core/Src/main.c **** uint8_t PB12_spd = 1;
-  98:Core/Src/main.c **** uint8_t PB13_spd = 1;
-  99:Core/Src/main.c **** uint8_t PB15_spd = 1;
- 100:Core/Src/main.c **** 
- 101:Core/Src/main.c **** 
- 102:Core/Src/main.c **** /*
- 103:Core/Src/main.c **** int main(void)
- 104:Core/Src/main.c **** {
- 105:Core/Src/main.c ****     Led_init();
- 106:Core/Src/main.c ****     Buttons_Init();
- 107:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR10);    
- 108:Core/Src/main.c **** 
- 109:Core/Src/main.c ****     while (1)
- 110:Core/Src/main.c ****     {
- 111:Core/Src/main.c ****         
- 112:Core/Src/main.c ****         if (upndown(GPIO_IDR_ID6))
- 113:Core/Src/main.c ****         {
- 114:Core/Src/main.c ****             btn2 = 1;
- 115:Core/Src/main.c ****                 
- 116:Core/Src/main.c ****                 btn2_state = !btn2_state;
- 117:Core/Src/main.c ****                 delay_cycles(500);
- 118:Core/Src/main.c ****         }
- 119:Core/Src/main.c ****         btn2 = 0;
+  88:Core/Src/main.c ****                 }
+  89:Core/Src/main.c ****                 
+  90:Core/Src/main.c ****             }
+  91:Core/Src/main.c ****         }
+  92:Core/Src/main.c ****     }
+  93:Core/Src/main.c **** }
+  94:Core/Src/main.c **** 
+  95:Core/Src/main.c **** 
+  96:Core/Src/main.c **** uint8_t flag = 0 ;
+  97:Core/Src/main.c **** int main()
+  98:Core/Src/main.c **** {
+  99:Core/Src/main.c ****     Led_init();
+ 100:Core/Src/main.c ****     Buttons_Init();
+ 101:Core/Src/main.c ****     PB10_out();
+ 102:Core/Src/main.c ****    
+ 103:Core/Src/main.c ****     while(1)
+ 104:Core/Src/main.c ****     {
+ 105:Core/Src/main.c ****         
+ 106:Core/Src/main.c ****            
+ 107:Core/Src/main.c ****              SET_BIT(GPIOB->BSRR, GPIO_PIN_SET_12);
+ 108:Core/Src/main.c ****              SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS11);
+ 109:Core/Src/main.c ****              SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS10);
+ 110:Core/Src/main.c ****         
+ 111:Core/Src/main.c **** 
+ 112:Core/Src/main.c ****         SET_BIT(GPIOB->BSRR, GPIO_PIN_RESET_12);
+ 113:Core/Src/main.c ****         if(!READ_BIT(GPIOB->IDR, GPIO_IDR_ID6))
+ 114:Core/Src/main.c ****         {flag++;}
+ 115:Core/Src/main.c **** 
+ 116:Core/Src/main.c ****     }
+ 117:Core/Src/main.c ****     
+ 118:Core/Src/main.c **** } 
+ 119:Core/Src/main.c ****     */
  120:Core/Src/main.c **** 
- 121:Core/Src/main.c ****         if (btn2_state == 0)
- 122:Core/Src/main.c ****         {
- 123:Core/Src/main.c ****  
- 124:Core/Src/main.c ****             PB10_inp();
- 125:Core/Src/main.c **** 
- 126:Core/Src/main.c ****             if (upndown(GPIO_IDR_ID10))
- 127:Core/Src/main.c ****             {
- 128:Core/Src/main.c ****                 btn1++;
- 129:Core/Src/main.c ****                 
- 130:Core/Src/main.c ****                     switch(btn1)
- 131:Core/Src/main.c ****                     {
- 132:Core/Src/main.c ****                     case 1:
- 133:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR, GPIO_PIN_SET_11);
- 134:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_RESET_12);
- 135:Core/Src/main.c ****                         break;
- 136:Core/Src/main.c ****                     case 2:
- 137:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR, GPIO_PIN_SET_11);
- 138:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_SET_12);
- 139:Core/Src/main.c ****                         break;
- 140:Core/Src/main.c ****                     case 3:
- 141:Core/Src/main.c ****                         btn1 = 0;
- 142:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_RESET_11);
- 143:Core/Src/main.c ****                         SET_BIT(GPIOB->BSRR,  GPIO_PIN_RESET_12);
- 144:Core/Src/main.c ****                         break;
- 145:Core/Src/main.c ****                     }
- 146:Core/Src/main.c ****                     delay_cycles(5000);
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 7
+ 121:Core/Src/main.c **** 
+ 122:Core/Src/main.c **** /*
+ 123:Core/Src/main.c **** uint8_t flag1 =0;
+ 124:Core/Src/main.c **** uint8_t flag2 =0;
+ 125:Core/Src/main.c **** uint8_t current_led_indx = 2;
+ 126:Core/Src/main.c **** uint8_t led_count = 0;
+ 127:Core/Src/main.c **** uint8_t timerbutton1,timerbutton2,led_index = 0;
+ 128:Core/Src/main.c ****    
+ 129:Core/Src/main.c **** 
+ 130:Core/Src/main.c **** 
+ 131:Core/Src/main.c **** uint32_t i =0;
+ 132:Core/Src/main.c **** int main(void)
+ 133:Core/Src/main.c **** {
+ 134:Core/Src/main.c ****    
+ 135:Core/Src/main.c ****  GPIO_init_led_pb7_blue ();
+ 136:Core/Src/main.c ****  GPIO_init_led_pb14_red ();
+ 137:Core/Src/main.c ****  GPIO_init_led_pb0_green ();
+ 138:Core/Src/main.c ****  Buttons_Init();
+ 139:Core/Src/main.c ****  
+ 140:Core/Src/main.c ****         while (1)
+ 141:Core/Src/main.c ****     {
+ 142:Core/Src/main.c **** 
+ 143:Core/Src/main.c **** 
+ 144:Core/Src/main.c ****        if(READ_BIT(GPIOC_IDR,GPIO_IDR_ID12 ))
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 4
 
 
- 147:Core/Src/main.c ****                 
- 148:Core/Src/main.c ****             }
- 149:Core/Src/main.c ****             
- 150:Core/Src/main.c ****         }
- 151:Core/Src/main.c ****         else
+ 145:Core/Src/main.c ****        {
+ 146:Core/Src/main.c ****             btn1 = 1;
+ 147:Core/Src/main.c ****             timerbutton1++;
+ 148:Core/Src/main.c ****        }
+ 149:Core/Src/main.c ****        else
+ 150:Core/Src/main.c ****        {
+ 151:Core/Src/main.c ****         if(timerbutton1>= 5)
  152:Core/Src/main.c ****         {
- 153:Core/Src/main.c ****             PB10_out();
- 154:Core/Src/main.c **** 
- 155:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_BSRR_BS10);
- 156:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_BSRR_BR11);
- 157:Core/Src/main.c ****             BIT_SET(GPIOB_BSRR, GPIO_BSRR_BR12);
- 158:Core/Src/main.c **** 
- 159:Core/Src/main.c ****     
- 160:Core/Src/main.c ****             while (1)
- 161:Core/Src/main.c ****             {
- 162:Core/Src/main.c ****                 
- 163:Core/Src/main.c ****                 if (upndown(GPIO_IDR_ID6))
- 164:Core/Src/main.c ****                 {
- 165:Core/Src/main.c ****                         btn2 = 1;
- 166:Core/Src/main.c ****                         BIT_SET(GPIOB_BSRR, GPIO_BSRR_BR10);
- 167:Core/Src/main.c ****                         PB10_inp();
- 168:Core/Src/main.c ****                         btn2_state = 0;
- 169:Core/Src/main.c ****                         delay_cycles(500000);
- 170:Core/Src/main.c ****                         break;
- 171:Core/Src/main.c ****                 }
- 172:Core/Src/main.c ****                 
- 173:Core/Src/main.c ****             }
- 174:Core/Src/main.c ****         }
- 175:Core/Src/main.c ****     }
- 176:Core/Src/main.c **** }
- 177:Core/Src/main.c **** 
- 178:Core/Src/main.c **** 
- 179:Core/Src/main.c **** uint8_t flag = 0 ;
- 180:Core/Src/main.c **** int main()
- 181:Core/Src/main.c **** {
- 182:Core/Src/main.c ****     Led_init();
- 183:Core/Src/main.c ****     Buttons_Init();
- 184:Core/Src/main.c ****     PB10_out();
- 185:Core/Src/main.c ****    
- 186:Core/Src/main.c ****     while(1)
- 187:Core/Src/main.c ****     {
- 188:Core/Src/main.c ****         
- 189:Core/Src/main.c ****            
- 190:Core/Src/main.c ****              SET_BIT(GPIOB->BSRR, GPIO_PIN_SET_12);
- 191:Core/Src/main.c ****              SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS11);
- 192:Core/Src/main.c ****              SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS10);
- 193:Core/Src/main.c ****         
- 194:Core/Src/main.c **** 
- 195:Core/Src/main.c ****         SET_BIT(GPIOB->BSRR, GPIO_PIN_RESET_12);
- 196:Core/Src/main.c ****         if(!READ_BIT(GPIOB->IDR, GPIO_IDR_ID6))
- 197:Core/Src/main.c ****         {flag++;}
- 198:Core/Src/main.c **** 
- 199:Core/Src/main.c ****     }
- 200:Core/Src/main.c ****     
- 201:Core/Src/main.c **** } 
- 202:Core/Src/main.c ****     */
- 203:Core/Src/main.c **** 
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 8
+ 153:Core/Src/main.c ****            
+ 154:Core/Src/main.c ****             
+ 155:Core/Src/main.c ****             
+ 156:Core/Src/main.c ****             btn1 = 1;
+ 157:Core/Src/main.c ****             if(choose<3){choose++;}
+ 158:Core/Src/main.c ****             else{choose = 1;}
+ 159:Core/Src/main.c ****             
+ 160:Core/Src/main.c ****         }
+ 161:Core/Src/main.c ****         if(timerbutton1>= 1 && timerbutton1 < 5)
+ 162:Core/Src/main.c ****         {
+ 163:Core/Src/main.c ****             if(quanty<3){quanty++;}
+ 164:Core/Src/main.c ****             else{quanty=1;}
+ 165:Core/Src/main.c ****         }
+ 166:Core/Src/main.c ****         
+ 167:Core/Src/main.c ****         timerbutton1 = 0;
+ 168:Core/Src/main.c ****         flag1 = 0;
+ 169:Core/Src/main.c ****         btn1 =0;
+ 170:Core/Src/main.c ****        }
+ 171:Core/Src/main.c ****        if (READ_BIT(GPIOC_IDR, GPIO_IDR_ID13))
+ 172:Core/Src/main.c ****        {
+ 173:Core/Src/main.c ****         btn2 = 1;
+ 174:Core/Src/main.c ****             switch(choose)
+ 175:Core/Src/main.c ****             {
+ 176:Core/Src/main.c ****                 case 1:
+ 177:Core/Src/main.c ****                 if(PB11_spd<3) {PB11_spd++;}
+ 178:Core/Src/main.c ****                 else{PB11_spd = 1;}
+ 179:Core/Src/main.c ****                 
+ 180:Core/Src/main.c ****                 break;
+ 181:Core/Src/main.c ****                 case 2: 
+ 182:Core/Src/main.c ****                 if(PB12_spd<3) {PB12_spd++;}
+ 183:Core/Src/main.c ****                 else{PB12_spd = 1;}
+ 184:Core/Src/main.c ****                 break;
+ 185:Core/Src/main.c ****                 case 3: 
+ 186:Core/Src/main.c ****                 if(PB13_spd<3) {PB13_spd++;}
+ 187:Core/Src/main.c ****                 else{PB13_spd = 1;}
+ 188:Core/Src/main.c **** 
+ 189:Core/Src/main.c ****                 break;
+ 190:Core/Src/main.c **** 
+ 191:Core/Src/main.c ****             }
+ 192:Core/Src/main.c ****        }
+ 193:Core/Src/main.c ****        btn2 =0;
+ 194:Core/Src/main.c ****         switch(quanty)
+ 195:Core/Src/main.c ****         {
+ 196:Core/Src/main.c ****             case 1: 
+ 197:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
+ 198:Core/Src/main.c ****             break;
+ 199:Core/Src/main.c ****             case 2:
+ 200:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
+ 201:Core/Src/main.c ****             blink(GPIO_BSRR_BS7, PB12_spd);
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 5
 
 
- 204:Core/Src/main.c **** 
- 205:Core/Src/main.c **** 
- 206:Core/Src/main.c **** 
- 207:Core/Src/main.c **** // int main(void)
- 208:Core/Src/main.c **** // {
+ 202:Core/Src/main.c ****             break;
+ 203:Core/Src/main.c ****             case 3:
+ 204:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
+ 205:Core/Src/main.c ****             blink(GPIO_BSRR_BS7, PB12_spd);
+ 206:Core/Src/main.c ****             blink(GPIO_BSRR_BS14, PB13_spd);
+ 207:Core/Src/main.c ****             break;
+ 208:Core/Src/main.c ****             
  209:Core/Src/main.c **** 
- 210:Core/Src/main.c ****     
- 211:Core/Src/main.c ****     
- 212:Core/Src/main.c **** //     GPIO_init_led_pb7_blue ();
- 213:Core/Src/main.c **** //     GPIO_init_led_pb14_red ();
- 214:Core/Src/main.c **** //     GPIO_init_led_pb0_green ();
- 215:Core/Src/main.c **** //     Buttons_Init();
- 216:Core/Src/main.c ****     
- 217:Core/Src/main.c **** //     while(1)
- 218:Core/Src/main.c **** //     {
+ 210:Core/Src/main.c **** 
+ 211:Core/Src/main.c ****         }
+ 212:Core/Src/main.c **** 
+ 213:Core/Src/main.c ****     
+ 214:Core/Src/main.c ****     }
+ 215:Core/Src/main.c ****     return 1;
+ 216:Core/Src/main.c **** }
+ 217:Core/Src/main.c **** 
+ 218:Core/Src/main.c **** 
  219:Core/Src/main.c **** 
- 220:Core/Src/main.c **** //         if(upndown_l(GPIO_IDR_ID13))
- 221:Core/Src/main.c **** //         {
- 222:Core/Src/main.c **** //             btn1 = 1;
- 223:Core/Src/main.c **** //             choose++;
- 224:Core/Src/main.c **** //         }
- 225:Core/Src/main.c **** //         else
- 226:Core/Src/main.c **** //         if(BIT_READ(GPIOC_IDR, GPIO_IDR_ID13))
- 227:Core/Src/main.c **** //         {btn1 = 1;}
- 228:Core/Src/main.c **** //         btn1 =0;
- 229:Core/Src/main.c **** //         if(BIT_READ(GPIOC_IDR, GPIO_IDR_ID12))
- 230:Core/Src/main.c **** //         {btn2 = 1;}
- 231:Core/Src/main.c **** //         btn2 = 0;
- 232:Core/Src/main.c **** 
- 233:Core/Src/main.c **** //         if(upndown(GPIO_IDR_ID13))
- 234:Core/Src/main.c **** //         {
- 235:Core/Src/main.c **** //             btn1 = 1;
- 236:Core/Src/main.c **** //             quant(&quanty);
- 237:Core/Src/main.c **** //         }
- 238:Core/Src/main.c **** //         btn1 = 0;
- 239:Core/Src/main.c **** 
- 240:Core/Src/main.c **** //         if(upndown(GPIO_IDR_ID12))
- 241:Core/Src/main.c **** //         {
- 242:Core/Src/main.c ****             // btn2 = 1;
- 243:Core/Src/main.c ****             // switch(choose)
- 244:Core/Src/main.c ****             // {
- 245:Core/Src/main.c ****             //     case 1: 
- 246:Core/Src/main.c ****             //     spdup(&PB11_spd);
- 247:Core/Src/main.c ****             //     break;
- 248:Core/Src/main.c ****             //     case 2: 
- 249:Core/Src/main.c ****             //     spdup(&PB12_spd);
- 250:Core/Src/main.c ****             //     break;
- 251:Core/Src/main.c ****             //     case 3: 
- 252:Core/Src/main.c ****             //     spdup(&PB13_spd);
- 253:Core/Src/main.c ****             //     break;
- 254:Core/Src/main.c ****             //     case 4: 
- 255:Core/Src/main.c ****             //     spdup(&PB15_spd);
- 256:Core/Src/main.c ****             //     choose =1 ;
- 257:Core/Src/main.c ****             //     break;
- 258:Core/Src/main.c ****                 
- 259:Core/Src/main.c **** 
- 260:Core/Src/main.c **** //             }
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 9
+ 220:Core/Src/main.c **** while (1)
+ 221:Core/Src/main.c ****     {
+ 222:Core/Src/main.c ****        if (BIT_READ(GPIOC_IDR, GPIO_PIN_8))
+ 223:Core/Src/main.c ****        {
+ 224:Core/Src/main.c ****         flag1 = 1;
+ 225:Core/Src/main.c ****         current_led_indx = (current_led_indx + 1) % 3;
+ 226:Core/Src/main.c ****         if(led_count == 2){
+ 227:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 |GPIO_BSRR_BR7 | GPIO_BSRR_BR14 );
+ 228:Core/Src/main.c ****             for(volatile uint32_t i = 0; i < 100000; i++){}}
+ 229:Core/Src/main.c ****         UpdateLEDs();
+ 230:Core/Src/main.c ****         for(volatile uint32_t i = 0; i < 1000000; i++);
+ 231:Core/Src/main.c ****        }
+ 232:Core/Src/main.c ****        else
+ 233:Core/Src/main.c ****        {
+ 234:Core/Src/main.c ****         flag1 = 0;
+ 235:Core/Src/main.c ****        }
+ 236:Core/Src/main.c ****        if (BIT_READ(GPIOC_IDR, GPIO_PIN_13))
+ 237:Core/Src/main.c ****        {
+ 238:Core/Src/main.c ****         flag2 = 1;
+ 239:Core/Src/main.c ****         led_count = ((led_count+1))%3;
+ 240:Core/Src/main.c ****        
+ 241:Core/Src/main.c ****     
+ 242:Core/Src/main.c ****         UpdateLEDs();
+ 243:Core/Src/main.c ****     
+ 244:Core/Src/main.c ****        for(volatile uint32_t i = 0; i < 1000000; i++);
+ 245:Core/Src/main.c ****        }
+ 246:Core/Src/main.c ****        else
+ 247:Core/Src/main.c ****        {
+ 248:Core/Src/main.c ****         flag2 = 0;
+ 249:Core/Src/main.c ****        }
+ 250:Core/Src/main.c ****     }
+ 251:Core/Src/main.c ****        */
+ 252:Core/Src/main.c **** 
+ 253:Core/Src/main.c **** uint8_t LedState;
+ 254:Core/Src/main.c **** 
+ 255:Core/Src/main.c **** int main(void)
+ 256:Core/Src/main.c **** {
+  29              		.loc 1 256 1 view -0
+  30              		.cfi_startproc
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 6
 
 
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 257:Core/Src/main.c ****     GPIO_init();
+  39              		.loc 1 257 5 view .LVU1
+  40 0002 FFF7FEFF 		bl	GPIO_init
+  41              	.LVL0:
+ 258:Core/Src/main.c ****     CLK_CLEAR();
+  42              		.loc 1 258 5 view .LVU2
+  43 0006 FFF7FEFF 		bl	CLK_CLEAR
+  44              	.LVL1:
+ 259:Core/Src/main.c ****     RCC_Init();
+  45              		.loc 1 259 5 view .LVU3
+  46 000a FFF7FEFF 		bl	RCC_Init
+  47              	.LVL2:
+ 260:Core/Src/main.c ****     ITR_init();
+  48              		.loc 1 260 5 view .LVU4
+  49 000e FFF7FEFF 		bl	ITR_init
+  50              	.LVL3:
+  51 0012 04E0     		b	.L2
+  52              	.L3:
  261:Core/Src/main.c **** 
- 262:Core/Src/main.c **** 
- 263:Core/Src/main.c **** //         }
- 264:Core/Src/main.c **** //         btn2 = 0;
- 265:Core/Src/main.c ****         // switch(quanty)
- 266:Core/Src/main.c ****         // {
- 267:Core/Src/main.c ****         //     case 1: 
- 268:Core/Src/main.c ****         //     blink(GPIO_BSRR_BS0, PB11_spd);
- 269:Core/Src/main.c ****         //     break;
- 270:Core/Src/main.c ****         //     case 2:
- 271:Core/Src/main.c ****         //     blink(GPIO_BSRR_BS7, PB11_spd);
- 272:Core/Src/main.c ****         //     blink(GPIO_BSRR_BS12, PB12_spd);
- 273:Core/Src/main.c ****         //     break;
- 274:Core/Src/main.c ****         //     case 3:
- 275:Core/Src/main.c ****         //     blink(GPIO_BSRR_BS0, PB11_spd);
- 276:Core/Src/main.c ****         //     blink(GPIO_BSRR_BS7, PB12_spd);
- 277:Core/Src/main.c ****         //     blink(GPIO_BSRR_BS12, PB13_spd);
- 278:Core/Src/main.c ****         //     break;
- 279:Core/Src/main.c **** 
- 280:Core/Src/main.c ****         // }
- 281:Core/Src/main.c ****         
- 282:Core/Src/main.c **** //     }
- 283:Core/Src/main.c **** 
- 284:Core/Src/main.c **** //     return 1;
- 285:Core/Src/main.c **** 
- 286:Core/Src/main.c **** // }
- 287:Core/Src/main.c **** 
- 288:Core/Src/main.c **** // uint8_t flag = 0;
- 289:Core/Src/main.c **** // int main(void)
- 290:Core/Src/main.c **** // {
- 291:Core/Src/main.c **** //     GPIO_init_led_pb7_blue ();
- 292:Core/Src/main.c **** //     GPIO_init_led_pb14_red ();
- 293:Core/Src/main.c **** //     GPIO_init_led_pb0_green ();
- 294:Core/Src/main.c **** //     Buttons_Init();
- 295:Core/Src/main.c **** //     while(1)
- 296:Core/Src/main.c **** //     {
- 297:Core/Src/main.c ****         
- 298:Core/Src/main.c **** //         // btn1 = upndown(GPIO_IDR_ID6);
- 299:Core/Src/main.c **** //         // btn2 = upndown(GPIO_IDR_ID10);
- 300:Core/Src/main.c **** //         // btn2_l = upndown_l(GPIO_IDR_ID10);
- 301:Core/Src/main.c **** 
- 302:Core/Src/main.c **** //         // if(upndown(GPIO_IDR_ID13)){btn1 =1;}
- 303:Core/Src/main.c **** //         // btn1 =0;
- 304:Core/Src/main.c **** //         // if(upndown_l(GPIO_IDR_ID13)){btn1 =2;}
- 305:Core/Src/main.c **** //         // btn1=0;
- 306:Core/Src/main.c **** //         // if(upndown(GPIO_IDR_ID13)){btn2 =1;}
- 307:Core/Src/main.c **** //         // btn2 = 0;
- 308:Core/Src/main.c **** //     //    if(READ_BIT(GPIOC_IDR, GPIO_IDR_ID13)){flag = 1;} 
- 309:Core/Src/main.c **** //     //    flag=0;
- 310:Core/Src/main.c **** 
- 311:Core/Src/main.c **** //     }
- 312:Core/Src/main.c **** //     return 1;
- 313:Core/Src/main.c **** // }
- 314:Core/Src/main.c **** 
- 315:Core/Src/main.c **** 
- 316:Core/Src/main.c **** 
- 317:Core/Src/main.c **** 
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 10
+ 262:Core/Src/main.c ****     while(1)
+ 263:Core/Src/main.c ****     {
+ 264:Core/Src/main.c ****         if(LedState) SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+ 265:Core/Src/main.c ****         else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  53              		.loc 1 265 14 view .LVU5
+  54 0014 074A     		ldr	r2, .L6
+  55 0016 9369     		ldr	r3, [r2, #24]
+  56 0018 43F08003 		orr	r3, r3, #128
+  57 001c 9361     		str	r3, [r2, #24]
+  58              	.L2:
+ 262:Core/Src/main.c ****     {
+  59              		.loc 1 262 5 view .LVU6
+ 264:Core/Src/main.c ****         else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  60              		.loc 1 264 9 view .LVU7
+ 264:Core/Src/main.c ****         else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  61              		.loc 1 264 12 is_stmt 0 view .LVU8
+  62 001e 064B     		ldr	r3, .L6+4
+  63 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 264:Core/Src/main.c ****         else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  64              		.loc 1 264 11 view .LVU9
+  65 0022 002B     		cmp	r3, #0
+  66 0024 F6D0     		beq	.L3
+ 264:Core/Src/main.c ****         else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  67              		.loc 1 264 22 is_stmt 1 discriminator 1 view .LVU10
+  68 0026 034A     		ldr	r2, .L6
+  69 0028 9369     		ldr	r3, [r2, #24]
+  70 002a 43F08003 		orr	r3, r3, #128
+  71 002e 9361     		str	r3, [r2, #24]
+  72 0030 F5E7     		b	.L2
+  73              	.L7:
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 7
 
 
- 318:Core/Src/main.c **** uint8_t flag1 =0;
- 319:Core/Src/main.c **** uint8_t flag2 =0;
- 320:Core/Src/main.c **** uint8_t current_led_indx = 2;
- 321:Core/Src/main.c **** uint8_t led_count = 0;
- 322:Core/Src/main.c **** uint8_t timerbutton1,timerbutton2,led_index = 0;
- 323:Core/Src/main.c ****    
- 324:Core/Src/main.c **** static uint8_t frequency_index = 0;       
- 325:Core/Src/main.c **** const uint32_t frequencies[4] = {1000000, 500000, 250000, 125000};
- 326:Core/Src/main.c **** static uint32_t avtodelay = frequencies[1];
- 327:Core/Src/main.c **** //  void UpdateLEDs(void)
- 328:Core/Src/main.c **** //     {
- 329:Core/Src/main.c **** //         SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 |GPIO_BSRR_BR7 | GPIO_BSRR_BR14 );
- 330:Core/Src/main.c ****         
- 331:Core/Src/main.c **** //     for (uint8_t i = 0; i < led_count; i++) 
- 332:Core/Src/main.c **** //         {
- 333:Core/Src/main.c **** //         uint8_t led_index = ((current_led_indx + i) % 3);
- 334:Core/Src/main.c **** //         switch (led_index) 
- 335:Core/Src/main.c **** //             {
- 336:Core/Src/main.c **** //             case 0:
- 337:Core/Src/main.c **** //                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);  // PB0
- 338:Core/Src/main.c **** //                 break;
- 339:Core/Src/main.c **** //             case 1:
- 340:Core/Src/main.c **** //                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);  // PB7
- 341:Core/Src/main.c **** //                 break;
- 342:Core/Src/main.c **** //             case 2:
- 343:Core/Src/main.c **** //                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14); // PB14
- 344:Core/Src/main.c **** //                 break;
- 345:Core/Src/main.c **** 
- 346:Core/Src/main.c ****             
- 347:Core/Src/main.c **** //             }
- 348:Core/Src/main.c **** //         }
- 349:Core/Src/main.c **** //     }
- 350:Core/Src/main.c **** //       void avtoper(uint32_t avtodelay)
- 351:Core/Src/main.c **** //         {
- 352:Core/Src/main.c **** //             if(led_count == 3)
- 353:Core/Src/main.c **** //             {
- 354:Core/Src/main.c **** //                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 |GPIO_BSRR_BR7 | GPIO_BSRR_BR14 );
- 355:Core/Src/main.c **** //                 for(volatile uint32_t i = 0; i < avtodelay; i++){}
- 356:Core/Src/main.c **** //                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0 |GPIO_BSRR_BS7 | GPIO_BSRR_BS14 );
- 357:Core/Src/main.c **** //                 for(volatile uint32_t i = 0; i < avtodelay; i++){}
- 358:Core/Src/main.c **** //             }
- 359:Core/Src/main.c **** //             else{
- 360:Core/Src/main.c **** //             current_led_indx = (current_led_indx + 1) % 3;
- 361:Core/Src/main.c **** //             for(volatile uint32_t i = 0; i < avtodelay; i++){}
- 362:Core/Src/main.c **** //             UpdateLEDs();
- 363:Core/Src/main.c **** //             }
- 364:Core/Src/main.c **** //         }
- 365:Core/Src/main.c **** 
- 366:Core/Src/main.c **** uint32_t i =0;
- 367:Core/Src/main.c **** int main(void)
- 368:Core/Src/main.c **** {
- 189              		.loc 1 368 1 is_stmt 1 view -0
- 190              		.cfi_startproc
- 191              		@ Volatile: function does not return.
- 192              		@ args = 0, pretend = 0, frame = 0
- 193              		@ frame_needed = 0, uses_anonymous_args = 0
- 194 0000 08B5     		push	{r3, lr}
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 11
-
-
- 195              	.LCFI3:
- 196              		.cfi_def_cfa_offset 8
- 197              		.cfi_offset 3, -8
- 198              		.cfi_offset 14, -4
- 369:Core/Src/main.c ****    
- 370:Core/Src/main.c ****  GPIO_init_led_pb7_blue ();
- 199              		.loc 1 370 2 view .LVU36
- 200 0002 FFF7FEFF 		bl	GPIO_init_led_pb7_blue
- 201              	.LVL13:
- 371:Core/Src/main.c ****  GPIO_init_led_pb14_red ();
- 202              		.loc 1 371 2 view .LVU37
- 203 0006 FFF7FEFF 		bl	GPIO_init_led_pb14_red
- 204              	.LVL14:
- 372:Core/Src/main.c ****  GPIO_init_led_pb0_green ();
- 205              		.loc 1 372 2 view .LVU38
- 206 000a FFF7FEFF 		bl	GPIO_init_led_pb0_green
- 207              	.LVL15:
- 373:Core/Src/main.c ****  Buttons_Init();
- 208              		.loc 1 373 2 view .LVU39
- 209 000e FFF7FEFF 		bl	Buttons_Init
- 210              	.LVL16:
- 211 0012 44E0     		b	.L31
- 212              	.L17:
- 374:Core/Src/main.c ****  
- 375:Core/Src/main.c ****         while (1)
- 376:Core/Src/main.c ****     {
- 377:Core/Src/main.c **** 
- 378:Core/Src/main.c **** 
- 379:Core/Src/main.c ****        if(READ_BIT(GPIOC_IDR,GPIO_IDR_ID12 ))
- 380:Core/Src/main.c ****        {
- 381:Core/Src/main.c ****             btn1 = 1;
- 382:Core/Src/main.c ****             timerbutton1++;
- 383:Core/Src/main.c ****        }
- 384:Core/Src/main.c ****        else
- 385:Core/Src/main.c ****        {
- 386:Core/Src/main.c ****         if(timerbutton1>= 5)
- 213              		.loc 1 386 9 view .LVU40
- 214              		.loc 1 386 24 is_stmt 0 view .LVU41
- 215 0014 494B     		ldr	r3, .L34
- 216 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 217              		.loc 1 386 11 view .LVU42
- 218 0018 042B     		cmp	r3, #4
- 219 001a 09D9     		bls	.L19
- 387:Core/Src/main.c ****         {
- 388:Core/Src/main.c ****            
- 389:Core/Src/main.c ****             
- 390:Core/Src/main.c ****             
- 391:Core/Src/main.c ****             btn1 = 1;
- 220              		.loc 1 391 13 is_stmt 1 view .LVU43
- 221              		.loc 1 391 18 is_stmt 0 view .LVU44
- 222 001c 4849     		ldr	r1, .L34+4
- 223 001e 0120     		movs	r0, #1
- 224 0020 0870     		strb	r0, [r1]
- 392:Core/Src/main.c ****             if(choose<3){choose++;}
- 225              		.loc 1 392 13 is_stmt 1 view .LVU45
- 226              		.loc 1 392 22 is_stmt 0 view .LVU46
- 227 0022 4849     		ldr	r1, .L34+8
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 12
-
-
- 228 0024 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
- 229              		.loc 1 392 15 view .LVU47
- 230 0026 0229     		cmp	r1, #2
- 231 0028 47D8     		bhi	.L20
- 232              		.loc 1 392 26 is_stmt 1 discriminator 1 view .LVU48
- 233              		.loc 1 392 32 is_stmt 0 discriminator 1 view .LVU49
- 234 002a 0144     		add	r1, r1, r0
- 235 002c 4548     		ldr	r0, .L34+8
- 236 002e 0170     		strb	r1, [r0]
- 237              	.L19:
- 393:Core/Src/main.c ****             else{choose = 1;}
- 394:Core/Src/main.c ****             
- 395:Core/Src/main.c ****         }
- 396:Core/Src/main.c ****         if(timerbutton1>= 1 && timerbutton1 < 5)
- 238              		.loc 1 396 9 is_stmt 1 view .LVU50
- 239              		.loc 1 396 29 is_stmt 0 view .LVU51
- 240 0030 013B     		subs	r3, r3, #1
- 241 0032 DBB2     		uxtb	r3, r3
- 242              		.loc 1 396 11 view .LVU52
- 243 0034 032B     		cmp	r3, #3
- 244 0036 06D8     		bhi	.L21
- 397:Core/Src/main.c ****         {
- 398:Core/Src/main.c ****             if(quanty<3){quanty++;}
- 245              		.loc 1 398 13 is_stmt 1 view .LVU53
- 246              		.loc 1 398 22 is_stmt 0 view .LVU54
- 247 0038 434B     		ldr	r3, .L34+12
- 248 003a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 249              		.loc 1 398 15 view .LVU55
- 250 003c 022B     		cmp	r3, #2
- 251 003e 40D8     		bhi	.L22
- 252              		.loc 1 398 26 is_stmt 1 discriminator 1 view .LVU56
- 253              		.loc 1 398 32 is_stmt 0 discriminator 1 view .LVU57
- 254 0040 0133     		adds	r3, r3, #1
- 255 0042 4149     		ldr	r1, .L34+12
- 256 0044 0B70     		strb	r3, [r1]
- 257              	.L21:
- 399:Core/Src/main.c ****             else{quanty=1;}
- 400:Core/Src/main.c ****         }
- 401:Core/Src/main.c ****         
- 402:Core/Src/main.c ****         timerbutton1 = 0;
- 258              		.loc 1 402 9 is_stmt 1 view .LVU58
- 259              		.loc 1 402 22 is_stmt 0 view .LVU59
- 260 0046 0023     		movs	r3, #0
- 261 0048 3C49     		ldr	r1, .L34
- 262 004a 0B70     		strb	r3, [r1]
- 403:Core/Src/main.c ****         flag1 = 0;
- 263              		.loc 1 403 9 is_stmt 1 view .LVU60
- 264              		.loc 1 403 15 is_stmt 0 view .LVU61
- 265 004c 3F49     		ldr	r1, .L34+16
- 266 004e 0B70     		strb	r3, [r1]
- 404:Core/Src/main.c ****         btn1 =0;
- 267              		.loc 1 404 9 is_stmt 1 view .LVU62
- 268              		.loc 1 404 14 is_stmt 0 view .LVU63
- 269 0050 3B49     		ldr	r1, .L34+4
- 270 0052 0B70     		strb	r3, [r1]
- 271              	.L18:
- 405:Core/Src/main.c ****        }
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 13
-
-
- 406:Core/Src/main.c ****        if (READ_BIT(GPIOC_IDR, GPIO_IDR_ID13))
- 272              		.loc 1 406 8 is_stmt 1 view .LVU64
- 273              		.loc 1 406 11 is_stmt 0 view .LVU65
- 274 0054 12F4005F 		tst	r2, #8192
- 275 0058 11D0     		beq	.L23
- 407:Core/Src/main.c ****        {
- 408:Core/Src/main.c ****         btn2 = 1;
- 276              		.loc 1 408 9 is_stmt 1 view .LVU66
- 277              		.loc 1 408 14 is_stmt 0 view .LVU67
- 278 005a 3D4B     		ldr	r3, .L34+20
- 279 005c 0122     		movs	r2, #1
- 280 005e 1A70     		strb	r2, [r3]
- 409:Core/Src/main.c ****             switch(choose)
- 281              		.loc 1 409 13 is_stmt 1 view .LVU68
- 282 0060 384B     		ldr	r3, .L34+8
- 283 0062 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 284 0064 022B     		cmp	r3, #2
- 285 0066 34D0     		beq	.L24
- 286 0068 032B     		cmp	r3, #3
- 287 006a 3ED0     		beq	.L25
- 288 006c 9342     		cmp	r3, r2
- 289 006e 06D1     		bne	.L23
- 410:Core/Src/main.c ****             {
- 411:Core/Src/main.c ****                 case 1:
- 412:Core/Src/main.c ****                 if(PB11_spd<3) {PB11_spd++;}
- 290              		.loc 1 412 17 view .LVU69
- 291              		.loc 1 412 28 is_stmt 0 view .LVU70
- 292 0070 384B     		ldr	r3, .L34+24
- 293 0072 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 294              		.loc 1 412 19 view .LVU71
- 295 0074 022B     		cmp	r3, #2
- 296 0076 28D8     		bhi	.L26
- 297              		.loc 1 412 33 is_stmt 1 discriminator 1 view .LVU72
- 298              		.loc 1 412 41 is_stmt 0 discriminator 1 view .LVU73
- 299 0078 1344     		add	r3, r3, r2
- 300 007a 364A     		ldr	r2, .L34+24
- 301 007c 1370     		strb	r3, [r2]
- 302              	.L23:
- 413:Core/Src/main.c ****                 else{PB11_spd = 1;}
- 414:Core/Src/main.c ****                 
- 415:Core/Src/main.c ****                 break;
- 416:Core/Src/main.c ****                 case 2: 
- 417:Core/Src/main.c ****                 if(PB12_spd<3) {PB12_spd++;}
- 418:Core/Src/main.c ****                 else{PB12_spd = 1;}
- 419:Core/Src/main.c ****                 break;
- 420:Core/Src/main.c ****                 case 3: 
- 421:Core/Src/main.c ****                 if(PB13_spd<3) {PB13_spd++;}
- 422:Core/Src/main.c ****                 else{PB13_spd = 1;}
- 423:Core/Src/main.c **** 
- 424:Core/Src/main.c ****                 break;
- 425:Core/Src/main.c **** 
- 426:Core/Src/main.c ****             }
- 427:Core/Src/main.c ****        }
- 428:Core/Src/main.c ****        btn2 =0;
- 303              		.loc 1 428 8 is_stmt 1 view .LVU74
- 304              		.loc 1 428 13 is_stmt 0 view .LVU75
- 305 007e 344B     		ldr	r3, .L34+20
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 14
-
-
- 306 0080 0022     		movs	r2, #0
- 307 0082 1A70     		strb	r2, [r3]
- 429:Core/Src/main.c ****         switch(quanty)
- 308              		.loc 1 429 9 is_stmt 1 view .LVU76
- 309 0084 304B     		ldr	r3, .L34+12
- 310 0086 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 311 0088 022B     		cmp	r3, #2
- 312 008a 3AD0     		beq	.L29
- 313 008c 032B     		cmp	r3, #3
- 314 008e 43D0     		beq	.L30
- 315 0090 012B     		cmp	r3, #1
- 316 0092 04D1     		bne	.L31
- 430:Core/Src/main.c ****         {
- 431:Core/Src/main.c ****             case 1: 
- 432:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
- 317              		.loc 1 432 13 view .LVU77
- 318 0094 2F4B     		ldr	r3, .L34+24
- 319 0096 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
- 320 0098 0120     		movs	r0, #1
- 321 009a FFF7FEFF 		bl	blink
- 322              	.LVL17:
- 433:Core/Src/main.c ****             break;
- 323              		.loc 1 433 13 view .LVU78
- 324              	.L31:
- 375:Core/Src/main.c ****     {
- 325              		.loc 1 375 9 view .LVU79
- 379:Core/Src/main.c ****        {
- 326              		.loc 1 379 8 view .LVU80
- 379:Core/Src/main.c ****        {
- 327              		.loc 1 379 11 is_stmt 0 view .LVU81
- 328 009e 2E4B     		ldr	r3, .L34+28
- 329 00a0 D3F81028 		ldr	r2, [r3, #2064]
- 379:Core/Src/main.c ****        {
- 330              		.loc 1 379 10 view .LVU82
- 331 00a4 12F4805F 		tst	r2, #4096
- 332 00a8 B4D0     		beq	.L17
- 381:Core/Src/main.c ****             timerbutton1++;
- 333              		.loc 1 381 13 is_stmt 1 view .LVU83
- 381:Core/Src/main.c ****             timerbutton1++;
- 334              		.loc 1 381 18 is_stmt 0 view .LVU84
- 335 00aa 254B     		ldr	r3, .L34+4
- 336 00ac 0121     		movs	r1, #1
- 337 00ae 1970     		strb	r1, [r3]
- 382:Core/Src/main.c ****        }
- 338              		.loc 1 382 13 is_stmt 1 view .LVU85
- 382:Core/Src/main.c ****        }
- 339              		.loc 1 382 25 is_stmt 0 view .LVU86
- 340 00b0 2249     		ldr	r1, .L34
- 341 00b2 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 342 00b4 0133     		adds	r3, r3, #1
- 343 00b6 0B70     		strb	r3, [r1]
- 344 00b8 CCE7     		b	.L18
- 345              	.L20:
- 393:Core/Src/main.c ****             
- 346              		.loc 1 393 18 is_stmt 1 view .LVU87
- 393:Core/Src/main.c ****             
- 347              		.loc 1 393 25 is_stmt 0 view .LVU88
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 15
-
-
- 348 00ba 2249     		ldr	r1, .L34+8
- 349 00bc 0120     		movs	r0, #1
- 350 00be 0870     		strb	r0, [r1]
- 351 00c0 B6E7     		b	.L19
- 352              	.L22:
- 399:Core/Src/main.c ****         }
- 353              		.loc 1 399 18 is_stmt 1 view .LVU89
- 399:Core/Src/main.c ****         }
- 354              		.loc 1 399 24 is_stmt 0 view .LVU90
- 355 00c2 214B     		ldr	r3, .L34+12
- 356 00c4 0121     		movs	r1, #1
- 357 00c6 1970     		strb	r1, [r3]
- 358 00c8 BDE7     		b	.L21
- 359              	.L26:
- 413:Core/Src/main.c ****                 
- 360              		.loc 1 413 22 is_stmt 1 view .LVU91
- 413:Core/Src/main.c ****                 
- 361              		.loc 1 413 31 is_stmt 0 view .LVU92
- 362 00ca 224B     		ldr	r3, .L34+24
- 363 00cc 0122     		movs	r2, #1
- 364 00ce 1A70     		strb	r2, [r3]
- 365 00d0 D5E7     		b	.L23
- 366              	.L24:
- 417:Core/Src/main.c ****                 else{PB12_spd = 1;}
- 367              		.loc 1 417 17 is_stmt 1 view .LVU93
- 417:Core/Src/main.c ****                 else{PB12_spd = 1;}
- 368              		.loc 1 417 28 is_stmt 0 view .LVU94
- 369 00d2 224B     		ldr	r3, .L34+32
- 370 00d4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 417:Core/Src/main.c ****                 else{PB12_spd = 1;}
- 371              		.loc 1 417 19 view .LVU95
- 372 00d6 022B     		cmp	r3, #2
- 373 00d8 03D8     		bhi	.L27
- 417:Core/Src/main.c ****                 else{PB12_spd = 1;}
- 374              		.loc 1 417 33 is_stmt 1 discriminator 1 view .LVU96
- 417:Core/Src/main.c ****                 else{PB12_spd = 1;}
- 375              		.loc 1 417 41 is_stmt 0 discriminator 1 view .LVU97
- 376 00da 0133     		adds	r3, r3, #1
- 377 00dc 1F4A     		ldr	r2, .L34+32
- 378 00de 1370     		strb	r3, [r2]
- 379 00e0 CDE7     		b	.L23
- 380              	.L27:
- 418:Core/Src/main.c ****                 break;
- 381              		.loc 1 418 22 is_stmt 1 view .LVU98
- 418:Core/Src/main.c ****                 break;
- 382              		.loc 1 418 31 is_stmt 0 view .LVU99
- 383 00e2 1E4B     		ldr	r3, .L34+32
- 384 00e4 0122     		movs	r2, #1
- 385 00e6 1A70     		strb	r2, [r3]
- 386 00e8 C9E7     		b	.L23
- 387              	.L25:
- 421:Core/Src/main.c ****                 else{PB13_spd = 1;}
- 388              		.loc 1 421 17 is_stmt 1 view .LVU100
- 421:Core/Src/main.c ****                 else{PB13_spd = 1;}
- 389              		.loc 1 421 28 is_stmt 0 view .LVU101
- 390 00ea 1D4B     		ldr	r3, .L34+36
- 391 00ec 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 16
-
-
- 421:Core/Src/main.c ****                 else{PB13_spd = 1;}
- 392              		.loc 1 421 19 view .LVU102
- 393 00ee 022B     		cmp	r3, #2
- 394 00f0 03D8     		bhi	.L28
- 421:Core/Src/main.c ****                 else{PB13_spd = 1;}
- 395              		.loc 1 421 33 is_stmt 1 discriminator 1 view .LVU103
- 421:Core/Src/main.c ****                 else{PB13_spd = 1;}
- 396              		.loc 1 421 41 is_stmt 0 discriminator 1 view .LVU104
- 397 00f2 0133     		adds	r3, r3, #1
- 398 00f4 1A4A     		ldr	r2, .L34+36
- 399 00f6 1370     		strb	r3, [r2]
- 400 00f8 C1E7     		b	.L23
- 401              	.L28:
- 422:Core/Src/main.c **** 
- 402              		.loc 1 422 22 is_stmt 1 view .LVU105
- 422:Core/Src/main.c **** 
- 403              		.loc 1 422 31 is_stmt 0 view .LVU106
- 404 00fa 194B     		ldr	r3, .L34+36
- 405 00fc 0122     		movs	r2, #1
- 406 00fe 1A70     		strb	r2, [r3]
- 407 0100 BDE7     		b	.L23
- 408              	.L29:
- 434:Core/Src/main.c ****             case 2:
- 435:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
- 409              		.loc 1 435 13 is_stmt 1 view .LVU107
- 410 0102 144B     		ldr	r3, .L34+24
- 411 0104 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
- 412 0106 0120     		movs	r0, #1
- 413 0108 FFF7FEFF 		bl	blink
- 414              	.LVL18:
- 436:Core/Src/main.c ****             blink(GPIO_BSRR_BS7, PB12_spd);
- 415              		.loc 1 436 13 view .LVU108
- 416 010c 134B     		ldr	r3, .L34+32
- 417 010e 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
- 418 0110 8020     		movs	r0, #128
- 419 0112 FFF7FEFF 		bl	blink
- 420              	.LVL19:
- 437:Core/Src/main.c ****             break;
- 421              		.loc 1 437 13 view .LVU109
- 422 0116 C2E7     		b	.L31
- 423              	.L30:
- 438:Core/Src/main.c ****             case 3:
- 439:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
- 424              		.loc 1 439 13 view .LVU110
- 425 0118 0E4B     		ldr	r3, .L34+24
- 426 011a 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
- 427 011c 0120     		movs	r0, #1
- 428 011e FFF7FEFF 		bl	blink
- 429              	.LVL20:
- 440:Core/Src/main.c ****             blink(GPIO_BSRR_BS7, PB12_spd);
- 430              		.loc 1 440 13 view .LVU111
- 431 0122 0E4B     		ldr	r3, .L34+32
- 432 0124 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
- 433 0126 8020     		movs	r0, #128
- 434 0128 FFF7FEFF 		bl	blink
- 435              	.LVL21:
- 441:Core/Src/main.c ****             blink(GPIO_BSRR_BS14, PB13_spd);
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 17
-
-
- 436              		.loc 1 441 13 view .LVU112
- 437 012c 0C4B     		ldr	r3, .L34+36
- 438 012e 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
- 439 0130 4FF48040 		mov	r0, #16384
- 440 0134 FFF7FEFF 		bl	blink
- 441              	.LVL22:
- 442:Core/Src/main.c ****             break;
- 442              		.loc 1 442 13 view .LVU113
- 443 0138 B1E7     		b	.L31
- 444              	.L35:
- 445 013a 00BF     		.align	2
- 446              	.L34:
- 447 013c 00000000 		.word	timerbutton1
- 448 0140 00000000 		.word	btn1
- 449 0144 00000000 		.word	choose
- 450 0148 00000000 		.word	quanty
- 451 014c 00000000 		.word	flag1
- 452 0150 00000000 		.word	btn2
- 453 0154 00000000 		.word	PB11_spd
- 454 0158 00000240 		.word	1073872896
- 455 015c 00000000 		.word	PB12_spd
- 456 0160 00000000 		.word	PB13_spd
- 457              		.cfi_endproc
- 458              	.LFE136:
- 460              		.global	i
- 461              		.section	.bss.i,"aw",%nobits
- 462              		.align	2
- 465              	i:
- 466 0000 00000000 		.space	4
- 467              		.global	frequencies
- 468              		.section	.rodata.frequencies,"a"
- 469              		.align	2
- 472              	frequencies:
- 473 0000 40420F00 		.word	1000000
- 474 0004 20A10700 		.word	500000
- 475 0008 90D00300 		.word	250000
- 476 000c 48E80100 		.word	125000
- 477              		.global	led_index
- 478              		.section	.bss.led_index,"aw",%nobits
- 481              	led_index:
- 482 0000 00       		.space	1
- 483              		.global	timerbutton2
- 484              		.section	.bss.timerbutton2,"aw",%nobits
- 487              	timerbutton2:
- 488 0000 00       		.space	1
- 489              		.global	timerbutton1
- 490              		.section	.bss.timerbutton1,"aw",%nobits
- 493              	timerbutton1:
- 494 0000 00       		.space	1
- 495              		.global	led_count
- 496              		.section	.bss.led_count,"aw",%nobits
- 499              	led_count:
- 500 0000 00       		.space	1
- 501              		.global	current_led_indx
- 502              		.section	.data.current_led_indx,"aw"
- 505              	current_led_indx:
- 506 0000 02       		.byte	2
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 18
-
-
- 507              		.global	flag2
- 508              		.section	.bss.flag2,"aw",%nobits
- 511              	flag2:
- 512 0000 00       		.space	1
- 513              		.global	flag1
- 514              		.section	.bss.flag1,"aw",%nobits
- 517              	flag1:
- 518 0000 00       		.space	1
- 519              		.global	PB15_spd
- 520              		.section	.data.PB15_spd,"aw"
- 523              	PB15_spd:
- 524 0000 01       		.byte	1
- 525              		.global	PB13_spd
- 526              		.section	.data.PB13_spd,"aw"
- 529              	PB13_spd:
- 530 0000 01       		.byte	1
- 531              		.global	PB12_spd
- 532              		.section	.data.PB12_spd,"aw"
- 535              	PB12_spd:
- 536 0000 01       		.byte	1
- 537              		.global	PB11_spd
- 538              		.section	.data.PB11_spd,"aw"
- 541              	PB11_spd:
- 542 0000 01       		.byte	1
- 543              		.global	quanty
- 544              		.section	.data.quanty,"aw"
- 547              	quanty:
- 548 0000 01       		.byte	1
- 549              		.global	choose
- 550              		.section	.data.choose,"aw"
- 553              	choose:
- 554 0000 01       		.byte	1
- 555              		.global	btn2
- 556              		.section	.bss.btn2,"aw",%nobits
- 559              	btn2:
- 560 0000 00       		.space	1
- 561              		.global	btn1
- 562              		.section	.bss.btn1,"aw",%nobits
- 565              	btn1:
- 566 0000 00       		.space	1
- 567              		.text
- 568              	.Letext0:
- 569              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
- 570              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
- 571              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 572              		.file 5 "Core/Inc/main.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s 			page 19
+  74 0032 00BF     		.align	2
+  75              	.L6:
+  76 0034 00040240 		.word	1073873920
+  77 0038 00000000 		.word	LedState
+  78              		.cfi_endproc
+  79              	.LFE130:
+  81              		.global	LedState
+  82              		.section	.bss.LedState,"aw",%nobits
+  85              	LedState:
+  86 0000 00       		.space	1
+  87              		.text
+  88              	.Letext0:
+  89              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
+  90              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
+  91              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+  92              		.file 5 "Core/Inc/init.h"
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:21     .text.delay_cycles:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:26     .text.delay_cycles:00000000 delay_cycles
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:69     .text.blink:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:74     .text.blink:00000000 blink
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:172    .text.blink:00000060 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:181    .text.main:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:187    .text.main:00000000 main
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:447    .text.main:0000013c $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:493    .bss.timerbutton1:00000000 timerbutton1
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:565    .bss.btn1:00000000 btn1
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:553    .data.choose:00000000 choose
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:547    .data.quanty:00000000 quanty
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:517    .bss.flag1:00000000 flag1
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:559    .bss.btn2:00000000 btn2
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:541    .data.PB11_spd:00000000 PB11_spd
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:535    .data.PB12_spd:00000000 PB12_spd
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:529    .data.PB13_spd:00000000 PB13_spd
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:465    .bss.i:00000000 i
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:462    .bss.i:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:472    .rodata.frequencies:00000000 frequencies
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:469    .rodata.frequencies:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:481    .bss.led_index:00000000 led_index
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:482    .bss.led_index:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:487    .bss.timerbutton2:00000000 timerbutton2
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:488    .bss.timerbutton2:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:494    .bss.timerbutton1:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:499    .bss.led_count:00000000 led_count
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:500    .bss.led_count:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:505    .data.current_led_indx:00000000 current_led_indx
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:511    .bss.flag2:00000000 flag2
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:512    .bss.flag2:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:518    .bss.flag1:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:523    .data.PB15_spd:00000000 PB15_spd
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:560    .bss.btn2:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccvAiSBa.s:566    .bss.btn1:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s:21     .text.main:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s:27     .text.main:00000000 main
+C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s:76     .text.main:00000034 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s:85     .bss.LedState:00000000 LedState
+C:\Users\SIMONM~1\AppData\Local\Temp\ccC8Z56Y.s:86     .bss.LedState:00000000 $d
 
 UNDEFINED SYMBOLS
-GPIO_init_led_pb7_blue
-GPIO_init_led_pb14_red
-GPIO_init_led_pb0_green
-Buttons_Init
+GPIO_init
+CLK_CLEAR
+RCC_Init
+ITR_init
