@@ -26,9 +26,27 @@ void GPIO_Init (void)
     CLEAR_BIT(GPIOB->BSRR, GPIO_BSRR_BR14);
     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD14, (0x0u << GPIO_PUPDR_PUPD14_Pos));
 
+    //PB8 - out
+    MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE8, (0x1u << GPIO_MODER_MODE8_Pos));
+    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT_8);
+    MODIFY_REG(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED8, (0x1u << GPIO_OSPEEDR_OSPEED8_Pos));
+    CLEAR_BIT(GPIOB->BSRR, GPIO_BSRR_BR8);
+    MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD8, (0x0u << GPIO_PUPDR_PUPD8_Pos));
+
+    //PB11 - out
+    MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE11, (0x1u << GPIO_MODER_MODE11_Pos));
+    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT_11);
+    MODIFY_REG(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED11, (0x1u << GPIO_OSPEEDR_OSPEED11_Pos));
+    CLEAR_BIT(GPIOB->BSRR, GPIO_BSRR_BR11);
+    MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD11, (0x0u << GPIO_PUPDR_PUPD11_Pos));
+
+    //PB10 - out
+    MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE10, (0x1u << GPIO_MODER_MODE10_Pos));
+    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT_10);
+    MODIFY_REG(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED10, (0x1u << GPIO_OSPEEDR_OSPEED10_Pos));
+    CLEAR_BIT(GPIOB->BSRR, GPIO_BSRR_BR10);
+    MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPD10, (0x0u << GPIO_PUPDR_PUPD10_Pos));
 }
-
-
 
    
 
@@ -81,4 +99,14 @@ void ITR_init(void)
     SET_BIT(EXTI->FTSR, EXTI_FTSR_TR13); //Настройка детектирования спадающего фронта 13 линии 
     NVIC_SetPriority(EXTI15_10_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0)); //Установка 0 приоритета прерывания для вектора EXTI15_10
     NVIC_EnableIRQ(EXTI15_10_IRQn); //Включение прерывания по вектору EXTI15_10 
+}
+
+void SysTick_Init(void)
+{
+    CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); //На всякий случай, предварительно, выключим счётчик 
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk); //Разрешаем прерывание по системному таймеру 
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk); //Источник тактирования будет идти из AHB без деления 
+    MODIFY_REG(SysTick->LOAD, SysTick_LOAD_RELOAD_Msk, 0 << SysTick_LOAD_RELOAD_Pos); //Значение с которого начинается счёт, эквивалентное 1 кГц 
+    MODIFY_REG(SysTick->VAL, SysTick_VAL_CURRENT_Msk, 0 << SysTick_VAL_CURRENT_Pos); //Очистка поля 
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); //Включим счётчик
 }

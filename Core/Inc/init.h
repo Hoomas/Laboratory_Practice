@@ -11,9 +11,9 @@
 void GPIO_init__Memory(void);
 
 
-void GPIO_init(void);
+void GPIO_Init(void);
 void CLK_CLEAR(void);
 void RCC_Init(void);
 void ITR_init(void);
-
+void SysTick_Init(void);
 

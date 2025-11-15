@@ -1,4 +1,4 @@
-Build/main.o: Core/Src/main.c Core/Inc/init.h \
+Build/main.o: Core/Src/main.c Core/Inc/main.h Core/Inc/init.h \
  Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h \
  CMSIS/Include/../include/core_cm4.h \
  CMSIS/Include/../include/cmsis_version.h \
@@ -9,6 +9,7 @@ Build/main.o: Core/Src/main.c Core/Inc/init.h \
  Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/stm32f4xx.h \
  CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h \
  Core/Inc/it_handlers.h
+Core/Inc/main.h:
 Core/Inc/init.h:
 Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h:
 CMSIS/Include/../include/core_cm4.h:

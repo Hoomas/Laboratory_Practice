@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -30,87 +30,259 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s 			page 1
   28              	.LFB130:
    1:Core/Src/it_handlers.c **** #include "it_handlers.h"
    2:Core/Src/it_handlers.c **** 
-   3:Core/Src/it_handlers.c **** uint8_t BtnCount;
-   4:Core/Src/it_handlers.c **** extern uint8_t LedState;
+   3:Core/Src/it_handlers.c **** #define DELAY_BUTTON_FILTER 10
+   4:Core/Src/it_handlers.c **** 
    5:Core/Src/it_handlers.c **** 
-   6:Core/Src/it_handlers.c **** void EXTI15_10_IRQHandler(void)
-   7:Core/Src/it_handlers.c **** {
-  29              		.loc 1 7 1 view -0
+   6:Core/Src/it_handlers.c **** uint8_t BtnCount;
+   7:Core/Src/it_handlers.c **** extern uint8_t LedState;
+   8:Core/Src/it_handlers.c **** extern uint16_t GlobalTickCount;
+   9:Core/Src/it_handlers.c **** extern uint16_t BtnStartTick;
+  10:Core/Src/it_handlers.c **** extern uint8_t mode;
+  11:Core/Src/it_handlers.c **** extern uint8_t freq_mode;
+  12:Core/Src/it_handlers.c **** 
+  13:Core/Src/it_handlers.c **** uint16_t ExternInterruptTickCount;
+  14:Core/Src/it_handlers.c **** 
+  15:Core/Src/it_handlers.c **** void EXTI15_10_IRQHandler(void)
+  16:Core/Src/it_handlers.c **** {
+  29              		.loc 1 16 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-   8:Core/Src/it_handlers.c ****     BtnCount ++; 
-  34              		.loc 1 8 5 view .LVU1
-  35              		.loc 1 8 14 is_stmt 0 view .LVU2
-  36 0000 0A4A     		ldr	r2, .L3
-  37 0002 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  38 0004 0133     		adds	r3, r3, #1
-  39 0006 DBB2     		uxtb	r3, r3
-  40 0008 1370     		strb	r3, [r2]
-   9:Core/Src/it_handlers.c ****     if(BtnCount >= 2)
-  41              		.loc 1 9 5 is_stmt 1 view .LVU3
-  42              		.loc 1 9 7 is_stmt 0 view .LVU4
-  43 000a 012B     		cmp	r3, #1
-  44 000c 08D9     		bls	.L2
-  10:Core/Src/it_handlers.c ****     {
-  11:Core/Src/it_handlers.c ****         LedState = !LedState;
-  45              		.loc 1 11 9 is_stmt 1 view .LVU5
-  46              		.loc 1 11 20 is_stmt 0 view .LVU6
-  47 000e 084A     		ldr	r2, .L3+4
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s 			page 2
+  17:Core/Src/it_handlers.c ****     SET_BIT(EXTI->PR, EXTI_PR_PR13); //Сброс флага прерывания 
+  34              		.loc 1 17 5 view .LVU1
+  35 0000 154A     		ldr	r2, .L9
+  36 0002 5369     		ldr	r3, [r2, #20]
+  37 0004 43F40053 		orr	r3, r3, #8192
+  38 0008 5361     		str	r3, [r2, #20]
+  18:Core/Src/it_handlers.c ****     if(ExternInterruptTickCount >= DELAY_BUTTON_FILTER)
+  39              		.loc 1 18 5 view .LVU2
+  40              		.loc 1 18 33 is_stmt 0 view .LVU3
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s 			page 2
 
 
-  48 0010 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  49 0012 B3FA83F3 		clz	r3, r3
-  50 0016 5B09     		lsrs	r3, r3, #5
-  51              		.loc 1 11 18 view .LVU7
-  52 0018 1370     		strb	r3, [r2]
-  12:Core/Src/it_handlers.c ****         BtnCount = 0;
-  53              		.loc 1 12 9 is_stmt 1 view .LVU8
-  54              		.loc 1 12 18 is_stmt 0 view .LVU9
-  55 001a 044B     		ldr	r3, .L3
-  56 001c 0022     		movs	r2, #0
-  57 001e 1A70     		strb	r2, [r3]
-  58              	.L2:
-  13:Core/Src/it_handlers.c ****     }
-  14:Core/Src/it_handlers.c **** 
-  15:Core/Src/it_handlers.c ****     SET_BIT(EXTI->PR, EXTI_PR_PR13); 
-  59              		.loc 1 15 5 is_stmt 1 view .LVU10
-  60 0020 044A     		ldr	r2, .L3+8
-  61 0022 5369     		ldr	r3, [r2, #20]
-  62 0024 43F40053 		orr	r3, r3, #8192
-  63 0028 5361     		str	r3, [r2, #20]
-  16:Core/Src/it_handlers.c **** }
-  64              		.loc 1 16 1 is_stmt 0 view .LVU11
-  65 002a 7047     		bx	lr
-  66              	.L4:
-  67              		.align	2
-  68              	.L3:
-  69 002c 00000000 		.word	BtnCount
-  70 0030 00000000 		.word	LedState
-  71 0034 003C0140 		.word	1073822720
-  72              		.cfi_endproc
-  73              	.LFE130:
-  75              		.global	BtnCount
-  76              		.section	.bss.BtnCount,"aw",%nobits
-  79              	BtnCount:
-  80 0000 00       		.space	1
-  81              		.text
-  82              	.Letext0:
-  83              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
-  84              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
-  85              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s 			page 3
+  41 000a 144B     		ldr	r3, .L9+4
+  42 000c 1B88     		ldrh	r3, [r3]
+  43              		.loc 1 18 7 view .LVU4
+  44 000e 092B     		cmp	r3, #9
+  45 0010 09D9     		bls	.L2
+  19:Core/Src/it_handlers.c ****     { //Выполнится, когда пройдёт 100 мс с момента обнулени
+  20:Core/Src/it_handlers.c ****         BtnCount++; //Изменение состояния кнопки 
+  46              		.loc 1 20 9 is_stmt 1 view .LVU5
+  47              		.loc 1 20 17 is_stmt 0 view .LVU6
+  48 0012 134A     		ldr	r2, .L9+8
+  49 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  50 0016 0133     		adds	r3, r3, #1
+  51 0018 DBB2     		uxtb	r3, r3
+  52 001a 1370     		strb	r3, [r2]
+  21:Core/Src/it_handlers.c ****         ExternInterruptTickCount = 0;
+  53              		.loc 1 21 9 is_stmt 1 view .LVU7
+  54              		.loc 1 21 34 is_stmt 0 view .LVU8
+  55 001c 0F4A     		ldr	r2, .L9+4
+  56 001e 0021     		movs	r1, #0
+  57 0020 1180     		strh	r1, [r2]	@ movhi
+  22:Core/Src/it_handlers.c ****         if(BtnCount == 1 )BtnStartTick = GlobalTickCount;
+  58              		.loc 1 22 9 is_stmt 1 view .LVU9
+  59              		.loc 1 22 11 is_stmt 0 view .LVU10
+  60 0022 012B     		cmp	r3, #1
+  61 0024 0ED0     		beq	.L7
+  62              	.L2:
+  23:Core/Src/it_handlers.c ****     }
+  24:Core/Src/it_handlers.c ****     
+  25:Core/Src/it_handlers.c ****     if(BtnCount >= 2)
+  63              		.loc 1 25 5 is_stmt 1 view .LVU11
+  64              		.loc 1 25 17 is_stmt 0 view .LVU12
+  65 0026 0E4B     		ldr	r3, .L9+8
+  66 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  67              		.loc 1 25 7 view .LVU13
+  68 002a 012B     		cmp	r3, #1
+  69 002c 09D9     		bls	.L1
+  26:Core/Src/it_handlers.c ****     {
+  27:Core/Src/it_handlers.c ****         BtnCount = 0;
+  70              		.loc 1 27 9 is_stmt 1 view .LVU14
+  71              		.loc 1 27 18 is_stmt 0 view .LVU15
+  72 002e 0C4B     		ldr	r3, .L9+8
+  73 0030 0022     		movs	r2, #0
+  74 0032 1A70     		strb	r2, [r3]
+  28:Core/Src/it_handlers.c ****         if(BtnStartTick - GlobalTickCount >= 2000000)
+  75              		.loc 1 28 9 is_stmt 1 view .LVU16
+  29:Core/Src/it_handlers.c ****         {
+  30:Core/Src/it_handlers.c ****             if(freq_mode <3)freq_mode++;
+  31:Core/Src/it_handlers.c ****             else freq_mode = 0;
+  32:Core/Src/it_handlers.c ****         }
+  33:Core/Src/it_handlers.c ****         else
+  34:Core/Src/it_handlers.c ****         {
+  35:Core/Src/it_handlers.c ****             if(mode < 2) mode++;
+  76              		.loc 1 35 13 view .LVU17
+  77              		.loc 1 35 21 is_stmt 0 view .LVU18
+  78 0034 0B4B     		ldr	r3, .L9+12
+  79 0036 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  80              		.loc 1 35 15 view .LVU19
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s 			page 3
+
+
+  81 0038 012B     		cmp	r3, #1
+  82 003a 08D9     		bls	.L8
+  36:Core/Src/it_handlers.c ****             else mode = 1;
+  83              		.loc 1 36 18 is_stmt 1 view .LVU20
+  84              		.loc 1 36 23 is_stmt 0 view .LVU21
+  85 003c 094B     		ldr	r3, .L9+12
+  86 003e 0122     		movs	r2, #1
+  87 0040 1A70     		strb	r2, [r3]
+  88              	.L1:
+  37:Core/Src/it_handlers.c ****         }
+  38:Core/Src/it_handlers.c ****         
+  39:Core/Src/it_handlers.c ****     }
+  40:Core/Src/it_handlers.c **** 
+  41:Core/Src/it_handlers.c **** 
+  42:Core/Src/it_handlers.c **** }
+  89              		.loc 1 42 1 view .LVU22
+  90 0042 7047     		bx	lr
+  91              	.L7:
+  22:Core/Src/it_handlers.c ****     }
+  92              		.loc 1 22 27 is_stmt 1 discriminator 1 view .LVU23
+  22:Core/Src/it_handlers.c ****     }
+  93              		.loc 1 22 40 is_stmt 0 discriminator 1 view .LVU24
+  94 0044 084B     		ldr	r3, .L9+16
+  95 0046 1A88     		ldrh	r2, [r3]
+  96 0048 084B     		ldr	r3, .L9+20
+  97 004a 1A80     		strh	r2, [r3]	@ movhi
+  98 004c EBE7     		b	.L2
+  99              	.L8:
+  35:Core/Src/it_handlers.c ****             else mode = 1;
+ 100              		.loc 1 35 26 is_stmt 1 discriminator 1 view .LVU25
+  35:Core/Src/it_handlers.c ****             else mode = 1;
+ 101              		.loc 1 35 30 is_stmt 0 discriminator 1 view .LVU26
+ 102 004e 0133     		adds	r3, r3, #1
+ 103 0050 044A     		ldr	r2, .L9+12
+ 104 0052 1370     		strb	r3, [r2]
+ 105 0054 7047     		bx	lr
+ 106              	.L10:
+ 107 0056 00BF     		.align	2
+ 108              	.L9:
+ 109 0058 003C0140 		.word	1073822720
+ 110 005c 00000000 		.word	ExternInterruptTickCount
+ 111 0060 00000000 		.word	BtnCount
+ 112 0064 00000000 		.word	mode
+ 113 0068 00000000 		.word	GlobalTickCount
+ 114 006c 00000000 		.word	BtnStartTick
+ 115              		.cfi_endproc
+ 116              	.LFE130:
+ 118              		.section	.text.SysTick_Handler,"ax",%progbits
+ 119              		.align	1
+ 120              		.global	SysTick_Handler
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 125              	SysTick_Handler:
+ 126              	.LFB131:
+  43:Core/Src/it_handlers.c **** 
+  44:Core/Src/it_handlers.c **** void SysTick_Handler(void)
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s 			page 4
+
+
+  45:Core/Src/it_handlers.c **** {
+ 127              		.loc 1 45 1 is_stmt 1 view -0
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 0
+ 130              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131              		@ link register save eliminated.
+  46:Core/Src/it_handlers.c ****     ExternInterruptTickCount++;
+ 132              		.loc 1 46 5 view .LVU28
+ 133              		.loc 1 46 29 is_stmt 0 view .LVU29
+ 134 0000 044A     		ldr	r2, .L12
+ 135 0002 1388     		ldrh	r3, [r2]
+ 136 0004 0133     		adds	r3, r3, #1
+ 137 0006 1380     		strh	r3, [r2]	@ movhi
+  47:Core/Src/it_handlers.c ****     GlobalTickCount++;
+ 138              		.loc 1 47 5 is_stmt 1 view .LVU30
+ 139              		.loc 1 47 20 is_stmt 0 view .LVU31
+ 140 0008 034A     		ldr	r2, .L12+4
+ 141 000a 1388     		ldrh	r3, [r2]
+ 142 000c 0133     		adds	r3, r3, #1
+ 143 000e 1380     		strh	r3, [r2]	@ movhi
+  48:Core/Src/it_handlers.c **** 
+  49:Core/Src/it_handlers.c **** }
+ 144              		.loc 1 49 1 view .LVU32
+ 145 0010 7047     		bx	lr
+ 146              	.L13:
+ 147 0012 00BF     		.align	2
+ 148              	.L12:
+ 149 0014 00000000 		.word	ExternInterruptTickCount
+ 150 0018 00000000 		.word	GlobalTickCount
+ 151              		.cfi_endproc
+ 152              	.LFE131:
+ 154              		.section	.text.milis,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	milis
+ 157              		.syntax unified
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	milis:
+ 162              	.LFB132:
+  50:Core/Src/it_handlers.c **** 
+  51:Core/Src/it_handlers.c **** void milis(uint32_t delay)
+  52:Core/Src/it_handlers.c **** {
+ 163              		.loc 1 52 1 is_stmt 1 view -0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              	.LVL0:
+ 169              	.L15:
+  53:Core/Src/it_handlers.c ****     uint16_t StartTickCount;
+  54:Core/Src/it_handlers.c ****     StartTickCount= GlobalTickCount;
+  55:Core/Src/it_handlers.c ****     while(GlobalTickCount - StartTickCount < delay*1000){}
+ 170              		.loc 1 55 58 discriminator 1 view .LVU34
+ 171              		.loc 1 55 44 discriminator 1 view .LVU35
+ 172              		.loc 1 55 51 is_stmt 0 discriminator 1 view .LVU36
+ 173 0000 4FF47A73 		mov	r3, #1000
+ 174 0004 00FB03F3 		mul	r3, r0, r3
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s 			page 5
+
+
+ 175              		.loc 1 55 44 discriminator 1 view .LVU37
+ 176 0008 002B     		cmp	r3, #0
+ 177 000a F9D1     		bne	.L15
+  56:Core/Src/it_handlers.c **** 
+  57:Core/Src/it_handlers.c **** }...
+ 178              		.loc 1 57 1 view .LVU38
+ 179 000c 7047     		bx	lr
+ 180              		.cfi_endproc
+ 181              	.LFE132:
+ 183              		.global	ExternInterruptTickCount
+ 184              		.section	.bss.ExternInterruptTickCount,"aw",%nobits
+ 185              		.align	1
+ 188              	ExternInterruptTickCount:
+ 189 0000 0000     		.space	2
+ 190              		.global	BtnCount
+ 191              		.section	.bss.BtnCount,"aw",%nobits
+ 194              	BtnCount:
+ 195 0000 00       		.space	1
+ 196              		.text
+ 197              	.Letext0:
+ 198              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
+ 199              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
+ 200              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 it_handlers.c
-C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s:21     .text.EXTI15_10_IRQHandler:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s:27     .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
-C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s:69     .text.EXTI15_10_IRQHandler:0000002c $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s:79     .bss.BtnCount:00000000 BtnCount
-C:\Users\SIMONM~1\AppData\Local\Temp\ccbzoXfA.s:80     .bss.BtnCount:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:21     .text.EXTI15_10_IRQHandler:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:27     .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:109    .text.EXTI15_10_IRQHandler:00000058 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:188    .bss.ExternInterruptTickCount:00000000 ExternInterruptTickCount
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:194    .bss.BtnCount:00000000 BtnCount
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:119    .text.SysTick_Handler:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:125    .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:149    .text.SysTick_Handler:00000014 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:155    .text.milis:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:161    .text.milis:00000000 milis
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:185    .bss.ExternInterruptTickCount:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccNRE9R8.s:195    .bss.BtnCount:00000000 $d
 
 UNDEFINED SYMBOLS
-LedState
+mode
+GlobalTickCount
+BtnStartTick

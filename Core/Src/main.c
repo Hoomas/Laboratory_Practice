@@ -1,5 +1,4 @@
-#include "init.h"
-#include "it_handlers.h"
+#include "main.h"
 //1 кнопка 3 частоты
 //2 кнопка включает последовательно 4 светодиода(циклично, короткое нажатие 1 12 123 1234 1 )
 //выбор светодиода, для которого выбирается частота(длинное нажатие имзенеие порядкового номера, если не настраивать, то базовя, можно настроить свтодтод. даже если он сейчас не горит) без таймеров и прерываний
@@ -250,19 +249,58 @@ while (1)
     }
        */
 
-uint8_t LedState;
+
+uint16_t GlobalTickCount;
+uint8_t mode;
+uint8_t freq_mode;
+uint16_t BtnStartTick;
+void blink(uint32_t bitmask, uint8_t freq) //Freq in ms
+{
+    SET_BIT(GPIOB->BSRR, bitmask);
+    milis(freq);
+    SET_BIT(GPIOB->BSRR, bitmask<<16U);
+}
+
+void blink2(uint32_t bitmask1, uint32_t bitmask2, uint8_t freq) //Freq in ms
+{
+    SET_BIT(GPIOB->BSRR, bitmask1);
+    SET_BIT(GPIOB->BSRR, bitmask2);
+    milis(freq);
+    SET_BIT(GPIOB->BSRR, bitmask1<<16U);
+    SET_BIT(GPIOB->BSRR, bitmask2<<16U);
+}
 
 int main(void)
 {
-    GPIO_init();
+    uint32_t led_bitmasks[6] = {GPIO_BSRR_BS0, GPIO_BSRR_BS7, GPIO_BSRR_BS14, GPIO_BSRR_BS8, GPIO_BSRR_BS10, GPIO_BSRR_BS11};
+    uint16_t freq1[3] = {400, 1900, 2600};
+    uint16_t freq2[3] = {300, 1600, 2300};
+    GPIO_Init();
     CLK_CLEAR();
     RCC_Init();
     ITR_init();
+    SysTick_Init();
 
     while(1)
     {
-        if(LedState) SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
-        else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+        switch( mode)
+        {
+            case 1:
+                for(uint8_t i = 0; i<6; i++)
+                {
+                    blink(led_bitmasks[i],freq1[freq_mode]);
+                }
+            break;
+
+            case 2:
+                
+            for(uint8_t i = 0; i<6; i++)
+            {
+                blink2(led_bitmasks[i], led_bitmasks[i+3],freq2[freq_mode]);
+            }
+            break;
+        }
     }
+
 
 }
