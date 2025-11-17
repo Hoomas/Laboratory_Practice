@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -30,7 +30,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 1
   28              	.LFB130:
    1:Core/Src/it_handlers.c **** #include "it_handlers.h"
    2:Core/Src/it_handlers.c **** 
-   3:Core/Src/it_handlers.c **** #define DELAY_BUTTON_FILTER 100
+   3:Core/Src/it_handlers.c **** #define DELAY_BUTTON_FILTER 250
    4:Core/Src/it_handlers.c **** 
    5:Core/Src/it_handlers.c **** 
    6:Core/Src/it_handlers.c **** uint8_t BtnCount;
@@ -52,83 +52,83 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 1
   17:Core/Src/it_handlers.c ****     if(ExternInterruptTickCount >= DELAY_BUTTON_FILTER)
   34              		.loc 1 17 5 view .LVU1
   35              		.loc 1 17 33 is_stmt 0 view .LVU2
-  36 0000 214B     		ldr	r3, .L12
+  36 0000 204B     		ldr	r3, .L11
   37 0002 1B68     		ldr	r3, [r3]
   38              		.loc 1 17 7 view .LVU3
-  39 0004 632B     		cmp	r3, #99
-  40 0006 09D9     		bls	.L2
+  39 0004 F92B     		cmp	r3, #249
+  40 0006 03D9     		bls	.L2
   18:Core/Src/it_handlers.c ****     { //Выполнится, когда пройдёт 100 мс с момента обнулени
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 2
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 2
 
 
   19:Core/Src/it_handlers.c ****         BtnCount++; //Изменение состояния кнопки 
   41              		.loc 1 19 9 is_stmt 1 view .LVU4
   42              		.loc 1 19 17 is_stmt 0 view .LVU5
-  43 0008 204A     		ldr	r2, .L12+4
+  43 0008 1F4A     		ldr	r2, .L11+4
   44 000a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
   45 000c 0133     		adds	r3, r3, #1
-  46 000e DBB2     		uxtb	r3, r3
-  47 0010 1370     		strb	r3, [r2]
-  20:Core/Src/it_handlers.c ****         ExternInterruptTickCount = 0;
-  48              		.loc 1 20 9 is_stmt 1 view .LVU6
-  49              		.loc 1 20 34 is_stmt 0 view .LVU7
-  50 0012 1D4A     		ldr	r2, .L12
-  51 0014 0021     		movs	r1, #0
-  52 0016 1160     		str	r1, [r2]
-  21:Core/Src/it_handlers.c ****         if(BtnCount == 1 ){BtnStartTick = GlobalTickCount;}
-  53              		.loc 1 21 9 is_stmt 1 view .LVU8
-  54              		.loc 1 21 11 is_stmt 0 view .LVU9
-  55 0018 012B     		cmp	r3, #1
-  56 001a 0ED0     		beq	.L8
-  57              	.L2:
-  22:Core/Src/it_handlers.c ****     }
-  23:Core/Src/it_handlers.c ****     
-  24:Core/Src/it_handlers.c ****     if(BtnCount == 2)
-  58              		.loc 1 24 5 is_stmt 1 view .LVU10
-  59              		.loc 1 24 17 is_stmt 0 view .LVU11
-  60 001c 1B4B     		ldr	r3, .L12+4
-  61 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-  62              		.loc 1 24 7 view .LVU12
-  63 0020 022B     		cmp	r3, #2
-  64 0022 0FD0     		beq	.L9
-  65              	.L3:
-  25:Core/Src/it_handlers.c ****     {
-  26:Core/Src/it_handlers.c ****         
-  27:Core/Src/it_handlers.c ****         if(GlobalTickCount - BtnStartTick  >= 20000)
-  28:Core/Src/it_handlers.c ****         {
-  29:Core/Src/it_handlers.c ****             if(freq_mode <2){freq_mode++;} 
-  30:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+  46 000e 1370     		strb	r3, [r2]
+  47              	.L2:
+  20:Core/Src/it_handlers.c **** 
+  21:Core/Src/it_handlers.c ****     }
+  22:Core/Src/it_handlers.c **** 
+  23:Core/Src/it_handlers.c ****     if(BtnCount == 2)
+  48              		.loc 1 23 5 is_stmt 1 view .LVU6
+  49              		.loc 1 23 17 is_stmt 0 view .LVU7
+  50 0010 1D4B     		ldr	r3, .L11+4
+  51 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  52              		.loc 1 23 7 view .LVU8
+  53 0014 022B     		cmp	r3, #2
+  54 0016 10D0     		beq	.L8
+  55              	.L3:
+  24:Core/Src/it_handlers.c ****     {
+  25:Core/Src/it_handlers.c ****         
+  26:Core/Src/it_handlers.c ****         if(ExternInterruptTickCount  >= 2000)
+  27:Core/Src/it_handlers.c ****         {
+  28:Core/Src/it_handlers.c ****             if(freq_mode <2){freq_mode++;} 
+  29:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+  30:Core/Src/it_handlers.c **** 
   31:Core/Src/it_handlers.c **** 
   32:Core/Src/it_handlers.c ****             
   33:Core/Src/it_handlers.c ****         }
-  34:Core/Src/it_handlers.c ****         else
+  34:Core/Src/it_handlers.c ****         if(ExternInterruptTickCount  < 2000 && ExternInterruptTickCount !=0)
   35:Core/Src/it_handlers.c ****         {
   36:Core/Src/it_handlers.c ****             if(mode < 2) {mode++;}
   37:Core/Src/it_handlers.c ****             else {mode = 1;}
   38:Core/Src/it_handlers.c ****         
   39:Core/Src/it_handlers.c **** 
   40:Core/Src/it_handlers.c ****         }
-  41:Core/Src/it_handlers.c **** 
+  41:Core/Src/it_handlers.c ****          
   42:Core/Src/it_handlers.c ****     }
-  43:Core/Src/it_handlers.c ****     if(BtnCount >2){
-  66              		.loc 1 43 5 is_stmt 1 view .LVU13
-  67              		.loc 1 43 7 is_stmt 0 view .LVU14
-  68 0024 022B     		cmp	r3, #2
-  69 0026 02D9     		bls	.L7
-  44:Core/Src/it_handlers.c ****         BtnCount = 1;
-  70              		.loc 1 44 9 is_stmt 1 view .LVU15
-  71              		.loc 1 44 18 is_stmt 0 view .LVU16
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 3
+  43:Core/Src/it_handlers.c ****     if(BtnCount>2)
+  56              		.loc 1 43 5 is_stmt 1 view .LVU9
+  57              		.loc 1 43 7 is_stmt 0 view .LVU10
+  58 0018 022B     		cmp	r3, #2
+  59 001a 05D9     		bls	.L7
+  44:Core/Src/it_handlers.c ****          { BtnCount = 1; ExternInterruptTickCount = 0;}
+  60              		.loc 1 44 12 is_stmt 1 view .LVU11
+  61              		.loc 1 44 21 is_stmt 0 view .LVU12
+  62 001c 1A4B     		ldr	r3, .L11+4
+  63 001e 0122     		movs	r2, #1
+  64 0020 1A70     		strb	r2, [r3]
+  65              		.loc 1 44 26 is_stmt 1 view .LVU13
+  66              		.loc 1 44 51 is_stmt 0 view .LVU14
+  67 0022 184B     		ldr	r3, .L11
+  68 0024 0022     		movs	r2, #0
+  69 0026 1A60     		str	r2, [r3]
+  70              	.L7:
+  45:Core/Src/it_handlers.c ****     ExternInterruptTickCount = 0;
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 3
 
 
-  72 0028 184B     		ldr	r3, .L12+4
-  73 002a 0122     		movs	r2, #1
-  74 002c 1A70     		strb	r2, [r3]
-  75              	.L7:
-  45:Core/Src/it_handlers.c ****     }
+  71              		.loc 1 45 5 is_stmt 1 view .LVU15
+  72              		.loc 1 45 30 is_stmt 0 view .LVU16
+  73 0028 164B     		ldr	r3, .L11
+  74 002a 0022     		movs	r2, #0
+  75 002c 1A60     		str	r2, [r3]
   46:Core/Src/it_handlers.c ****     SET_BIT(EXTI->PR, EXTI_PR_PR13);
   76              		.loc 1 46 5 is_stmt 1 view .LVU17
-  77 002e 184A     		ldr	r2, .L12+8
+  77 002e 174A     		ldr	r2, .L11+8
   78 0030 5369     		ldr	r3, [r2, #20]
   79 0032 43F40053 		orr	r3, r3, #8192
   80 0036 5361     		str	r3, [r2, #20]
@@ -136,226 +136,226 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 1
   81              		.loc 1 47 1 is_stmt 0 view .LVU18
   82 0038 7047     		bx	lr
   83              	.L8:
-  21:Core/Src/it_handlers.c ****     }
-  84              		.loc 1 21 28 is_stmt 1 discriminator 1 view .LVU19
-  21:Core/Src/it_handlers.c ****     }
-  85              		.loc 1 21 41 is_stmt 0 discriminator 1 view .LVU20
-  86 003a 164B     		ldr	r3, .L12+12
-  87 003c 1A68     		ldr	r2, [r3]
-  88 003e 164B     		ldr	r3, .L12+16
-  89 0040 1A60     		str	r2, [r3]
-  90 0042 EBE7     		b	.L2
-  91              	.L9:
-  27:Core/Src/it_handlers.c ****         {
-  92              		.loc 1 27 9 is_stmt 1 view .LVU21
-  27:Core/Src/it_handlers.c ****         {
-  93              		.loc 1 27 28 is_stmt 0 view .LVU22
-  94 0044 134A     		ldr	r2, .L12+12
-  95 0046 1268     		ldr	r2, [r2]
-  96 0048 1349     		ldr	r1, .L12+16
-  97 004a 0968     		ldr	r1, [r1]
-  98 004c 521A     		subs	r2, r2, r1
-  27:Core/Src/it_handlers.c ****         {
-  99              		.loc 1 27 11 view .LVU23
- 100 004e 44F61F61 		movw	r1, #19999
- 101 0052 8A42     		cmp	r2, r1
- 102 0054 0BD9     		bls	.L4
-  29:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
- 103              		.loc 1 29 13 is_stmt 1 view .LVU24
-  29:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
- 104              		.loc 1 29 26 is_stmt 0 view .LVU25
- 105 0056 114A     		ldr	r2, .L12+20
- 106 0058 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
-  29:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
- 107              		.loc 1 29 15 view .LVU26
- 108 005a 012A     		cmp	r2, #1
- 109 005c 03D9     		bls	.L10
-  30:Core/Src/it_handlers.c **** 
- 110              		.loc 1 30 19 is_stmt 1 view .LVU27
-  30:Core/Src/it_handlers.c **** 
- 111              		.loc 1 30 29 is_stmt 0 view .LVU28
- 112 005e 0F4A     		ldr	r2, .L12+20
- 113 0060 0021     		movs	r1, #0
- 114 0062 1170     		strb	r1, [r2]
- 115 0064 DEE7     		b	.L3
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 4
+  26:Core/Src/it_handlers.c ****         {
+  84              		.loc 1 26 9 is_stmt 1 view .LVU19
+  26:Core/Src/it_handlers.c ****         {
+  85              		.loc 1 26 38 is_stmt 0 view .LVU20
+  86 003a 124A     		ldr	r2, .L11
+  87 003c 1268     		ldr	r2, [r2]
+  26:Core/Src/it_handlers.c ****         {
+  88              		.loc 1 26 11 view .LVU21
+  89 003e B2F5FA6F 		cmp	r2, #2000
+  90 0042 06D3     		bcc	.L4
+  28:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+  91              		.loc 1 28 13 is_stmt 1 view .LVU22
+  28:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+  92              		.loc 1 28 26 is_stmt 0 view .LVU23
+  93 0044 124A     		ldr	r2, .L11+12
+  94 0046 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+  28:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+  95              		.loc 1 28 15 view .LVU24
+  96 0048 012A     		cmp	r2, #1
+  97 004a 13D9     		bls	.L9
+  29:Core/Src/it_handlers.c **** 
+  98              		.loc 1 29 19 is_stmt 1 view .LVU25
+  29:Core/Src/it_handlers.c **** 
+  99              		.loc 1 29 29 is_stmt 0 view .LVU26
+ 100 004c 104A     		ldr	r2, .L11+12
+ 101 004e 0021     		movs	r1, #0
+ 102 0050 1170     		strb	r1, [r2]
+ 103              	.L4:
+  34:Core/Src/it_handlers.c ****         {
+ 104              		.loc 1 34 9 is_stmt 1 view .LVU27
+  34:Core/Src/it_handlers.c ****         {
+ 105              		.loc 1 34 38 is_stmt 0 view .LVU28
+ 106 0052 0C4A     		ldr	r2, .L11
+ 107 0054 1268     		ldr	r2, [r2]
+  34:Core/Src/it_handlers.c ****         {
+ 108              		.loc 1 34 11 view .LVU29
+ 109 0056 B2F5FA6F 		cmp	r2, #2000
+ 110 005a DDD2     		bcs	.L3
+  34:Core/Src/it_handlers.c ****         {
+ 111              		.loc 1 34 73 discriminator 1 view .LVU30
+ 112 005c 094A     		ldr	r2, .L11
+ 113 005e 1268     		ldr	r2, [r2]
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 4
 
 
- 116              	.L10:
-  29:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
- 117              		.loc 1 29 30 is_stmt 1 discriminator 1 view .LVU29
-  29:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
- 118              		.loc 1 29 39 is_stmt 0 discriminator 1 view .LVU30
- 119 0066 0132     		adds	r2, r2, #1
- 120 0068 0C49     		ldr	r1, .L12+20
- 121 006a 0A70     		strb	r2, [r1]
- 122 006c DAE7     		b	.L3
- 123              	.L4:
+  34:Core/Src/it_handlers.c ****         {
+ 114              		.loc 1 34 45 discriminator 1 view .LVU31
+ 115 0060 002A     		cmp	r2, #0
+ 116 0062 D9D0     		beq	.L3
   36:Core/Src/it_handlers.c ****             else {mode = 1;}
- 124              		.loc 1 36 13 is_stmt 1 view .LVU31
+ 117              		.loc 1 36 13 is_stmt 1 view .LVU32
   36:Core/Src/it_handlers.c ****             else {mode = 1;}
- 125              		.loc 1 36 21 is_stmt 0 view .LVU32
- 126 006e 0C4A     		ldr	r2, .L12+24
- 127 0070 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 118              		.loc 1 36 21 is_stmt 0 view .LVU33
+ 119 0064 0B4A     		ldr	r2, .L11+16
+ 120 0066 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
   36:Core/Src/it_handlers.c ****             else {mode = 1;}
- 128              		.loc 1 36 15 view .LVU33
- 129 0072 012A     		cmp	r2, #1
- 130 0074 03D9     		bls	.L11
+ 121              		.loc 1 36 15 view .LVU34
+ 122 0068 012A     		cmp	r2, #1
+ 123 006a 07D9     		bls	.L10
   37:Core/Src/it_handlers.c ****         
- 131              		.loc 1 37 19 is_stmt 1 view .LVU34
+ 124              		.loc 1 37 19 is_stmt 1 view .LVU35
   37:Core/Src/it_handlers.c ****         
- 132              		.loc 1 37 24 is_stmt 0 view .LVU35
- 133 0076 0A4A     		ldr	r2, .L12+24
- 134 0078 0121     		movs	r1, #1
- 135 007a 1170     		strb	r1, [r2]
- 136 007c D2E7     		b	.L3
- 137              	.L11:
+ 125              		.loc 1 37 24 is_stmt 0 view .LVU36
+ 126 006c 094A     		ldr	r2, .L11+16
+ 127 006e 0121     		movs	r1, #1
+ 128 0070 1170     		strb	r1, [r2]
+ 129 0072 D1E7     		b	.L3
+ 130              	.L9:
+  28:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+ 131              		.loc 1 28 30 is_stmt 1 discriminator 1 view .LVU37
+  28:Core/Src/it_handlers.c ****             else{ freq_mode = 0;}
+ 132              		.loc 1 28 39 is_stmt 0 discriminator 1 view .LVU38
+ 133 0074 0132     		adds	r2, r2, #1
+ 134 0076 0649     		ldr	r1, .L11+12
+ 135 0078 0A70     		strb	r2, [r1]
+ 136 007a EAE7     		b	.L4
+ 137              	.L10:
   36:Core/Src/it_handlers.c ****             else {mode = 1;}
- 138              		.loc 1 36 27 is_stmt 1 discriminator 1 view .LVU36
+ 138              		.loc 1 36 27 is_stmt 1 discriminator 1 view .LVU39
   36:Core/Src/it_handlers.c ****             else {mode = 1;}
- 139              		.loc 1 36 31 is_stmt 0 discriminator 1 view .LVU37
- 140 007e 0132     		adds	r2, r2, #1
- 141 0080 0749     		ldr	r1, .L12+24
- 142 0082 0A70     		strb	r2, [r1]
- 143 0084 CEE7     		b	.L3
- 144              	.L13:
- 145 0086 00BF     		.align	2
- 146              	.L12:
- 147 0088 00000000 		.word	ExternInterruptTickCount
- 148 008c 00000000 		.word	BtnCount
- 149 0090 003C0140 		.word	1073822720
- 150 0094 00000000 		.word	GlobalTickCount
- 151 0098 00000000 		.word	BtnStartTick
- 152 009c 00000000 		.word	freq_mode
- 153 00a0 00000000 		.word	mode
- 154              		.cfi_endproc
- 155              	.LFE130:
- 157              		.section	.text.SysTick_Handler,"ax",%progbits
- 158              		.align	1
- 159              		.global	SysTick_Handler
- 160              		.syntax unified
- 161              		.thumb
- 162              		.thumb_func
- 164              	SysTick_Handler:
- 165              	.LFB131:
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 5
+ 139              		.loc 1 36 31 is_stmt 0 discriminator 1 view .LVU40
+ 140 007c 0132     		adds	r2, r2, #1
+ 141 007e 0549     		ldr	r1, .L11+16
+ 142 0080 0A70     		strb	r2, [r1]
+ 143 0082 C9E7     		b	.L3
+ 144              	.L12:
+ 145              		.align	2
+ 146              	.L11:
+ 147 0084 00000000 		.word	ExternInterruptTickCount
+ 148 0088 00000000 		.word	BtnCount
+ 149 008c 003C0140 		.word	1073822720
+ 150 0090 00000000 		.word	freq_mode
+ 151 0094 00000000 		.word	mode
+ 152              		.cfi_endproc
+ 153              	.LFE130:
+ 155              		.section	.text.SysTick_Handler,"ax",%progbits
+ 156              		.align	1
+ 157              		.global	SysTick_Handler
+ 158              		.syntax unified
+ 159              		.thumb
+ 160              		.thumb_func
+ 162              	SysTick_Handler:
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 5
 
 
+ 163              	.LFB131:
   48:Core/Src/it_handlers.c **** 
   49:Core/Src/it_handlers.c **** void SysTick_Handler(void)
   50:Core/Src/it_handlers.c **** {
- 166              		.loc 1 50 1 is_stmt 1 view -0
- 167              		.cfi_startproc
- 168              		@ args = 0, pretend = 0, frame = 0
- 169              		@ frame_needed = 0, uses_anonymous_args = 0
- 170              		@ link register save eliminated.
+ 164              		.loc 1 50 1 is_stmt 1 view -0
+ 165              		.cfi_startproc
+ 166              		@ args = 0, pretend = 0, frame = 0
+ 167              		@ frame_needed = 0, uses_anonymous_args = 0
+ 168              		@ link register save eliminated.
   51:Core/Src/it_handlers.c ****     ExternInterruptTickCount++;
- 171              		.loc 1 51 5 view .LVU39
- 172              		.loc 1 51 29 is_stmt 0 view .LVU40
- 173 0000 044A     		ldr	r2, .L15
- 174 0002 1368     		ldr	r3, [r2]
- 175 0004 0133     		adds	r3, r3, #1
- 176 0006 1360     		str	r3, [r2]
+ 169              		.loc 1 51 5 view .LVU42
+ 170              		.loc 1 51 29 is_stmt 0 view .LVU43
+ 171 0000 044A     		ldr	r2, .L14
+ 172 0002 1368     		ldr	r3, [r2]
+ 173 0004 0133     		adds	r3, r3, #1
+ 174 0006 1360     		str	r3, [r2]
   52:Core/Src/it_handlers.c ****     GlobalTickCount++;
- 177              		.loc 1 52 5 is_stmt 1 view .LVU41
- 178              		.loc 1 52 20 is_stmt 0 view .LVU42
- 179 0008 034A     		ldr	r2, .L15+4
- 180 000a 1368     		ldr	r3, [r2]
- 181 000c 0133     		adds	r3, r3, #1
- 182 000e 1360     		str	r3, [r2]
+ 175              		.loc 1 52 5 is_stmt 1 view .LVU44
+ 176              		.loc 1 52 20 is_stmt 0 view .LVU45
+ 177 0008 034A     		ldr	r2, .L14+4
+ 178 000a 1368     		ldr	r3, [r2]
+ 179 000c 0133     		adds	r3, r3, #1
+ 180 000e 1360     		str	r3, [r2]
   53:Core/Src/it_handlers.c **** 
   54:Core/Src/it_handlers.c **** }
- 183              		.loc 1 54 1 view .LVU43
- 184 0010 7047     		bx	lr
- 185              	.L16:
- 186 0012 00BF     		.align	2
- 187              	.L15:
- 188 0014 00000000 		.word	ExternInterruptTickCount
- 189 0018 00000000 		.word	GlobalTickCount
- 190              		.cfi_endproc
- 191              	.LFE131:
- 193              		.section	.text.milis,"ax",%progbits
- 194              		.align	1
- 195              		.global	milis
- 196              		.syntax unified
- 197              		.thumb
- 198              		.thumb_func
- 200              	milis:
- 201              	.LVL0:
- 202              	.LFB132:
+ 181              		.loc 1 54 1 view .LVU46
+ 182 0010 7047     		bx	lr
+ 183              	.L15:
+ 184 0012 00BF     		.align	2
+ 185              	.L14:
+ 186 0014 00000000 		.word	ExternInterruptTickCount
+ 187 0018 00000000 		.word	GlobalTickCount
+ 188              		.cfi_endproc
+ 189              	.LFE131:
+ 191              		.section	.text.milis,"ax",%progbits
+ 192              		.align	1
+ 193              		.global	milis
+ 194              		.syntax unified
+ 195              		.thumb
+ 196              		.thumb_func
+ 198              	milis:
+ 199              	.LVL0:
+ 200              	.LFB132:
   55:Core/Src/it_handlers.c **** 
   56:Core/Src/it_handlers.c **** void milis(uint32_t delay)
   57:Core/Src/it_handlers.c **** {
- 203              		.loc 1 57 1 is_stmt 1 view -0
- 204              		.cfi_startproc
- 205              		@ args = 0, pretend = 0, frame = 0
- 206              		@ frame_needed = 0, uses_anonymous_args = 0
- 207              		@ link register save eliminated.
+ 201              		.loc 1 57 1 is_stmt 1 view -0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              		@ link register save eliminated.
   58:Core/Src/it_handlers.c ****   uint32_t start = GlobalTickCount;                 // запоминаем текущее врем
- 208              		.loc 1 58 3 view .LVU45
- 209              		.loc 1 58 12 is_stmt 0 view .LVU46
- 210 0000 034B     		ldr	r3, .L19
- 211 0002 1A68     		ldr	r2, [r3]
- 212              	.LVL1:
+ 206              		.loc 1 58 3 view .LVU48
+ 207              		.loc 1 58 12 is_stmt 0 view .LVU49
+ 208 0000 034B     		ldr	r3, .L18
+ 209 0002 1A68     		ldr	r2, [r3]
+ 210              	.LVL1:
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 6
+
+
   59:Core/Src/it_handlers.c **** while ((uint32_t)(GlobalTickCount - start) < delay) {}
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 6
-
-
- 213              		.loc 1 59 1 is_stmt 1 view .LVU47
- 214              	.L18:
- 215              		.loc 1 59 54 discriminator 1 view .LVU48
- 216              		.loc 1 59 44 discriminator 1 view .LVU49
- 217              		.loc 1 59 35 is_stmt 0 discriminator 1 view .LVU50
- 218 0004 024B     		ldr	r3, .L19
- 219 0006 1B68     		ldr	r3, [r3]
- 220 0008 9B1A     		subs	r3, r3, r2
- 221              		.loc 1 59 44 discriminator 1 view .LVU51
- 222 000a 8342     		cmp	r3, r0
- 223 000c FAD3     		bcc	.L18
+ 211              		.loc 1 59 1 is_stmt 1 view .LVU50
+ 212              	.L17:
+ 213              		.loc 1 59 54 discriminator 1 view .LVU51
+ 214              		.loc 1 59 44 discriminator 1 view .LVU52
+ 215              		.loc 1 59 35 is_stmt 0 discriminator 1 view .LVU53
+ 216 0004 024B     		ldr	r3, .L18
+ 217 0006 1B68     		ldr	r3, [r3]
+ 218 0008 9B1A     		subs	r3, r3, r2
+ 219              		.loc 1 59 44 discriminator 1 view .LVU54
+ 220 000a 8342     		cmp	r3, r0
+ 221 000c FAD3     		bcc	.L17
   60:Core/Src/it_handlers.c **** }
- 224              		.loc 1 60 1 view .LVU52
- 225 000e 7047     		bx	lr
- 226              	.L20:
- 227              		.align	2
- 228              	.L19:
- 229 0010 00000000 		.word	GlobalTickCount
- 230              		.cfi_endproc
- 231              	.LFE132:
- 233              		.global	ExternInterruptTickCount
- 234              		.section	.bss.ExternInterruptTickCount,"aw",%nobits
- 235              		.align	2
- 238              	ExternInterruptTickCount:
- 239 0000 00000000 		.space	4
- 240              		.global	BtnCount
- 241              		.section	.bss.BtnCount,"aw",%nobits
- 244              	BtnCount:
- 245 0000 00       		.space	1
- 246              		.text
- 247              	.Letext0:
- 248              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
- 249              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
- 250              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s 			page 7
+ 222              		.loc 1 60 1 view .LVU55
+ 223 000e 7047     		bx	lr
+ 224              	.L19:
+ 225              		.align	2
+ 226              	.L18:
+ 227 0010 00000000 		.word	GlobalTickCount
+ 228              		.cfi_endproc
+ 229              	.LFE132:
+ 231              		.global	ExternInterruptTickCount
+ 232              		.section	.bss.ExternInterruptTickCount,"aw",%nobits
+ 233              		.align	2
+ 236              	ExternInterruptTickCount:
+ 237 0000 00000000 		.space	4
+ 238              		.global	BtnCount
+ 239              		.section	.bss.BtnCount,"aw",%nobits
+ 242              	BtnCount:
+ 243 0000 00       		.space	1
+ 244              		.text
+ 245              	.Letext0:
+ 246              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
+ 247              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
+ 248              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 it_handlers.c
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:21     .text.EXTI15_10_IRQHandler:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:27     .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:147    .text.EXTI15_10_IRQHandler:00000088 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:238    .bss.ExternInterruptTickCount:00000000 ExternInterruptTickCount
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:244    .bss.BtnCount:00000000 BtnCount
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:158    .text.SysTick_Handler:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:164    .text.SysTick_Handler:00000000 SysTick_Handler
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:188    .text.SysTick_Handler:00000014 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:194    .text.milis:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:200    .text.milis:00000000 milis
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:229    .text.milis:00000010 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:235    .bss.ExternInterruptTickCount:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\ccUFnqLv.s:245    .bss.BtnCount:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:21     .text.EXTI15_10_IRQHandler:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:27     .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:147    .text.EXTI15_10_IRQHandler:00000084 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:236    .bss.ExternInterruptTickCount:00000000 ExternInterruptTickCount
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:242    .bss.BtnCount:00000000 BtnCount
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:156    .text.SysTick_Handler:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:162    .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:186    .text.SysTick_Handler:00000014 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:192    .text.milis:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:198    .text.milis:00000000 milis
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:227    .text.milis:00000010 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:233    .bss.ExternInterruptTickCount:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccDJDHjF.s:243    .bss.BtnCount:00000000 $d
 
 UNDEFINED SYMBOLS
-GlobalTickCount
-BtnStartTick
 freq_mode
 mode
+GlobalTickCount

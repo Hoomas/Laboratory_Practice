@@ -259,8 +259,9 @@ uint8_t i;
 void blink(uint32_t bitmask, uint8_t freq) //Freq in ms
 {
     SET_BIT(GPIOB->BSRR, bitmask);
-    milis(freq);
+    milis(freq/2);
     SET_BIT(GPIOB->BSRR, bitmask<<16U);
+    milis(freq/2);
 }
 
 void blink2(uint32_t bitmask1, uint32_t bitmask2, uint8_t freq) //Freq in ms
@@ -276,7 +277,7 @@ void blink2(uint32_t bitmask1, uint32_t bitmask2, uint8_t freq) //Freq in ms
 int main(void)
 {
     uint32_t led_bitmasks[6] = {GPIO_BSRR_BS0, GPIO_BSRR_BS7, GPIO_BSRR_BS14, GPIO_BSRR_BS8, GPIO_BSRR_BS10, GPIO_BSRR_BS11};
-    uint16_t freq1[3] = {2500, 526, 385};
+    uint16_t freq1[3] = {2500, 625, 385};
     uint16_t freq2[3] = {3300, 625, 435};
     GPIO_Init();
     CLK_CLEAR();
@@ -297,7 +298,7 @@ int main(void)
 
             case 2:
                 
-            for(i = 0; i<6; i++)
+            for(i = 0; i<3; i++)
             {
                 blink2(led_bitmasks[i], led_bitmasks[i+3],freq2[freq_mode]);
             }
