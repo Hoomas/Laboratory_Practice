@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
   27:Core/Src/main.c ****         
   28:Core/Src/main.c ****         if (upndown(GPIO_IDR_ID6))
   29:Core/Src/main.c ****         {
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 2
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 2
 
 
   30:Core/Src/main.c ****             btn2 = 1;
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
   84:Core/Src/main.c ****                         btn2_state = 0;
   85:Core/Src/main.c ****                         delay_cycles(500000);
   86:Core/Src/main.c ****                         break;
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 3
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 3
 
 
   87:Core/Src/main.c ****                 }
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
  141:Core/Src/main.c **** 
  142:Core/Src/main.c **** 
  143:Core/Src/main.c ****        if(READ_BIT(GPIOC_IDR,GPIO_IDR_ID12 ))
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 4
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 4
 
 
  144:Core/Src/main.c ****        {
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
  198:Core/Src/main.c ****             case 2:
  199:Core/Src/main.c ****             blink(GPIO_BSRR_BS0, PB11_spd);
  200:Core/Src/main.c ****             blink(GPIO_BSRR_BS7, PB12_spd);
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 5
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 5
 
 
  201:Core/Src/main.c ****             break;
@@ -293,20 +293,22 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
  250:Core/Src/main.c ****        */
  251:Core/Src/main.c **** 
  252:Core/Src/main.c **** 
- 253:Core/Src/main.c **** uint16_t GlobalTickCount;
- 254:Core/Src/main.c **** uint8_t mode;
+ 253:Core/Src/main.c **** volatile uint32_t GlobalTickCount;
+ 254:Core/Src/main.c **** uint8_t mode = 1;
  255:Core/Src/main.c **** uint8_t freq_mode;
- 256:Core/Src/main.c **** uint16_t BtnStartTick;
- 257:Core/Src/main.c **** void blink(uint32_t bitmask, uint8_t freq) //Freq in ms
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 6
+ 256:Core/Src/main.c **** uint8_t LedState = 0;
+ 257:Core/Src/main.c **** volatile uint32_t BtnStartTick;
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 6
 
 
- 258:Core/Src/main.c **** {
-  30              		.loc 1 258 1 view -0
+ 258:Core/Src/main.c **** uint8_t i;
+ 259:Core/Src/main.c **** void blink(uint32_t bitmask, uint8_t freq) //Freq in ms
+ 260:Core/Src/main.c **** {
+  30              		.loc 1 260 1 view -0
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		.loc 1 258 1 is_stmt 0 view .LVU1
+  34              		.loc 1 260 1 is_stmt 0 view .LVU1
   35 0000 38B5     		push	{r3, r4, r5, lr}
   36              	.LCFI0:
   37              		.cfi_def_cfa_offset 16
@@ -315,30 +317,30 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
   40              		.cfi_offset 5, -8
   41              		.cfi_offset 14, -4
   42 0002 0546     		mov	r5, r0
- 259:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask);
-  43              		.loc 1 259 5 is_stmt 1 view .LVU2
+ 261:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask);
+  43              		.loc 1 261 5 is_stmt 1 view .LVU2
   44 0004 054C     		ldr	r4, .L3
   45 0006 A369     		ldr	r3, [r4, #24]
   46 0008 0343     		orrs	r3, r3, r0
   47 000a A361     		str	r3, [r4, #24]
- 260:Core/Src/main.c ****     milis(freq);
-  48              		.loc 1 260 5 view .LVU3
+ 262:Core/Src/main.c ****     milis(freq);
+  48              		.loc 1 262 5 view .LVU3
   49 000c 0846     		mov	r0, r1
   50              	.LVL1:
-  51              		.loc 1 260 5 is_stmt 0 view .LVU4
+  51              		.loc 1 262 5 is_stmt 0 view .LVU4
   52 000e FFF7FEFF 		bl	milis
   53              	.LVL2:
- 261:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask<<16U);
-  54              		.loc 1 261 5 is_stmt 1 view .LVU5
+ 263:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask<<16U);
+  54              		.loc 1 263 5 is_stmt 1 view .LVU5
   55 0012 A369     		ldr	r3, [r4, #24]
   56 0014 43EA0543 		orr	r3, r3, r5, lsl #16
   57 0018 A361     		str	r3, [r4, #24]
- 262:Core/Src/main.c **** }
-  58              		.loc 1 262 1 is_stmt 0 view .LVU6
+ 264:Core/Src/main.c **** }
+  58              		.loc 1 264 1 is_stmt 0 view .LVU6
   59 001a 38BD     		pop	{r3, r4, r5, pc}
   60              	.LVL3:
   61              	.L4:
-  62              		.loc 1 262 1 view .LVU7
+  62              		.loc 1 264 1 view .LVU7
   63              		.align	2
   64              	.L3:
   65 001c 00040240 		.word	1073873920
@@ -353,319 +355,344 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 1
   76              	blink2:
   77              	.LVL4:
   78              	.LFB131:
- 263:Core/Src/main.c **** 
- 264:Core/Src/main.c **** void blink2(uint32_t bitmask1, uint32_t bitmask2, uint8_t freq) //Freq in ms
- 265:Core/Src/main.c **** {
-  79              		.loc 1 265 1 is_stmt 1 view -0
+ 265:Core/Src/main.c **** 
+ 266:Core/Src/main.c **** void blink2(uint32_t bitmask1, uint32_t bitmask2, uint8_t freq) //Freq in ms
+ 267:Core/Src/main.c **** {
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 7
+
+
+  79              		.loc 1 267 1 is_stmt 1 view -0
   80              		.cfi_startproc
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 7
-
-
   81              		@ args = 0, pretend = 0, frame = 0
   82              		@ frame_needed = 0, uses_anonymous_args = 0
-  83              		.loc 1 265 1 is_stmt 0 view .LVU9
-  84 0000 70B5     		push	{r4, r5, r6, lr}
+  83              		.loc 1 267 1 is_stmt 0 view .LVU9
+  84 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
   85              	.LCFI1:
-  86              		.cfi_def_cfa_offset 16
-  87              		.cfi_offset 4, -16
-  88              		.cfi_offset 5, -12
-  89              		.cfi_offset 6, -8
-  90              		.cfi_offset 14, -4
-  91 0002 0646     		mov	r6, r0
-  92 0004 0D46     		mov	r5, r1
- 266:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask1);
-  93              		.loc 1 266 5 is_stmt 1 view .LVU10
-  94 0006 094C     		ldr	r4, .L7
-  95 0008 A369     		ldr	r3, [r4, #24]
-  96 000a 0343     		orrs	r3, r3, r0
-  97 000c A361     		str	r3, [r4, #24]
- 267:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask2);
-  98              		.loc 1 267 5 view .LVU11
-  99 000e A369     		ldr	r3, [r4, #24]
- 100 0010 0B43     		orrs	r3, r3, r1
- 101 0012 A361     		str	r3, [r4, #24]
- 268:Core/Src/main.c ****     milis(freq);
- 102              		.loc 1 268 5 view .LVU12
- 103 0014 1046     		mov	r0, r2
- 104              	.LVL5:
- 105              		.loc 1 268 5 is_stmt 0 view .LVU13
- 106 0016 FFF7FEFF 		bl	milis
- 107              	.LVL6:
- 269:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask1<<16U);
- 108              		.loc 1 269 5 is_stmt 1 view .LVU14
- 109 001a A369     		ldr	r3, [r4, #24]
- 110 001c 43EA0643 		orr	r3, r3, r6, lsl #16
- 111 0020 A361     		str	r3, [r4, #24]
- 270:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask2<<16U);
- 112              		.loc 1 270 5 view .LVU15
- 113 0022 A369     		ldr	r3, [r4, #24]
- 114 0024 43EA0543 		orr	r3, r3, r5, lsl #16
- 115 0028 A361     		str	r3, [r4, #24]
- 271:Core/Src/main.c **** }
- 116              		.loc 1 271 1 is_stmt 0 view .LVU16
- 117 002a 70BD     		pop	{r4, r5, r6, pc}
- 118              	.LVL7:
- 119              	.L8:
- 120              		.loc 1 271 1 view .LVU17
- 121              		.align	2
- 122              	.L7:
- 123 002c 00040240 		.word	1073873920
- 124              		.cfi_endproc
- 125              	.LFE131:
- 127              		.section	.text.main,"ax",%progbits
- 128              		.align	1
- 129              		.global	main
- 130              		.syntax unified
- 131              		.thumb
- 132              		.thumb_func
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 8
+  86              		.cfi_def_cfa_offset 24
+  87              		.cfi_offset 3, -24
+  88              		.cfi_offset 4, -20
+  89              		.cfi_offset 5, -16
+  90              		.cfi_offset 6, -12
+  91              		.cfi_offset 7, -8
+  92              		.cfi_offset 14, -4
+  93 0002 0746     		mov	r7, r0
+  94 0004 0E46     		mov	r6, r1
+ 268:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask1);
+  95              		.loc 1 268 5 is_stmt 1 view .LVU10
+  96 0006 0B4C     		ldr	r4, .L7
+  97 0008 A369     		ldr	r3, [r4, #24]
+  98 000a 0343     		orrs	r3, r3, r0
+  99 000c A361     		str	r3, [r4, #24]
+ 269:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask2);
+ 100              		.loc 1 269 5 view .LVU11
+ 101 000e A369     		ldr	r3, [r4, #24]
+ 102 0010 0B43     		orrs	r3, r3, r1
+ 103 0012 A361     		str	r3, [r4, #24]
+ 270:Core/Src/main.c ****     milis(freq/2);
+ 104              		.loc 1 270 5 view .LVU12
+ 105 0014 5508     		lsrs	r5, r2, #1
+ 106 0016 2846     		mov	r0, r5
+ 107              	.LVL5:
+ 108              		.loc 1 270 5 is_stmt 0 view .LVU13
+ 109 0018 FFF7FEFF 		bl	milis
+ 110              	.LVL6:
+ 271:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask1<<16U);
+ 111              		.loc 1 271 5 is_stmt 1 view .LVU14
+ 112 001c A369     		ldr	r3, [r4, #24]
+ 113 001e 43EA0743 		orr	r3, r3, r7, lsl #16
+ 114 0022 A361     		str	r3, [r4, #24]
+ 272:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, bitmask2<<16U);
+ 115              		.loc 1 272 5 view .LVU15
+ 116 0024 A369     		ldr	r3, [r4, #24]
+ 117 0026 43EA0643 		orr	r3, r3, r6, lsl #16
+ 118 002a A361     		str	r3, [r4, #24]
+ 273:Core/Src/main.c ****     milis(freq/2);
+ 119              		.loc 1 273 5 view .LVU16
+ 120 002c 2846     		mov	r0, r5
+ 121 002e FFF7FEFF 		bl	milis
+ 122              	.LVL7:
+ 274:Core/Src/main.c **** }
+ 123              		.loc 1 274 1 is_stmt 0 view .LVU17
+ 124 0032 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 125              	.LVL8:
+ 126              	.L8:
+ 127              		.loc 1 274 1 view .LVU18
+ 128              		.align	2
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 8
 
 
- 134              	main:
- 135              	.LFB132:
- 272:Core/Src/main.c **** 
- 273:Core/Src/main.c **** int main(void)
- 274:Core/Src/main.c **** {
- 136              		.loc 1 274 1 is_stmt 1 view -0
- 137              		.cfi_startproc
- 138              		@ args = 0, pretend = 0, frame = 40
- 139              		@ frame_needed = 0, uses_anonymous_args = 0
- 140 0000 10B5     		push	{r4, lr}
- 141              	.LCFI2:
- 142              		.cfi_def_cfa_offset 8
- 143              		.cfi_offset 4, -8
- 144              		.cfi_offset 14, -4
- 145 0002 8AB0     		sub	sp, sp, #40
- 146              	.LCFI3:
- 147              		.cfi_def_cfa_offset 48
- 275:Core/Src/main.c ****     uint32_t led_bitmasks[6] = {GPIO_BSRR_BS0, GPIO_BSRR_BS7, GPIO_BSRR_BS14, GPIO_BSRR_BS8, GPIO_B
- 148              		.loc 1 275 5 view .LVU19
- 149              		.loc 1 275 14 is_stmt 0 view .LVU20
- 150 0004 DFF8B0E0 		ldr	lr, .L20+8
- 151 0008 04AC     		add	r4, sp, #16
- 152 000a F446     		mov	ip, lr
- 153 000c BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
- 154 0010 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 155 0012 9CE80300 		ldm	ip, {r0, r1}
- 156 0016 84E80300 		stm	r4, {r0, r1}
- 276:Core/Src/main.c ****     uint16_t freq1[3] = {400, 1900, 2600};
- 157              		.loc 1 276 5 is_stmt 1 view .LVU21
- 158              		.loc 1 276 14 is_stmt 0 view .LVU22
- 159 001a 0EF11803 		add	r3, lr, #24
- 160 001e 93E80300 		ldm	r3, {r0, r1}
- 161 0022 0290     		str	r0, [sp, #8]
- 162 0024 ADF80C10 		strh	r1, [sp, #12]	@ movhi
- 277:Core/Src/main.c ****     uint16_t freq2[3] = {300, 1600, 2300};
- 163              		.loc 1 277 5 is_stmt 1 view .LVU23
- 164              		.loc 1 277 14 is_stmt 0 view .LVU24
- 165 0028 0EF1200E 		add	lr, lr, #32
- 166 002c 9EE80300 		ldm	lr, {r0, r1}
- 167 0030 0090     		str	r0, [sp]
- 168 0032 ADF80410 		strh	r1, [sp, #4]	@ movhi
- 278:Core/Src/main.c ****     GPIO_Init();
- 169              		.loc 1 278 5 is_stmt 1 view .LVU25
- 170 0036 FFF7FEFF 		bl	GPIO_Init
- 171              	.LVL8:
- 279:Core/Src/main.c ****     CLK_CLEAR();
- 172              		.loc 1 279 5 view .LVU26
- 173 003a FFF7FEFF 		bl	CLK_CLEAR
- 174              	.LVL9:
- 280:Core/Src/main.c ****     RCC_Init();
- 175              		.loc 1 280 5 view .LVU27
- 176 003e FFF7FEFF 		bl	RCC_Init
- 177              	.LVL10:
- 281:Core/Src/main.c ****     ITR_init();
- 178              		.loc 1 281 5 view .LVU28
- 179 0042 FFF7FEFF 		bl	ITR_init
- 180              	.LVL11:
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 9
+ 129              	.L7:
+ 130 0034 00040240 		.word	1073873920
+ 131              		.cfi_endproc
+ 132              	.LFE131:
+ 134              		.section	.text.main,"ax",%progbits
+ 135              		.align	1
+ 136              		.global	main
+ 137              		.syntax unified
+ 138              		.thumb
+ 139              		.thumb_func
+ 141              	main:
+ 142              	.LFB132:
+ 275:Core/Src/main.c **** 
+ 276:Core/Src/main.c **** int main(void)
+ 277:Core/Src/main.c **** {
+ 143              		.loc 1 277 1 is_stmt 1 view -0
+ 144              		.cfi_startproc
+ 145              		@ Volatile: function does not return.
+ 146              		@ args = 0, pretend = 0, frame = 40
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148 0000 00B5     		push	{lr}
+ 149              	.LCFI2:
+ 150              		.cfi_def_cfa_offset 4
+ 151              		.cfi_offset 14, -4
+ 152 0002 8BB0     		sub	sp, sp, #44
+ 153              	.LCFI3:
+ 154              		.cfi_def_cfa_offset 48
+ 278:Core/Src/main.c ****     uint32_t led_bitmasks[6] = {GPIO_BSRR_BS0, GPIO_BSRR_BS7, GPIO_BSRR_BS14, GPIO_BSRR_BS8, GPIO_B
+ 155              		.loc 1 278 5 view .LVU20
+ 156              		.loc 1 278 14 is_stmt 0 view .LVU21
+ 157 0004 304C     		ldr	r4, .L21
+ 158 0006 0DF1100C 		add	ip, sp, #16
+ 159 000a A646     		mov	lr, r4
+ 160 000c BEE80F00 		ldmia	lr!, {r0, r1, r2, r3}
+ 161 0010 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 162 0014 9EE80300 		ldm	lr, {r0, r1}
+ 163 0018 8CE80300 		stm	ip, {r0, r1}
+ 279:Core/Src/main.c ****     uint16_t freq1[3] = {2500, 526, 385};
+ 164              		.loc 1 279 5 is_stmt 1 view .LVU22
+ 165              		.loc 1 279 14 is_stmt 0 view .LVU23
+ 166 001c 04F11803 		add	r3, r4, #24
+ 167 0020 93E80300 		ldm	r3, {r0, r1}
+ 168 0024 0290     		str	r0, [sp, #8]
+ 169 0026 ADF80C10 		strh	r1, [sp, #12]	@ movhi
+ 280:Core/Src/main.c ****     uint16_t freq2[3] = {3300, 625, 435};
+ 170              		.loc 1 280 5 is_stmt 1 view .LVU24
+ 171              		.loc 1 280 14 is_stmt 0 view .LVU25
+ 172 002a 2034     		adds	r4, r4, #32
+ 173 002c 94E80300 		ldm	r4, {r0, r1}
+ 174 0030 0090     		str	r0, [sp]
+ 175 0032 ADF80410 		strh	r1, [sp, #4]	@ movhi
+ 281:Core/Src/main.c ****     GPIO_Init();
+ 176              		.loc 1 281 5 is_stmt 1 view .LVU26
+ 177 0036 FFF7FEFF 		bl	GPIO_Init
+ 178              	.LVL9:
+ 282:Core/Src/main.c ****     CLK_CLEAR();
+ 179              		.loc 1 282 5 view .LVU27
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 9
 
 
- 282:Core/Src/main.c ****     SysTick_Init();
- 181              		.loc 1 282 5 view .LVU29
- 182 0046 FFF7FEFF 		bl	SysTick_Init
- 183              	.LVL12:
- 184 004a 10E0     		b	.L13
- 185              	.LVL13:
- 186              	.L14:
- 187              	.LBB2:
- 283:Core/Src/main.c **** 
- 284:Core/Src/main.c ****     while(1)
- 285:Core/Src/main.c ****     {
- 286:Core/Src/main.c ****         switch( mode)
- 287:Core/Src/main.c ****         {
- 288:Core/Src/main.c ****             case 1:
- 289:Core/Src/main.c ****                 for(uint8_t i = 0; i<6; i++)
- 290:Core/Src/main.c ****                 {
- 291:Core/Src/main.c ****                     blink(led_bitmasks[i],freq1[freq_mode]);
- 188              		.loc 1 291 21 view .LVU30
- 189              		.loc 1 291 48 is_stmt 0 view .LVU31
- 190 004c 184B     		ldr	r3, .L20
- 191 004e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 192 0050 0AAA     		add	r2, sp, #40
- 193 0052 02EB4303 		add	r3, r2, r3, lsl #1
- 194              		.loc 1 291 21 view .LVU32
- 195 0056 02EB8402 		add	r2, r2, r4, lsl #2
- 196 005a 13F8201C 		ldrb	r1, [r3, #-32]	@ zero_extendqisi2
- 197 005e 52F8180C 		ldr	r0, [r2, #-24]
- 198 0062 FFF7FEFF 		bl	blink
- 199              	.LVL14:
- 289:Core/Src/main.c ****                 {
- 200              		.loc 1 289 42 is_stmt 1 discriminator 3 view .LVU33
- 201 0066 0134     		adds	r4, r4, #1
- 202              	.LVL15:
- 289:Core/Src/main.c ****                 {
- 203              		.loc 1 289 42 is_stmt 0 discriminator 3 view .LVU34
- 204 0068 E4B2     		uxtb	r4, r4
- 205              	.LVL16:
- 206              	.L11:
- 289:Core/Src/main.c ****                 {
- 207              		.loc 1 289 37 is_stmt 1 discriminator 1 view .LVU35
- 208 006a 052C     		cmp	r4, #5
- 209 006c EED9     		bls	.L14
- 210              	.LVL17:
- 211              	.L13:
- 289:Core/Src/main.c ****                 {
- 212              		.loc 1 289 37 is_stmt 0 discriminator 1 view .LVU36
- 213              	.LBE2:
- 284:Core/Src/main.c ****     {
- 214              		.loc 1 284 5 is_stmt 1 view .LVU37
- 286:Core/Src/main.c ****         {
- 215              		.loc 1 286 9 view .LVU38
- 216 006e 114B     		ldr	r3, .L20+4
- 217 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 218 0072 012B     		cmp	r3, #1
- 219 0074 03D0     		beq	.L17
- 220 0076 022B     		cmp	r3, #2
- 221 0078 F9D1     		bne	.L13
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 10
+ 180 003a FFF7FEFF 		bl	CLK_CLEAR
+ 181              	.LVL10:
+ 283:Core/Src/main.c ****     RCC_Init();
+ 182              		.loc 1 283 5 view .LVU28
+ 183 003e FFF7FEFF 		bl	RCC_Init
+ 184              	.LVL11:
+ 284:Core/Src/main.c ****     ITR_init();
+ 185              		.loc 1 284 5 view .LVU29
+ 186 0042 FFF7FEFF 		bl	ITR_init
+ 187              	.LVL12:
+ 285:Core/Src/main.c ****     SysTick_Init();
+ 188              		.loc 1 285 5 view .LVU30
+ 189 0046 FFF7FEFF 		bl	SysTick_Init
+ 190              	.LVL13:
+ 191 004a 06E0     		b	.L13
+ 192              	.L11:
+ 286:Core/Src/main.c **** 
+ 287:Core/Src/main.c ****     while(1)
+ 288:Core/Src/main.c ****     {
+ 289:Core/Src/main.c ****         switch( mode)
+ 290:Core/Src/main.c ****         {
+ 291:Core/Src/main.c ****             case 1:
+ 292:Core/Src/main.c ****                 for( i = 0; i<6; i++)
+ 193              		.loc 1 292 17 view .LVU31
+ 194              		.loc 1 292 24 is_stmt 0 view .LVU32
+ 195 004c 1F4B     		ldr	r3, .L21+4
+ 196 004e 0022     		movs	r2, #0
+ 197 0050 1A70     		strb	r2, [r3]
+ 198              	.L14:
+ 199              		.loc 1 292 30 is_stmt 1 discriminator 1 view .LVU33
+ 200 0052 1E4B     		ldr	r3, .L21+4
+ 201 0054 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 202 0056 052B     		cmp	r3, #5
+ 203 0058 09D9     		bls	.L20
+ 204              	.L13:
+ 287:Core/Src/main.c ****     {
+ 205              		.loc 1 287 5 view .LVU34
+ 289:Core/Src/main.c ****         {
+ 206              		.loc 1 289 9 view .LVU35
+ 207 005a 1D4B     		ldr	r3, .L21+8
+ 208 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 209 005e 012B     		cmp	r3, #1
+ 210 0060 F4D0     		beq	.L11
+ 211 0062 022B     		cmp	r3, #2
+ 212 0064 F9D1     		bne	.L13
+ 293:Core/Src/main.c ****                 {
+ 294:Core/Src/main.c ****                     blink(led_bitmasks[i],freq1[freq_mode]);
+ 295:Core/Src/main.c ****                 }
+ 296:Core/Src/main.c ****             break;
+ 297:Core/Src/main.c **** 
+ 298:Core/Src/main.c ****             case 2:
+ 299:Core/Src/main.c ****                 
+ 300:Core/Src/main.c ****             for(i = 0; i<6; i++)
+ 213              		.loc 1 300 13 view .LVU36
+ 214              		.loc 1 300 19 is_stmt 0 view .LVU37
+ 215 0066 194B     		ldr	r3, .L21+4
+ 216 0068 0022     		movs	r2, #0
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 10
 
 
- 222 007a 0024     		movs	r4, #0
- 223 007c 15E0     		b	.L12
- 224              	.L17:
- 225 007e 0024     		movs	r4, #0
- 226 0080 F3E7     		b	.L11
- 227              	.LVL18:
- 228              	.L16:
- 229              	.LBB3:
- 292:Core/Src/main.c ****                 }
- 293:Core/Src/main.c ****             break;
- 294:Core/Src/main.c **** 
- 295:Core/Src/main.c ****             case 2:
- 296:Core/Src/main.c ****                 
- 297:Core/Src/main.c ****             for(uint8_t i = 0; i<6; i++)
- 298:Core/Src/main.c ****             {
- 299:Core/Src/main.c ****                 blink2(led_bitmasks[i], led_bitmasks[i+3],freq2[freq_mode]);
- 230              		.loc 1 299 17 view .LVU39
- 231              		.loc 1 299 55 is_stmt 0 view .LVU40
- 232 0082 E31C     		adds	r3, r4, #3
- 233              		.loc 1 299 64 view .LVU41
- 234 0084 0A4A     		ldr	r2, .L20
- 235 0086 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 236 0088 0AA9     		add	r1, sp, #40
- 237 008a 01EB4202 		add	r2, r1, r2, lsl #1
- 238              		.loc 1 299 17 view .LVU42
- 239 008e 01EB8303 		add	r3, r1, r3, lsl #2
- 240 0092 01EB8400 		add	r0, r1, r4, lsl #2
- 241 0096 12F8282C 		ldrb	r2, [r2, #-40]	@ zero_extendqisi2
- 242 009a 53F8181C 		ldr	r1, [r3, #-24]
- 243 009e 50F8180C 		ldr	r0, [r0, #-24]
- 244 00a2 FFF7FEFF 		bl	blink2
- 245              	.LVL19:
- 297:Core/Src/main.c ****             {
- 246              		.loc 1 297 38 is_stmt 1 discriminator 3 view .LVU43
- 247 00a6 0134     		adds	r4, r4, #1
- 248              	.LVL20:
- 297:Core/Src/main.c ****             {
- 249              		.loc 1 297 38 is_stmt 0 discriminator 3 view .LVU44
- 250 00a8 E4B2     		uxtb	r4, r4
- 251              	.LVL21:
- 252              	.L12:
- 297:Core/Src/main.c ****             {
- 253              		.loc 1 297 33 is_stmt 1 discriminator 1 view .LVU45
- 254 00aa 052C     		cmp	r4, #5
- 255 00ac E9D9     		bls	.L16
- 256 00ae DEE7     		b	.L13
- 257              	.L21:
- 258              		.align	2
- 259              	.L20:
- 260 00b0 00000000 		.word	freq_mode
- 261 00b4 00000000 		.word	mode
- 262 00b8 00000000 		.word	.LANCHOR0
- 263              	.LBE3:
- 264              		.cfi_endproc
- 265              	.LFE132:
- 267              		.global	BtnStartTick
- 268              		.section	.bss.BtnStartTick,"aw",%nobits
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 11
+ 217 006a 1A70     		strb	r2, [r3]
+ 218              		.loc 1 300 13 view .LVU38
+ 219 006c 27E0     		b	.L17
+ 220              	.L20:
+ 294:Core/Src/main.c ****                 }
+ 221              		.loc 1 294 21 is_stmt 1 view .LVU39
+ 294:Core/Src/main.c ****                 }
+ 222              		.loc 1 294 48 is_stmt 0 view .LVU40
+ 223 006e 194A     		ldr	r2, .L21+12
+ 224 0070 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 225 0072 0AA9     		add	r1, sp, #40
+ 226 0074 01EB4202 		add	r2, r1, r2, lsl #1
+ 294:Core/Src/main.c ****                 }
+ 227              		.loc 1 294 21 view .LVU41
+ 228 0078 01EB8303 		add	r3, r1, r3, lsl #2
+ 229 007c 12F8201C 		ldrb	r1, [r2, #-32]	@ zero_extendqisi2
+ 230 0080 53F8180C 		ldr	r0, [r3, #-24]
+ 231 0084 FFF7FEFF 		bl	blink
+ 232              	.LVL14:
+ 292:Core/Src/main.c ****                 {
+ 233              		.loc 1 292 35 is_stmt 1 discriminator 3 view .LVU42
+ 234 0088 104A     		ldr	r2, .L21+4
+ 235 008a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 236 008c 0133     		adds	r3, r3, #1
+ 237 008e 1370     		strb	r3, [r2]
+ 238 0090 DFE7     		b	.L14
+ 239              	.L18:
+ 301:Core/Src/main.c ****             {
+ 302:Core/Src/main.c ****                 blink2(led_bitmasks[i], led_bitmasks[i+3],freq2[freq_mode]);
+ 240              		.loc 1 302 17 view .LVU43
+ 241              		.loc 1 302 55 is_stmt 0 view .LVU44
+ 242 0092 D91C     		adds	r1, r3, #3
+ 243              		.loc 1 302 64 view .LVU45
+ 244 0094 0F4A     		ldr	r2, .L21+12
+ 245 0096 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 246 0098 0AA8     		add	r0, sp, #40
+ 247 009a 00EB4202 		add	r2, r0, r2, lsl #1
+ 248              		.loc 1 302 17 view .LVU46
+ 249 009e 00EB8101 		add	r1, r0, r1, lsl #2
+ 250 00a2 00EB8303 		add	r3, r0, r3, lsl #2
+ 251 00a6 12F8282C 		ldrb	r2, [r2, #-40]	@ zero_extendqisi2
+ 252 00aa 51F8181C 		ldr	r1, [r1, #-24]
+ 253 00ae 53F8180C 		ldr	r0, [r3, #-24]
+ 254 00b2 FFF7FEFF 		bl	blink2
+ 255              	.LVL15:
+ 300:Core/Src/main.c ****             {
+ 256              		.loc 1 300 30 is_stmt 1 discriminator 3 view .LVU47
+ 257 00b6 054A     		ldr	r2, .L21+4
+ 258 00b8 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 259 00ba 0133     		adds	r3, r3, #1
+ 260 00bc 1370     		strb	r3, [r2]
+ 261              	.L17:
+ 300:Core/Src/main.c ****             {
+ 262              		.loc 1 300 25 discriminator 1 view .LVU48
+ 263 00be 034B     		ldr	r3, .L21+4
+ 264 00c0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 265 00c2 052B     		cmp	r3, #5
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 11
 
 
- 269              		.align	1
- 272              	BtnStartTick:
- 273 0000 0000     		.space	2
- 274              		.global	freq_mode
- 275              		.section	.bss.freq_mode,"aw",%nobits
- 278              	freq_mode:
- 279 0000 00       		.space	1
- 280              		.global	mode
- 281              		.section	.bss.mode,"aw",%nobits
- 284              	mode:
- 285 0000 00       		.space	1
- 286              		.global	GlobalTickCount
- 287              		.section	.bss.GlobalTickCount,"aw",%nobits
- 288              		.align	1
- 291              	GlobalTickCount:
- 292 0000 0000     		.space	2
- 293              		.section	.rodata
- 294              		.align	2
- 295              		.set	.LANCHOR0,. + 0
- 296              	.LC0:
- 297 0000 01000000 		.word	1
- 298 0004 80000000 		.word	128
- 299 0008 00400000 		.word	16384
- 300 000c 00010000 		.word	256
- 301 0010 00040000 		.word	1024
- 302 0014 00080000 		.word	2048
- 303              	.LC1:
- 304 0018 9001     		.short	400
- 305 001a 6C07     		.short	1900
- 306 001c 280A     		.short	2600
- 307 001e 0000     		.space	2
- 308              	.LC2:
- 309 0020 2C01     		.short	300
- 310 0022 4006     		.short	1600
- 311 0024 FC08     		.short	2300
- 312              		.text
- 313              	.Letext0:
- 314              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
- 315              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
- 316              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 317              		.file 5 "Core/Inc/init.h"
- 318              		.file 6 "Core/Inc/it_handlers.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s 			page 12
+ 266 00c4 E5D9     		bls	.L18
+ 267 00c6 C8E7     		b	.L13
+ 268              	.L22:
+ 269              		.align	2
+ 270              	.L21:
+ 271 00c8 00000000 		.word	.LANCHOR0
+ 272 00cc 00000000 		.word	i
+ 273 00d0 00000000 		.word	mode
+ 274 00d4 00000000 		.word	freq_mode
+ 275              		.cfi_endproc
+ 276              	.LFE132:
+ 278              		.global	i
+ 279              		.section	.bss.i,"aw",%nobits
+ 282              	i:
+ 283 0000 00       		.space	1
+ 284              		.global	BtnStartTick
+ 285              		.section	.bss.BtnStartTick,"aw",%nobits
+ 286              		.align	2
+ 289              	BtnStartTick:
+ 290 0000 00000000 		.space	4
+ 291              		.global	LedState
+ 292              		.section	.bss.LedState,"aw",%nobits
+ 295              	LedState:
+ 296 0000 00       		.space	1
+ 297              		.global	freq_mode
+ 298              		.section	.bss.freq_mode,"aw",%nobits
+ 301              	freq_mode:
+ 302 0000 00       		.space	1
+ 303              		.global	mode
+ 304              		.section	.data.mode,"aw"
+ 307              	mode:
+ 308 0000 01       		.byte	1
+ 309              		.global	GlobalTickCount
+ 310              		.section	.bss.GlobalTickCount,"aw",%nobits
+ 311              		.align	2
+ 314              	GlobalTickCount:
+ 315 0000 00000000 		.space	4
+ 316              		.section	.rodata
+ 317              		.align	2
+ 318              		.set	.LANCHOR0,. + 0
+ 319              	.LC0:
+ 320 0000 01000000 		.word	1
+ 321 0004 80000000 		.word	128
+ 322 0008 00400000 		.word	16384
+ 323 000c 00010000 		.word	256
+ 324 0010 00040000 		.word	1024
+ 325 0014 00080000 		.word	2048
+ 326              	.LC1:
+ 327 0018 C409     		.short	2500
+ 328 001a 0E02     		.short	526
+ 329 001c 8101     		.short	385
+ 330 001e 0000     		.space	2
+ 331              	.LC2:
+ 332 0020 E40C     		.short	3300
+ 333 0022 7102     		.short	625
+ 334 0024 B301     		.short	435
+ 335              		.text
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 12
+
+
+ 336              	.Letext0:
+ 337              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
+ 338              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
+ 339              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 340              		.file 5 "Core/Inc/init.h"
+ 341              		.file 6 "Core/Inc/it_handlers.h"
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:21     .text.blink:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:27     .text.blink:00000000 blink
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:65     .text.blink:0000001c $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:70     .text.blink2:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:76     .text.blink2:00000000 blink2
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:123    .text.blink2:0000002c $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:128    .text.main:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:134    .text.main:00000000 main
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:260    .text.main:000000b0 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:278    .bss.freq_mode:00000000 freq_mode
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:284    .bss.mode:00000000 mode
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:272    .bss.BtnStartTick:00000000 BtnStartTick
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:269    .bss.BtnStartTick:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:279    .bss.freq_mode:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:285    .bss.mode:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:291    .bss.GlobalTickCount:00000000 GlobalTickCount
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:288    .bss.GlobalTickCount:00000000 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc3rtS2Y.s:294    .rodata:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:21     .text.blink:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:27     .text.blink:00000000 blink
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:65     .text.blink:0000001c $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:70     .text.blink2:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:76     .text.blink2:00000000 blink2
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:130    .text.blink2:00000034 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:135    .text.main:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:141    .text.main:00000000 main
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:271    .text.main:000000c8 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:282    .bss.i:00000000 i
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:307    .data.mode:00000000 mode
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:301    .bss.freq_mode:00000000 freq_mode
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:283    .bss.i:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:289    .bss.BtnStartTick:00000000 BtnStartTick
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:286    .bss.BtnStartTick:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:295    .bss.LedState:00000000 LedState
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:296    .bss.LedState:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:302    .bss.freq_mode:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:314    .bss.GlobalTickCount:00000000 GlobalTickCount
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:311    .bss.GlobalTickCount:00000000 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\cckCRv03.s:317    .rodata:00000000 $d
 
 UNDEFINED SYMBOLS
 milis
