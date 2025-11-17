@@ -15,8 +15,8 @@ void EXTI15_10_IRQHandler(void)
 {
 
     if(ExternInterruptTickCount >= DELAY_BUTTON_FILTER)
-    { //Выполнится, когда пройдёт 100 мс с момента обнуления данной переменной 
-        BtnCount++; //Изменение состояния кнопки 
+    { 
+        BtnCount++; 
 
     }
 
@@ -55,6 +55,6 @@ void SysTick_Handler(void)
 
 void milis(uint32_t delay)
 {
-  uint32_t start = GlobalTickCount;                 // запоминаем текущее время
+  uint32_t start = GlobalTickCount;                
 while ((uint32_t)(GlobalTickCount - start) < delay) {}
 }
