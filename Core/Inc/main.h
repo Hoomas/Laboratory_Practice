@@ -8,3 +8,4 @@
 void blink(uint32_t bitmask, uint8_t freq);
 void blink2(uint32_t bitmask1, uint32_t bitmask2, uint8_t freq);
 
+uint16_t ADC_Read_Channel(uint8_t channel);

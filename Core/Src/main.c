@@ -2,7 +2,18 @@
 //PB0 - led
 //PB1 - pot
 
+void Beep(uint16_t frequency)
+{
+    if (frequency == 0) {
+        TIM3->CCR2 = 0; // Выключить звук
+        return;
+    }
 
+    uint16_t period = 1000000 / frequency;
+    
+    TIM3->ARR = period;
+    TIM3->CCR2 = period / 2; // Скважность 50%
+}
 
 uint16_t adc;
 uint32_t enc =0;
@@ -11,51 +22,44 @@ uint16_t brightnes;
 uint16_t flag = 0;
 int position;
 uint16_t brightness;
+uint16_t pot1;
+uint16_t pot2;
+uint16_t pot3;
+
 
 int main(void) {
-    GPIO_Init();
     ADC_Init();
-    TIM_Init();
-    ITR_init();
+    FAN_BUZZER_Init();
     SET_BIT(ADC1->CR2, ADC_CR2_SWSTART);
-    TIM2->CNT = 0;
-    enc = 0;
-    uint8_t led_count = 0;
-    adc = 0;
-    brightness = 0;
-    
-    while(1) {
-        
-        //if(adc<1200) adc = 0;
-        if (adc  !=0) brightness = (adc); 
-        else brightness = 0;
-       if (brightness > 1000) brightness = 1000;
-        enc = TIM2->CNT;
-        position = (int16_t)enc / 2; 
 
-        if (position < 0) {
-            position = 0;
-            TIM2->CNT = 0; 
-        }
-        if (position > 6) {
-            position = 6;
-            TIM2->CNT = 6 * 2;
-        }
-        led_count = position;
-        if (led_count >= 1) TIM9->CCR1 = brightness;
-        else    TIM9->CCR1 = 0;
-        if (led_count >= 2) TIM9->CCR2 = brightness;
-        else    TIM9->CCR2 = 0;
-        if (led_count >= 3) TIM1->CCR1 = brightness;
-        else    TIM1->CCR1 = 0;
-        if (led_count >= 4) TIM1->CCR2 = brightness;
-        else    TIM1->CCR2 = 0;
-        if (led_count >= 5) TIM1->CCR3 = brightness;
-        else    TIM1->CCR3 = 0;
-        if (led_count >= 6) TIM1->CCR4 = brightness;
-        else    TIM1->CCR4 = 0;
-        
-
+    while (1) {
+        // Читаем потенциометр 1 (PB1 - канал 9)
+   pot1 = ADC_Read_Channel(9);
     
-    } 
+    // Читаем потенциометр 2 (PA3 - канал 3)
+    pot2 = ADC_Read_Channel(3);
+    
+    // Читаем потенциометр 3 (PA4 - канал 4)
+   pot3 = ADC_Read_Channel(4);
+        
+    TIM3->CCR1 =  pot3/4; 
+   
+if(pot1 > 2500 && pot2 > 2500) {
+    Beep(1000);
+}
+else if (pot1 > 2500 && pot2 < 2500) {
+    Beep(2000);
+}
+else if (pot1 < 2500 && pot2 > 2500) {
+    Beep(3000);
+}
+else {
+    Beep(4000);
+}
+            
+    
+// Выключить
+        
+        
+    }
 }  

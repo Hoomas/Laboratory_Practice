@@ -17,6 +17,12 @@ void ADC_Init(void);
 void GPIO_Init(void);
 void ITR_init(void);
 
+void ADC_Init(void);
+void FAN_BUZZER_Init(void);
+uint16_t read_POT1(void);
+uint16_t read_POT2(void);
+uint16_t read_POT3(void);
+
 // void CLK_CLEAR(void);
 // void RCC_Init(void);
 // void ITR_init(void);
