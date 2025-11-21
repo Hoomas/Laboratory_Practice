@@ -7,8 +7,7 @@ Build/main.o: Core/Src/main.c Core/Inc/main.h Core/Inc/init.h \
  CMSIS/Include/../include/mpu_armv7.h \
  CMSIS/Devices/STM32F4xx/Inc/system_stm32f4xx.h \
  Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/stm32f4xx.h \
- CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h \
- Core/Inc/it_handlers.h
+ CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h
 Core/Inc/main.h:
 Core/Inc/init.h:
 Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h:
@@ -20,4 +19,3 @@ CMSIS/Include/../include/mpu_armv7.h:
 CMSIS/Devices/STM32F4xx/Inc/system_stm32f4xx.h:
 Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/stm32f4xx.h:
 CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h:
-Core/Inc/it_handlers.h:

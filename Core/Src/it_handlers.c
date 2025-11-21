@@ -2,7 +2,6 @@
 
 #define DELAY_BUTTON_FILTER 250
 
-
 uint8_t BtnCount;
 extern volatile uint32_t GlobalTickCount;
 extern volatile uint32_t BtnStartTick;
@@ -36,7 +35,6 @@ void EXTI15_10_IRQHandler(void)
             if(mode < 2) {mode++;}
             else {mode = 1;}
         
-
         }
          
     }
@@ -58,3 +56,5 @@ void milis(uint32_t delay)
   uint32_t start = GlobalTickCount;                
 while ((uint32_t)(GlobalTickCount - start) < delay) {}
 }
+
+

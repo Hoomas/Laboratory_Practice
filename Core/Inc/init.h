@@ -8,12 +8,17 @@
 //button pins PB10(69), PB6(136)
 
 
-void GPIO_init__Memory(void);
+// void GPIO_init__Memory(void);
 
 
+
+void TIM_Init(void);
+void ADC_Init(void);
 void GPIO_Init(void);
-void CLK_CLEAR(void);
-void RCC_Init(void);
-void ITR_init(void);
-void SysTick_Init(void);
+
+uint16_t ADC_Read(void);
+// void CLK_CLEAR(void);
+// void RCC_Init(void);
+// void ITR_init(void);
+// void SysTick_Init(void);
 
