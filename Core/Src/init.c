@@ -142,24 +142,21 @@ void ADC_Init(void)
 
 // }
 
-// void ITR_init(void)
-// { 
-//     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SYSCFGEN); //Включение тактирования периферии SYSCFG 
-//     MODIFY_REG(SYSCFG->EXTICR[3], SYSCFG_EXTICR4_EXTI13_Msk, SYSCFG_EXTICR4_EXTI13_PC); //Настройка мультиплексора на вывод линии прерывания EXTI13 на PC13 
-//     SET_BIT(EXTI->IMR, EXTI_IMR_MR13); //Настройка маскирования 13 линии 
-//     SET_BIT(EXTI->RTSR, EXTI_RTSR_TR13); //Настройка детектирования нарастающего фронта 13 линии 
-//     SET_BIT(EXTI->FTSR, EXTI_FTSR_TR13); //Настройка детектирования спадающего фронта 13 линии 
-//     NVIC_SetPriority(EXTI15_10_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0)); //Установка 0 приоритета прерывания для вектора EXTI15_10
-//     NVIC_EnableIRQ(EXTI15_10_IRQn); //Включение прерывания по вектору EXTI15_10 
-// }
+void ITR_init(void)
+{ 
+    //SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SYSCFGEN); //Включение тактирования периферии SYSCFG 
+    SET_BIT(ADC1->CR1, ADC_CR1_EOCIE);
+    NVIC_EnableIRQ(ADC_IRQn);
+    NVIC_SetPriority(ADC_IRQn, 0);
+}
 
 // void SysTick_Init(void)
 // {
-//     CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); //На всякий случай, предварительно, выключим счётчик 
-//     SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk); //Разрешаем прерывание по системному таймеру 
-//     SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk); //Источник тактирования будет идти из AHB без деления 
+//     CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); 
+//     SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk); 
+//     SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk); //Источник тактирования на AHB без деления 
 //     MODIFY_REG(SysTick->LOAD, SysTick_LOAD_RELOAD_Msk, (180000000 / 1000) - 1 << SysTick_LOAD_RELOAD_Pos); //Значение с которого начинается счёт, эквивалентное 1 кГц 
 //     MODIFY_REG(SysTick->VAL, SysTick_VAL_CURRENT_Msk, 0 << SysTick_VAL_CURRENT_Pos); //Очистка поля 
-//     SET_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); //Включим счётчик
+//     SET_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); 
 // }
 

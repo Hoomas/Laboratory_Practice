@@ -2,33 +2,36 @@
 //PB0 - led
 //PB1 - pot
 
-uint16_t ADC_Read(void) {
-    SET_BIT(ADC1->CR2, ADC_CR2_SWSTART); 
-    while(!(READ_BIT(ADC1->SR, ADC_SR_EOC)));
-    return ADC1->DR; 
-}
+
 
 uint16_t adc;
-uint32_t enc;
+uint32_t enc =0;
 uint32_t duty;
 uint16_t brightnes;
+uint16_t flag = 0;
+int position;
+uint16_t brightness;
+
 int main(void) {
     GPIO_Init();
     ADC_Init();
     TIM_Init();
+    ITR_init();
+    SET_BIT(ADC1->CR2, ADC_CR2_SWSTART);
     TIM2->CNT = 0;
-    uint32_t enc = 0;
+    enc = 0;
     uint8_t led_count = 0;
     adc = 0;
-    uint16_t brightness = 0;
+    brightness = 0;
+    
     while(1) {
-        adc = ADC_Read();
-        if(adc<1000) adc = 0;
-        if (adc  !=0) brightness = (adc-1000)/4; 
+        
+        //if(adc<1200) adc = 0;
+        if (adc  !=0) brightness = (adc); 
         else brightness = 0;
-        // if (brightness > 2000) brightness = 2000;
+       if (brightness > 1000) brightness = 1000;
         enc = TIM2->CNT;
-        int position = (int16_t)enc / 2; 
+        position = (int16_t)enc / 2; 
 
         if (position < 0) {
             position = 0;

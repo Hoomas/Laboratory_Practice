@@ -1,15 +1,18 @@
 #include "it_handlers.h"
 
-#define DELAY_BUTTON_FILTER 250
 
-uint8_t BtnCount;
-extern volatile uint32_t GlobalTickCount;
-extern volatile uint32_t BtnStartTick;
-extern uint8_t mode;
-extern uint8_t freq_mode;
 
-volatile uint32_t ExternInterruptTickCount;
+extern uint16_t adc;
+extern uint16_t flag;
 
+void ADC_IRQHandler(void)
+{
+    flag = 1;
+    SET_BIT(ADC1->CR2, ADC_CR2_SWSTART); 
+    adc =  ADC1->DR; 
+    CLEAR_BIT(ADC1->SR, ADC_SR_EOC);
+}
+/*
 void EXTI15_10_IRQHandler(void)
 {
 
@@ -56,5 +59,5 @@ void milis(uint32_t delay)
   uint32_t start = GlobalTickCount;                
 while ((uint32_t)(GlobalTickCount - start) < delay) {}
 }
-
+*/
 

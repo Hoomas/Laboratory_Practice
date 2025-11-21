@@ -15,8 +15,8 @@
 void TIM_Init(void);
 void ADC_Init(void);
 void GPIO_Init(void);
+void ITR_init(void);
 
-uint16_t ADC_Read(void);
 // void CLK_CLEAR(void);
 // void RCC_Init(void);
 // void ITR_init(void);
