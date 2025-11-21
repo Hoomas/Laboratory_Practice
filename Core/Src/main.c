@@ -8,9 +8,10 @@ uint16_t ADC_Read(void) {
     return ADC1->DR; 
 }
 
-uint16_t adc =0;
+uint16_t adc;
 uint32_t enc;
 uint32_t duty;
+uint16_t brightnes;
 int main(void) {
     GPIO_Init();
     ADC_Init();
@@ -18,12 +19,14 @@ int main(void) {
     TIM2->CNT = 0;
     uint32_t enc = 0;
     uint8_t led_count = 0;
-    uint16_t adc = 0;
+    adc = 0;
     uint16_t brightness = 0;
     while(1) {
         adc = ADC_Read();
-        brightness = adc / 4; 
-        if (brightness > 1000) brightness = 1000;
+        if(adc<1000) adc = 0;
+        if (adc  !=0) brightness = (adc-1000)/4; 
+        else brightness = 0;
+        // if (brightness > 2000) brightness = 2000;
         enc = TIM2->CNT;
         int position = (int16_t)enc / 2; 
 

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -29,9 +29,9 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
   27              	GPIO_Init:
   28              	.LFB130:
    1:Core/Src/init.c **** #include "init.h"
-   2:Core/Src/init.c ****     // Порт PA0 CLK
-   3:Core/Src/init.c ****     // PB3 DT
-   4:Core/Src/init.c **** 
+   2:Core/Src/init.c ****     //  PA0 CLK PB3 DT - enc
+   3:Core/Src/init.c ****     // PB1 - potenc
+   4:Core/Src/init.c ****     // LED PE5, PE6, PE9, PE11, PE13, PE14
    5:Core/Src/init.c **** 
    6:Core/Src/init.c ****     
    7:Core/Src/init.c **** 
@@ -42,149 +42,145 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-  10:Core/Src/init.c ****     // 1. Включаем тактирование портов A, B, E
-  11:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOEEN);
-  34              		.loc 1 11 5 view .LVU1
+  10:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOEEN);
+  34              		.loc 1 10 5 view .LVU1
   35 0000 334A     		ldr	r2, .L2
   36 0002 136B     		ldr	r3, [r2, #48]
   37 0004 43F01303 		orr	r3, r3, #19
   38 0008 1363     		str	r3, [r2, #48]
-  12:Core/Src/init.c **** 
-  13:Core/Src/init.c ****     // PA0: AF1 (TIM2_CH1), PB3: AF1 (TIM2_CH2)
-  14:Core/Src/init.c ****     
-  15:Core/Src/init.c ****     // PA0
-  16:Core/Src/init.c ****     MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODER0, GPIO_MODER_MODER0_1); // AF mode
-  39              		.loc 1 16 5 view .LVU2
+  11:Core/Src/init.c **** 
+  12:Core/Src/init.c ****     
+  13:Core/Src/init.c ****     // PA0
+  14:Core/Src/init.c ****     MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODER0, GPIO_MODER_MODER0_1); // AF mode
+  39              		.loc 1 14 5 view .LVU2
   40 000a 324B     		ldr	r3, .L2+4
   41 000c 1A68     		ldr	r2, [r3]
   42 000e 22F00302 		bic	r2, r2, #3
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 2
-
-
   43 0012 42F00202 		orr	r2, r2, #2
   44 0016 1A60     		str	r2, [r3]
-  17:Core/Src/init.c ****     MODIFY_REG(GPIOA->PUPDR, GPIO_PUPDR_PUPDR0, GPIO_PUPDR_PUPDR0_0); // Pull-Up
-  45              		.loc 1 17 5 view .LVU3
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 2
+
+
+  15:Core/Src/init.c ****     MODIFY_REG(GPIOA->PUPDR, GPIO_PUPDR_PUPDR0, GPIO_PUPDR_PUPDR0_0); // Pull-Up
+  45              		.loc 1 15 5 view .LVU3
   46 0018 DA68     		ldr	r2, [r3, #12]
   47 001a 22F00302 		bic	r2, r2, #3
   48 001e 42F00102 		orr	r2, r2, #1
   49 0022 DA60     		str	r2, [r3, #12]
-  18:Core/Src/init.c ****     MODIFY_REG(GPIOA->AFR[0], GPIO_AFRL_AFSEL0, 0x01 << GPIO_AFRL_AFSEL0_Pos); // AF1
-  50              		.loc 1 18 5 view .LVU4
+  16:Core/Src/init.c ****     MODIFY_REG(GPIOA->AFR[0], GPIO_AFRL_AFSEL0, 0x01 << GPIO_AFRL_AFSEL0_Pos); // AF
+  50              		.loc 1 16 5 view .LVU4
   51 0024 1A6A     		ldr	r2, [r3, #32]
   52 0026 22F00F02 		bic	r2, r2, #15
   53 002a 42F00102 		orr	r2, r2, #1
   54 002e 1A62     		str	r2, [r3, #32]
-  19:Core/Src/init.c **** 
-  20:Core/Src/init.c ****     // PB3 (Осторожно: это JTAG пин, мы его переназначаем)
-  21:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODER3, GPIO_MODER_MODER3_1); // AF mode
-  55              		.loc 1 21 5 view .LVU5
+  17:Core/Src/init.c **** 
+  18:Core/Src/init.c ****     // PB3 
+  19:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODER3, GPIO_MODER_MODER3_1); // AF
+  55              		.loc 1 19 5 view .LVU5
   56 0030 03F58063 		add	r3, r3, #1024
   57 0034 1A68     		ldr	r2, [r3]
   58 0036 22F0C002 		bic	r2, r2, #192
   59 003a 42F08002 		orr	r2, r2, #128
   60 003e 1A60     		str	r2, [r3]
-  22:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPDR3, GPIO_PUPDR_PUPDR3_0); // Pull-Up
-  61              		.loc 1 22 5 view .LVU6
+  20:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPDR3, GPIO_PUPDR_PUPDR3_0); // Pull-Up
+  61              		.loc 1 20 5 view .LVU6
   62 0040 DA68     		ldr	r2, [r3, #12]
   63 0042 22F0C002 		bic	r2, r2, #192
   64 0046 42F04002 		orr	r2, r2, #64
   65 004a DA60     		str	r2, [r3, #12]
-  23:Core/Src/init.c ****     MODIFY_REG(GPIOB->AFR[0], GPIO_AFRL_AFSEL3, 0x01 << GPIO_AFRL_AFSEL3_Pos); // AF1
-  66              		.loc 1 23 5 view .LVU7
+  21:Core/Src/init.c ****     MODIFY_REG(GPIOB->AFR[0], GPIO_AFRL_AFSEL3, 0x01 << GPIO_AFRL_AFSEL3_Pos); // AF
+  66              		.loc 1 21 5 view .LVU7
   67 004c 1A6A     		ldr	r2, [r3, #32]
   68 004e 22F47042 		bic	r2, r2, #61440
   69 0052 42F48052 		orr	r2, r2, #4096
   70 0056 1A62     		str	r2, [r3, #32]
-  24:Core/Src/init.c **** 
-  25:Core/Src/init.c ****     // PB1: Analog mode (ADC1_IN9)
-  26:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODER1, GPIO_MODER_MODER1); // 11 = Analog mode
-  71              		.loc 1 26 5 view .LVU8
+  22:Core/Src/init.c **** 
+  23:Core/Src/init.c ****     // PB1
+  24:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODER1, GPIO_MODER_MODER1);
+  71              		.loc 1 24 5 view .LVU8
   72 0058 1A68     		ldr	r2, [r3]
   73 005a 42F00C02 		orr	r2, r2, #12
   74 005e 1A60     		str	r2, [r3]
-  27:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPDR1, 0);                 // No pull-up/down
-  75              		.loc 1 27 5 view .LVU9
+  25:Core/Src/init.c ****     MODIFY_REG(GPIOB->PUPDR, GPIO_PUPDR_PUPDR1, 0);
+  75              		.loc 1 25 5 view .LVU9
   76 0060 DA68     		ldr	r2, [r3, #12]
   77 0062 22F00C02 		bic	r2, r2, #12
   78 0066 DA60     		str	r2, [r3, #12]
-  28:Core/Src/init.c **** 
-  29:Core/Src/init.c **** 
-  30:Core/Src/init.c ****     // Очистка режимов для всех нужных пинов порта E
-  31:Core/Src/init.c ****     uint32_t pwm_pins = GPIO_MODER_MODER5 | GPIO_MODER_MODER6 | GPIO_MODER_MODER9 |  GPIO_MODER_MOD
-  79              		.loc 1 31 5 view .LVU10
+  26:Core/Src/init.c **** 
+  27:Core/Src/init.c **** 
+  28:Core/Src/init.c ****     uint32_t pwm_pins = GPIO_MODER_MODER5 | GPIO_MODER_MODER6 | GPIO_MODER_MODER9 |  GPIO_MODER_MOD
+  79              		.loc 1 28 5 view .LVU10
   80              	.LVL0:
-  32:Core/Src/init.c ****     CLEAR_BIT(GPIOE->MODER, pwm_pins);
-  81              		.loc 1 32 5 view .LVU11
+  29:Core/Src/init.c ****     CLEAR_BIT(GPIOE->MODER, pwm_pins);
+  81              		.loc 1 29 5 view .LVU11
   82 0068 03F54063 		add	r3, r3, #3072
   83 006c 1A68     		ldr	r2, [r3]
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 3
-
-
   84 006e 22F03C22 		bic	r2, r2, #1006648320
   85 0072 22F44C02 		bic	r2, r2, #13369344
   86 0076 1A60     		str	r2, [r3]
-  33:Core/Src/init.c **** 
-  34:Core/Src/init.c ****     // Установка режима AF (10) для всех пинов
-  35:Core/Src/init.c ****     uint32_t pwm_af_mode = GPIO_MODER_MODER5_1 | GPIO_MODER_MODER6_1 | GPIO_MODER_MODER9_1 |  GPIO_
-  87              		.loc 1 35 5 view .LVU12
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 3
+
+
+  30:Core/Src/init.c **** 
+  31:Core/Src/init.c ****     uint32_t pwm_af_mode = GPIO_MODER_MODER5_1 | GPIO_MODER_MODER6_1 | GPIO_MODER_MODER9_1 |  GPIO_
+  87              		.loc 1 31 5 view .LVU12
   88              	.LVL1:
-  36:Core/Src/init.c ****     SET_BIT(GPIOE->MODER, pwm_af_mode);
-  89              		.loc 1 36 5 view .LVU13
+  32:Core/Src/init.c ****     SET_BIT(GPIOE->MODER, pwm_af_mode);
+  89              		.loc 1 32 5 view .LVU13
   90 0078 1A68     		ldr	r2, [r3]
   91 007a 42F02822 		orr	r2, r2, #671098880
   92 007e 42F40802 		orr	r2, r2, #8912896
   93 0082 1A60     		str	r2, [r3]
-  37:Core/Src/init.c **** 
-  38:Core/Src/init.c ****     // PE5, PE6 -> TIM9 (AF3)
-  39:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[0], GPIO_AFRL_AFSEL5, 0x03 << GPIO_AFRL_AFSEL5_Pos);
-  94              		.loc 1 39 5 view .LVU14
+  33:Core/Src/init.c **** 
+  34:Core/Src/init.c ****     // PE5, PE6 -> TIM9 (AF3)
+  35:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[0], GPIO_AFRL_AFSEL5, 0x03 << GPIO_AFRL_AFSEL5_Pos);
+  94              		.loc 1 35 5 view .LVU14
   95 0084 1A6A     		ldr	r2, [r3, #32]
   96 0086 22F47002 		bic	r2, r2, #15728640
   97 008a 42F44012 		orr	r2, r2, #3145728
   98 008e 1A62     		str	r2, [r3, #32]
-  40:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[0], GPIO_AFRL_AFSEL6, 0x03 << GPIO_AFRL_AFSEL6_Pos);
-  99              		.loc 1 40 5 view .LVU15
+  36:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[0], GPIO_AFRL_AFSEL6, 0x03 << GPIO_AFRL_AFSEL6_Pos);
+  99              		.loc 1 36 5 view .LVU15
  100 0090 1A6A     		ldr	r2, [r3, #32]
  101 0092 22F07062 		bic	r2, r2, #251658240
  102 0096 42F04072 		orr	r2, r2, #50331648
  103 009a 1A62     		str	r2, [r3, #32]
-  41:Core/Src/init.c **** 
-  42:Core/Src/init.c ****     // PE9, PE11, PE13, PE14 -> TIM1 (AF1)
-  43:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL9,  0x01 << GPIO_AFRH_AFSEL9_Pos);
- 104              		.loc 1 43 5 view .LVU16
+  37:Core/Src/init.c **** 
+  38:Core/Src/init.c ****     // PE9, PE11, PE13, PE14 -> TIM1 (AF1)
+  39:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL9,  0x01 << GPIO_AFRH_AFSEL9_Pos);
+ 104              		.loc 1 39 5 view .LVU16
  105 009c 5A6A     		ldr	r2, [r3, #36]
  106 009e 22F0F002 		bic	r2, r2, #240
  107 00a2 42F01002 		orr	r2, r2, #16
  108 00a6 5A62     		str	r2, [r3, #36]
-  44:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL11, 0x01 << GPIO_AFRH_AFSEL11_Pos);
- 109              		.loc 1 44 5 view .LVU17
+  40:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL11, 0x01 << GPIO_AFRH_AFSEL11_Pos);
+ 109              		.loc 1 40 5 view .LVU17
  110 00a8 5A6A     		ldr	r2, [r3, #36]
  111 00aa 22F47042 		bic	r2, r2, #61440
  112 00ae 42F48052 		orr	r2, r2, #4096
  113 00b2 5A62     		str	r2, [r3, #36]
-  45:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL13, 0x01 << GPIO_AFRH_AFSEL13_Pos);
- 114              		.loc 1 45 5 view .LVU18
+  41:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL13, 0x01 << GPIO_AFRH_AFSEL13_Pos);
+ 114              		.loc 1 41 5 view .LVU18
  115 00b4 5A6A     		ldr	r2, [r3, #36]
  116 00b6 22F47002 		bic	r2, r2, #15728640
  117 00ba 42F48012 		orr	r2, r2, #1048576
  118 00be 5A62     		str	r2, [r3, #36]
-  46:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL14, 0x01 << GPIO_AFRH_AFSEL14_Pos);
- 119              		.loc 1 46 5 view .LVU19
+  42:Core/Src/init.c ****     MODIFY_REG(GPIOE->AFR[1], GPIO_AFRH_AFSEL14, 0x01 << GPIO_AFRH_AFSEL14_Pos);
+ 119              		.loc 1 42 5 view .LVU19
  120 00c0 5A6A     		ldr	r2, [r3, #36]
  121 00c2 22F07062 		bic	r2, r2, #251658240
  122 00c6 42F08072 		orr	r2, r2, #16777216
  123 00ca 5A62     		str	r2, [r3, #36]
-  47:Core/Src/init.c **** }
- 124              		.loc 1 47 1 is_stmt 0 view .LVU20
+  43:Core/Src/init.c **** }
+ 124              		.loc 1 43 1 is_stmt 0 view .LVU20
  125 00cc 7047     		bx	lr
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 4
-
-
  126              	.L3:
  127 00ce 00BF     		.align	2
  128              	.L2:
  129 00d0 00380240 		.word	1073887232
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 4
+
+
  130 00d4 00000240 		.word	1073872896
  131              		.cfi_endproc
  132              	.LFE130:
@@ -196,11 +192,11 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
  139              		.thumb_func
  141              	TIM_Init:
  142              	.LFB131:
-  48:Core/Src/init.c **** 
-  49:Core/Src/init.c **** 
-  50:Core/Src/init.c **** void TIM_Init(void)
-  51:Core/Src/init.c **** {
- 143              		.loc 1 51 1 is_stmt 1 view -0
+  44:Core/Src/init.c **** 
+  45:Core/Src/init.c **** 
+  46:Core/Src/init.c **** void TIM_Init(void)
+  47:Core/Src/init.c **** {
+ 143              		.loc 1 47 1 is_stmt 1 view -0
  144              		.cfi_startproc
  145              		@ args = 0, pretend = 0, frame = 0
  146              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -210,171 +206,165 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
  150              		.cfi_def_cfa_offset 8
  151              		.cfi_offset 4, -8
  152              		.cfi_offset 5, -4
-  52:Core/Src/init.c ****     // Включение тактирования таймеров
-  53:Core/Src/init.c ****     SET_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM2EN); // TIM2 
- 153              		.loc 1 53 5 view .LVU22
+  48:Core/Src/init.c ****     SET_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM2EN); 
+ 153              		.loc 1 48 5 view .LVU22
  154 0002 374B     		ldr	r3, .L6
  155 0004 1A6C     		ldr	r2, [r3, #64]
  156 0006 42F00102 		orr	r2, r2, #1
  157 000a 1A64     		str	r2, [r3, #64]
-  54:Core/Src/init.c ****     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_TIM1EN | RCC_APB2ENR_TIM9EN); // TIM1, TIM9
- 158              		.loc 1 54 5 view .LVU23
+  49:Core/Src/init.c ****     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_TIM1EN | RCC_APB2ENR_TIM9EN);
+ 158              		.loc 1 49 5 view .LVU23
  159 000c 5A6C     		ldr	r2, [r3, #68]
  160 000e 42F00112 		orr	r2, r2, #65537
  161 0012 5A64     		str	r2, [r3, #68]
-  55:Core/Src/init.c **** 
-  56:Core/Src/init.c ****     TIM2->PSC = 0;
- 162              		.loc 1 56 5 view .LVU24
- 163              		.loc 1 56 15 is_stmt 0 view .LVU25
+  50:Core/Src/init.c **** 
+  51:Core/Src/init.c ****     TIM2->PSC = 0;
+ 162              		.loc 1 51 5 view .LVU24
+ 163              		.loc 1 51 15 is_stmt 0 view .LVU25
  164 0014 4FF08043 		mov	r3, #1073741824
  165 0018 0022     		movs	r2, #0
  166 001a 9A62     		str	r2, [r3, #40]
-  57:Core/Src/init.c ****     TIM2->ARR = 0xFFFFFFFF; // 32-битный счетчик
- 167              		.loc 1 57 5 is_stmt 1 view .LVU26
- 168              		.loc 1 57 15 is_stmt 0 view .LVU27
+  52:Core/Src/init.c ****     TIM2->ARR = 0xFFFFFFFF; //max U number
+ 167              		.loc 1 52 5 is_stmt 1 view .LVU26
+ 168              		.loc 1 52 15 is_stmt 0 view .LVU27
  169 001c 4FF0FF32 		mov	r2, #-1
  170 0020 DA62     		str	r2, [r3, #44]
-  58:Core/Src/init.c ****     
-  59:Core/Src/init.c ****     MODIFY_REG(TIM2->CCMR1, TIM_CCMR1_CC1S | TIM_CCMR1_CC2S, TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0);
- 171              		.loc 1 59 5 is_stmt 1 view .LVU28
+  53:Core/Src/init.c ****     
+  54:Core/Src/init.c ****     MODIFY_REG(TIM2->CCMR1, TIM_CCMR1_CC1S | TIM_CCMR1_CC2S, TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0); 
+ 171              		.loc 1 54 5 is_stmt 1 view .LVU28
  172 0022 9A69     		ldr	r2, [r3, #24]
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 5
-
-
  173 0024 22F44072 		bic	r2, r2, #768
  174 0028 22F00302 		bic	r2, r2, #3
  175 002c 42F48072 		orr	r2, r2, #256
  176 0030 42F00102 		orr	r2, r2, #1
  177 0034 9A61     		str	r2, [r3, #24]
-  60:Core/Src/init.c ****     
-  61:Core/Src/init.c ****     // Фильтр (IC1F, IC2F = 0xF)
-  62:Core/Src/init.c ****     MODIFY_REG(TIM2->CCMR1, TIM_CCMR1_IC1F | TIM_CCMR1_IC2F, (0xF << TIM_CCMR1_IC1F_Pos) | (0xF << 
- 178              		.loc 1 62 5 view .LVU29
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 5
+
+
+  55:Core/Src/init.c ****     
+  56:Core/Src/init.c ****     MODIFY_REG(TIM2->CCMR1, TIM_CCMR1_IC1F | TIM_CCMR1_IC2F, (0xF << TIM_CCMR1_IC1F_Pos) | (0xF << 
+ 178              		.loc 1 56 5 view .LVU29
  179 0036 9A69     		ldr	r2, [r3, #24]
  180 0038 42F47042 		orr	r2, r2, #61440
  181 003c 42F0F002 		orr	r2, r2, #240
  182 0040 9A61     		str	r2, [r3, #24]
-  63:Core/Src/init.c ****     
-  64:Core/Src/init.c ****     // Encoder Mode 3 (SMS=011)
-  65:Core/Src/init.c ****     MODIFY_REG(TIM2->SMCR, TIM_SMCR_SMS, TIM_SMCR_SMS_0 | TIM_SMCR_SMS_1);
- 183              		.loc 1 65 5 view .LVU30
+  57:Core/Src/init.c ****     
+  58:Core/Src/init.c ****     MODIFY_REG(TIM2->SMCR, TIM_SMCR_SMS, TIM_SMCR_SMS_0 | TIM_SMCR_SMS_1); //rotation side
+ 183              		.loc 1 58 5 view .LVU30
  184 0042 9A68     		ldr	r2, [r3, #8]
  185 0044 22F00702 		bic	r2, r2, #7
  186 0048 42F00302 		orr	r2, r2, #3
  187 004c 9A60     		str	r2, [r3, #8]
-  66:Core/Src/init.c ****     
-  67:Core/Src/init.c ****     SET_BIT(TIM2->CR1, TIM_CR1_CEN); // Старт энкодера
- 188              		.loc 1 67 5 view .LVU31
+  59:Core/Src/init.c ****     
+  60:Core/Src/init.c ****     SET_BIT(TIM2->CR1, TIM_CR1_CEN);
+ 188              		.loc 1 60 5 view .LVU31
  189 004e 1A68     		ldr	r2, [r3]
  190 0050 42F00102 		orr	r2, r2, #1
  191 0054 1A60     		str	r2, [r3]
-  68:Core/Src/init.c **** 
-  69:Core/Src/init.c ****     TIM9->PSC = 179; 
- 192              		.loc 1 69 5 view .LVU32
- 193              		.loc 1 69 15 is_stmt 0 view .LVU33
+  61:Core/Src/init.c **** 
+  62:Core/Src/init.c ****     TIM9->PSC = 179; 
+ 192              		.loc 1 62 5 view .LVU32
+ 193              		.loc 1 62 15 is_stmt 0 view .LVU33
  194 0056 03F5A033 		add	r3, r3, #81920
  195 005a B325     		movs	r5, #179
  196 005c 9D62     		str	r5, [r3, #40]
-  70:Core/Src/init.c ****     TIM9->ARR = 1000;
- 197              		.loc 1 70 5 is_stmt 1 view .LVU34
- 198              		.loc 1 70 15 is_stmt 0 view .LVU35
- 199 005e 4FF47A74 		mov	r4, #1000
+  63:Core/Src/init.c ****     TIM9->ARR = 999;
+ 197              		.loc 1 63 5 is_stmt 1 view .LVU34
+ 198              		.loc 1 63 15 is_stmt 0 view .LVU35
+ 199 005e 40F2E734 		movw	r4, #999
  200 0062 DC62     		str	r4, [r3, #44]
-  71:Core/Src/init.c ****     MODIFY_REG(TIM9->CCMR1, TIM_CCMR1_OC1M | TIM_CCMR1_OC2M, (0x6 << TIM_CCMR1_OC1M_Pos) | (0x6 << 
- 201              		.loc 1 71 5 is_stmt 1 view .LVU36
+  64:Core/Src/init.c ****     MODIFY_REG(TIM9->CCMR1, TIM_CCMR1_OC1M | TIM_CCMR1_OC2M, (0x6 << TIM_CCMR1_OC1M_Pos) | (0x6 << 
+ 201              		.loc 1 64 5 is_stmt 1 view .LVU36
  202 0064 9A69     		ldr	r2, [r3, #24]
  203 0066 22F4E042 		bic	r2, r2, #28672
  204 006a 22F07002 		bic	r2, r2, #112
  205 006e 46F26000 		movw	r0, #24672
  206 0072 0243     		orrs	r2, r2, r0
  207 0074 9A61     		str	r2, [r3, #24]
-  72:Core/Src/init.c ****     
-  73:Core/Src/init.c ****     // Preload enable
-  74:Core/Src/init.c ****     SET_BIT(TIM9->CCMR1, TIM_CCMR1_OC1PE | TIM_CCMR1_OC2PE);
- 208              		.loc 1 74 5 view .LVU37
+  65:Core/Src/init.c ****     
+  66:Core/Src/init.c **** 
+  67:Core/Src/init.c ****     SET_BIT(TIM9->CCMR1, TIM_CCMR1_OC1PE | TIM_CCMR1_OC2PE);
+ 208              		.loc 1 67 5 view .LVU37
  209 0076 9A69     		ldr	r2, [r3, #24]
  210 0078 40F60801 		movw	r1, #2056
  211 007c 0A43     		orrs	r2, r2, r1
  212 007e 9A61     		str	r2, [r3, #24]
-  75:Core/Src/init.c ****     // Output enable
-  76:Core/Src/init.c ****     SET_BIT(TIM9->CCER, TIM_CCER_CC1E | TIM_CCER_CC2E);
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 6
-
-
- 213              		.loc 1 76 5 view .LVU38
+  68:Core/Src/init.c ****     SET_BIT(TIM9->CCER, TIM_CCER_CC1E | TIM_CCER_CC2E);
+ 213              		.loc 1 68 5 view .LVU38
  214 0080 1A6A     		ldr	r2, [r3, #32]
  215 0082 42F01102 		orr	r2, r2, #17
  216 0086 1A62     		str	r2, [r3, #32]
-  77:Core/Src/init.c ****     // Start TIM9
-  78:Core/Src/init.c ****     SET_BIT(TIM9->CR1, TIM_CR1_ARPE | TIM_CR1_CEN);
- 217              		.loc 1 78 5 view .LVU39
+  69:Core/Src/init.c ****     SET_BIT(TIM9->CR1, TIM_CR1_ARPE | TIM_CR1_CEN);
+ 217              		.loc 1 69 5 view .LVU39
  218 0088 1A68     		ldr	r2, [r3]
  219 008a 42F08102 		orr	r2, r2, #129
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 6
+
+
  220 008e 1A60     		str	r2, [r3]
-  79:Core/Src/init.c **** 
-  80:Core/Src/init.c ****     TIM1->PSC = 179; // Аналогично 1 MHz
- 221              		.loc 1 80 5 view .LVU40
- 222              		.loc 1 80 15 is_stmt 0 view .LVU41
+  70:Core/Src/init.c **** 
+  71:Core/Src/init.c ****     TIM1->PSC = 179; 
+ 221              		.loc 1 71 5 view .LVU40
+ 222              		.loc 1 71 15 is_stmt 0 view .LVU41
  223 0090 A3F58043 		sub	r3, r3, #16384
  224 0094 9D62     		str	r5, [r3, #40]
-  81:Core/Src/init.c ****     TIM1->ARR = 1000; // 1 kHz PWM
- 225              		.loc 1 81 5 is_stmt 1 view .LVU42
- 226              		.loc 1 81 15 is_stmt 0 view .LVU43
+  72:Core/Src/init.c ****     TIM1->ARR = 999; // 1 kHz PWM
+ 225              		.loc 1 72 5 is_stmt 1 view .LVU42
+ 226              		.loc 1 72 15 is_stmt 0 view .LVU43
  227 0096 DC62     		str	r4, [r3, #44]
-  82:Core/Src/init.c ****     
-  83:Core/Src/init.c ****     // PWM Mode 1 для CH1, CH2, CH3, CH4
-  84:Core/Src/init.c ****     MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M | TIM_CCMR1_OC2M, (0x6 << TIM_CCMR1_OC1M_Pos) | (0x6 << 
- 228              		.loc 1 84 5 is_stmt 1 view .LVU44
+  73:Core/Src/init.c ****     
+  74:Core/Src/init.c ****     // PWM Mode 1 CH1, CH2, CH3, CH4
+  75:Core/Src/init.c ****     MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M | TIM_CCMR1_OC2M, (0x6 << TIM_CCMR1_OC1M_Pos) | (0x6 << 
+ 228              		.loc 1 75 5 is_stmt 1 view .LVU44
  229 0098 9A69     		ldr	r2, [r3, #24]
  230 009a 22F4E042 		bic	r2, r2, #28672
  231 009e 22F07002 		bic	r2, r2, #112
  232 00a2 0243     		orrs	r2, r2, r0
  233 00a4 9A61     		str	r2, [r3, #24]
-  85:Core/Src/init.c ****     MODIFY_REG(TIM1->CCMR2, TIM_CCMR2_OC3M | TIM_CCMR2_OC4M, (0x6 << TIM_CCMR2_OC3M_Pos) | (0x6 << 
- 234              		.loc 1 85 5 view .LVU45
+  76:Core/Src/init.c ****     MODIFY_REG(TIM1->CCMR2, TIM_CCMR2_OC3M | TIM_CCMR2_OC4M, (0x6 << TIM_CCMR2_OC3M_Pos) | (0x6 << 
+ 234              		.loc 1 76 5 view .LVU45
  235 00a6 DA69     		ldr	r2, [r3, #28]
  236 00a8 22F4E042 		bic	r2, r2, #28672
  237 00ac 22F07002 		bic	r2, r2, #112
  238 00b0 0243     		orrs	r2, r2, r0
  239 00b2 DA61     		str	r2, [r3, #28]
-  86:Core/Src/init.c ****     
-  87:Core/Src/init.c ****     // Preload enable
-  88:Core/Src/init.c ****     SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE | TIM_CCMR1_OC2PE);
- 240              		.loc 1 88 5 view .LVU46
+  77:Core/Src/init.c ****     
+  78:Core/Src/init.c ****     // Preload enable
+  79:Core/Src/init.c ****     SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE | TIM_CCMR1_OC2PE);
+ 240              		.loc 1 79 5 view .LVU46
  241 00b4 9A69     		ldr	r2, [r3, #24]
  242 00b6 0A43     		orrs	r2, r2, r1
  243 00b8 9A61     		str	r2, [r3, #24]
-  89:Core/Src/init.c ****     SET_BIT(TIM1->CCMR2, TIM_CCMR2_OC3PE | TIM_CCMR2_OC4PE);
- 244              		.loc 1 89 5 view .LVU47
+  80:Core/Src/init.c ****     SET_BIT(TIM1->CCMR2, TIM_CCMR2_OC3PE | TIM_CCMR2_OC4PE);
+ 244              		.loc 1 80 5 view .LVU47
  245 00ba DA69     		ldr	r2, [r3, #28]
  246 00bc 0A43     		orrs	r2, r2, r1
  247 00be DA61     		str	r2, [r3, #28]
-  90:Core/Src/init.c ****     
-  91:Core/Src/init.c ****     
-  92:Core/Src/init.c ****     SET_BIT(TIM1->CCER, TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E);// Output en
- 248              		.loc 1 92 5 view .LVU48
+  81:Core/Src/init.c ****     
+  82:Core/Src/init.c ****     
+  83:Core/Src/init.c ****     SET_BIT(TIM1->CCER, TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E);// out (CH1,
+ 248              		.loc 1 83 5 view .LVU48
  249 00c0 1A6A     		ldr	r2, [r3, #32]
  250 00c2 42F48852 		orr	r2, r2, #4352
  251 00c6 42F01102 		orr	r2, r2, #17
  252 00ca 1A62     		str	r2, [r3, #32]
-  93:Core/Src/init.c ****     
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 7
-
-
-  94:Core/Src/init.c ****     SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);//MOE EN
- 253              		.loc 1 94 5 view .LVU49
+  84:Core/Src/init.c ****     
+  85:Core/Src/init.c ****     SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);//MOE EN
+ 253              		.loc 1 85 5 view .LVU49
  254 00cc 5A6C     		ldr	r2, [r3, #68]
  255 00ce 42F40042 		orr	r2, r2, #32768
  256 00d2 5A64     		str	r2, [r3, #68]
-  95:Core/Src/init.c ****     
-  96:Core/Src/init.c ****     // Start TIM1
-  97:Core/Src/init.c ****     SET_BIT(TIM1->CR1, TIM_CR1_ARPE | TIM_CR1_CEN);
- 257              		.loc 1 97 5 view .LVU50
+  86:Core/Src/init.c ****     
+  87:Core/Src/init.c ****     SET_BIT(TIM1->CR1, TIM_CR1_ARPE | TIM_CR1_CEN);
+ 257              		.loc 1 87 5 view .LVU50
  258 00d4 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 7
+
+
  259 00d6 42F08102 		orr	r2, r2, #129
  260 00da 1A60     		str	r2, [r3]
-  98:Core/Src/init.c **** }
- 261              		.loc 1 98 1 is_stmt 0 view .LVU51
+  88:Core/Src/init.c **** }
+ 261              		.loc 1 88 1 is_stmt 0 view .LVU51
  262 00dc 30BC     		pop	{r4, r5}
  263              	.LCFI1:
  264              		.cfi_restore 5
@@ -395,62 +385,62 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
  280              		.thumb_func
  282              	ADC_Init:
  283              	.LFB132:
-  99:Core/Src/init.c **** 
- 100:Core/Src/init.c **** 
- 101:Core/Src/init.c **** void ADC_Init(void)
- 102:Core/Src/init.c **** {
- 284              		.loc 1 102 1 is_stmt 1 view -0
+  89:Core/Src/init.c **** 
+  90:Core/Src/init.c **** 
+  91:Core/Src/init.c **** void ADC_Init(void)
+  92:Core/Src/init.c **** {
+ 284              		.loc 1 92 1 is_stmt 1 view -0
  285              		.cfi_startproc
  286              		@ args = 0, pretend = 0, frame = 0
  287              		@ frame_needed = 0, uses_anonymous_args = 0
  288              		@ link register save eliminated.
- 103:Core/Src/init.c ****     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
- 289              		.loc 1 103 5 view .LVU53
+  93:Core/Src/init.c ****     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
+ 289              		.loc 1 93 5 view .LVU53
  290 0000 114A     		ldr	r2, .L9
  291 0002 536C     		ldr	r3, [r2, #68]
  292 0004 43F48073 		orr	r3, r3, #256
  293 0008 5364     		str	r3, [r2, #68]
- 104:Core/Src/init.c **** 
- 105:Core/Src/init.c ****     CLEAR_BIT(ADC1->CR2, ADC_CR2_ADON);
- 294              		.loc 1 105 5 view .LVU54
+  94:Core/Src/init.c **** 
+  95:Core/Src/init.c ****     CLEAR_BIT(ADC1->CR2, ADC_CR2_ADON); //adc off
+ 294              		.loc 1 95 5 view .LVU54
  295 000a 104B     		ldr	r3, .L9+4
  296 000c 9A68     		ldr	r2, [r3, #8]
  297 000e 22F00102 		bic	r2, r2, #1
  298 0012 9A60     		str	r2, [r3, #8]
- 106:Core/Src/init.c ****     SET_BIT(ADC->CCR, ADC_CCR_ADCPRE_0); 
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 8
-
-
- 299              		.loc 1 106 5 view .LVU55
+  96:Core/Src/init.c ****     SET_BIT(ADC->CCR, ADC_CCR_ADCPRE_0); // devide by 4
+ 299              		.loc 1 96 5 view .LVU55
  300 0014 0E49     		ldr	r1, .L9+8
  301 0016 4A68     		ldr	r2, [r1, #4]
  302 0018 42F48032 		orr	r2, r2, #65536
  303 001c 4A60     		str	r2, [r1, #4]
- 107:Core/Src/init.c ****     MODIFY_REG(ADC1->SQR1, ADC_SQR1_L, 0);
- 304              		.loc 1 107 5 view .LVU56
+  97:Core/Src/init.c ****     MODIFY_REG(ADC1->SQR1, ADC_SQR1_L, 0); //num of channels
+ 304              		.loc 1 97 5 view .LVU56
  305 001e DA6A     		ldr	r2, [r3, #44]
  306 0020 22F47002 		bic	r2, r2, #15728640
  307 0024 DA62     		str	r2, [r3, #44]
- 108:Core/Src/init.c ****     MODIFY_REG(ADC1->SQR3, ADC_SQR3_SQ1, 9 << ADC_SQR3_SQ1_Pos);
- 308              		.loc 1 108 5 view .LVU57
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 8
+
+
+  98:Core/Src/init.c ****     MODIFY_REG(ADC1->SQR3, ADC_SQR3_SQ1, 9 << ADC_SQR3_SQ1_Pos); //first read 
+ 308              		.loc 1 98 5 view .LVU57
  309 0026 5A6B     		ldr	r2, [r3, #52]
  310 0028 22F01F02 		bic	r2, r2, #31
  311 002c 42F00902 		orr	r2, r2, #9
  312 0030 5A63     		str	r2, [r3, #52]
- 109:Core/Src/init.c ****     MODIFY_REG(ADC1->SMPR2, ADC_SMPR2_SMP9, 4 << ADC_SMPR2_SMP9_Pos);
- 313              		.loc 1 109 5 view .LVU58
+  99:Core/Src/init.c ****     MODIFY_REG(ADC1->SMPR2, ADC_SMPR2_SMP9, 4 << ADC_SMPR2_SMP9_Pos); // charging cyles
+ 313              		.loc 1 99 5 view .LVU58
  314 0032 1A69     		ldr	r2, [r3, #16]
  315 0034 22F06052 		bic	r2, r2, #939524096
  316 0038 42F00052 		orr	r2, r2, #536870912
  317 003c 1A61     		str	r2, [r3, #16]
- 110:Core/Src/init.c ****     SET_BIT(ADC1->CR2, ADC_CR2_ADON);
- 318              		.loc 1 110 5 view .LVU59
+ 100:Core/Src/init.c ****     SET_BIT(ADC1->CR2, ADC_CR2_ADON); // adc on
+ 318              		.loc 1 100 5 view .LVU59
  319 003e 9A68     		ldr	r2, [r3, #8]
  320 0040 42F00102 		orr	r2, r2, #1
  321 0044 9A60     		str	r2, [r3, #8]
- 111:Core/Src/init.c ****     
- 112:Core/Src/init.c **** }
- 322              		.loc 1 112 1 is_stmt 0 view .LVU60
+ 101:Core/Src/init.c ****     
+ 102:Core/Src/init.c **** }
+ 322              		.loc 1 102 1 is_stmt 0 view .LVU60
  323 0046 7047     		bx	lr
  324              	.L10:
  325              		.align	2
@@ -465,19 +455,19 @@ ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 1
  335              		.file 2 "C:/Tools/SysGCC/arm-none-eabi/include/machine/_default_types.h"
  336              		.file 3 "C:/Tools/SysGCC/arm-none-eabi/include/sys/_stdint.h"
  337              		.file 4 "Core/Inc/../../CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
-ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s 			page 9
+ARM GAS  C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:21     .text.GPIO_Init:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:27     .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:129    .text.GPIO_Init:000000d0 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:135    .text.TIM_Init:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:141    .text.TIM_Init:00000000 TIM_Init
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:271    .text.TIM_Init:000000e0 $d
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:276    .text.ADC_Init:00000000 $t
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:282    .text.ADC_Init:00000000 ADC_Init
-C:\Users\SIMONM~1\AppData\Local\Temp\cc1kIe02.s:327    .text.ADC_Init:00000048 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:21     .text.GPIO_Init:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:27     .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:129    .text.GPIO_Init:000000d0 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:135    .text.TIM_Init:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:141    .text.TIM_Init:00000000 TIM_Init
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:271    .text.TIM_Init:000000e0 $d
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:276    .text.ADC_Init:00000000 $t
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:282    .text.ADC_Init:00000000 ADC_Init
+C:\Users\SIMONM~1\AppData\Local\Temp\ccB3Ry7y.s:327    .text.ADC_Init:00000048 $d
 
 NO UNDEFINED SYMBOLS
